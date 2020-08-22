@@ -1,0 +1,168 @@
+@import "scss/__reset";
+
+$c--highlight: #bb9a53;
+$black: black;
+$white: white;
+$t--1: #f2f2f2;
+
+$f1: orpheuspro;
+$f2: freight-sans-condensed-pro;
+$f3: freight-sans-pro;
+$f4: freight-text-pro;
+
+$omega: 0.8rem;
+$alpha: 1rem;
+$bravo: 1.6rem;
+$charlie: 2.56rem;
+$delta: 4.1rem;
+
+$space: 1rem;
+$pad: 0.75 * $space;
+
+$border: 0.125rem;
+
+html {
+  font-size: 20px;
+  padding: $pad;
+}
+
+body {
+}
+
+ul {
+  list-style: none;
+}
+
+.c-location {
+  & + & {
+    margin-top: 2 * $space;
+  }
+}
+
+.c-location__title {
+  font-family: $f1;
+  font-size: $charlie;
+  font-weight: 700;
+  padding: 0 $pad;
+  > span {
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  + .c-categories {
+    margin-top: $pad;
+  }
+}
+
+.c-category {
+  background: $t--1;
+  border-top: $border $c--highlight solid;
+  padding-bottom: $pad;
+  position: relative;
+
+  & + & {
+    margin-top: 2 * $space;
+  }
+}
+
+.c-category__title {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: $pad;
+  background: $c--highlight;
+  color: $white;
+  text-shadow: 1px 1px darken($c--highlight, 15%);
+  font-family: $f2;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 0 0.25 * $space;
+  transform: translate3d(0, -50%, 0);
+}
+
+.c-task {
+  padding: 0 $pad;
+  margin-top: $pad;
+  padding-top: $pad;
+  position: relative;
+  & + & {
+    &:before {
+      content: "";
+      position: absolute;
+      border-top: 2px $black dotted;
+      left: $pad;
+      right: $pad;
+      top: -1px;
+    }
+  }
+}
+
+.c-task__title {
+  font-family: $f3;
+  font-size: $bravo;
+  font-weight: 300;
+  line-height: 1;
+
+  & + .c-task__actions {
+    margin-top: 0.5 * $pad;
+  }
+}
+
+.c-task__actions {
+  display: flex;
+}
+
+.c-task__action {
+  font-family: $f2;
+  font-size: $omega;
+  font-weight: 300;
+  text-transform: uppercase;
+
+  & + & {
+    margin-left: $pad;
+    position: relative;
+    &:before {
+      content: "";
+      position: absolute;
+      border-left: 1px $black solid;
+      top: 0;
+      bottom: 0;
+      left: -0.5 * $pad;
+    }
+  }
+}
+
+.c-task__items {
+  padding-top: $pad;
+  display: none;
+  .c-task:first-child & {
+    //display: block;
+  }
+}
+
+.c-task__item {
+  font-family: $f4;
+  width: calc(100% + #{2 * $pad});
+  margin-left: -$pad;
+  padding: 0.125em 0;
+  padding-left: $pad;
+
+  &:before {
+    content: "+ ";
+  }
+
+  &:nth-child(odd) {
+    background: $white;
+  }
+}
+
+.c-task__checkbox {
+  position: absolute;
+  top: $pad;
+  right: $pad;
+  width: 1rem;
+  height: 1rem;
+  border: 2px $black solid;
+  border-radius: 4px;
+  margin-top: #{0.5 * ($bravo - $alpha)};
+}

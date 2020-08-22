@@ -1,0 +1,68 @@
+html {
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+}
+
+iframe {
+	border: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+ul,
+ol,
+figure,
+button,
+blockquote {
+	margin: 0;
+	padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+	font-size: inherit;
+}
+
+a,
+button {
+	color: inherit;
+}
+
+a {
+	text-decoration: none;
+}
+
+button {
+	overflow: visible;
+	border: 0;
+	font: inherit;
+	letter-spacing: inherit;
+	background: none;
+	cursor: pointer;
+	-webkit-font-smoothing: inherit;
+	&:focus {
+		outline: 0;
+	}
+}
+
+::-moz-focus-inner {
+	padding: 0;
+	border: 0;
+}
+
+img {
+	height: auto;
+	border: 0;
+}
