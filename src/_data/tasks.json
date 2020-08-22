@@ -1,0 +1,111 @@
+{
+  "tasks": [
+    // {
+    //     "title"         :   "",
+    //     "area"          :   "",
+    //     "category"      :   "",
+    //     "frequency"     :   1, // in days
+    //     "restricted"    :   false, // e.g. Manager
+    //     "subtasks"      :   [
+
+    //     ]
+    // },
+
+    {
+      "title": "Tables",
+      "area": "Floor",
+      "category": "Furniture",
+      "subtasks": ["Clean ’em (undersides too)"]
+    },
+
+    {
+      "title": "Booths",
+      "area": "Floor",
+      "category": "Furniture",
+      "subtasks": [
+        "Clean ’em with booth juice: top, bottom, back and sides"
+      ]
+    },
+
+    {
+      "title": "High-chairs",
+      "area": "Floor",
+      "category": "Furniture",
+      "subtasks": [
+        "Clean ’em with booth juice",
+        "Stack ’em in AREA X"
+      ]
+    },
+
+    {
+      "title": "Stools & Chairs",
+      "area": "Floor",
+      "category": "Furniture",
+      "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
+    },
+
+    {
+      "title": "Furniture",
+      "area": "Floor",
+      "category": "Outside",
+      "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
+    },
+
+    {
+      "title": "A-Board",
+      "area": "Floor",
+      "category": "Outside",
+      "subtasks": ["Store inside, by entrance door"]
+    },
+
+    {
+      "title": "Clean & Sweep",
+      "area": "Floor",
+      "category": "Outside",
+      "subtasks": ["Make the area spick and span"]
+    },
+
+    {
+      "title": "Cutlery",
+      "area": "Floor",
+      "category": "Prepwork",
+      "subtasks": [
+        "Polish with boiling water and a squeeze of lemon juice"
+      ]
+    },
+
+    {
+      "title": "Sauces",
+      "area": "Floor",
+      "category": "Prepwork",
+      "subtasks": [
+        "Soak and rinse lids",
+        "Marry-up sauces",
+        "Clean bottles",
+        "Store in cellar"
+      ]
+    },
+
+    {
+      "title": "Cutlery",
+      "area": "Floor",
+      "category": "Prepwork",
+      "subtasks": [
+        "Polish with boiling water and a squeeze of lemon juice"
+      ]
+    },
+
+    {
+      "title": "Bus Stand",
+      "area": "Floor",
+      "category": "Prepwork",
+      "subtasks": [
+        "Clean and tidy",
+        "Replenish cutlery",
+        "Replenish kitchen roll",
+        "Replenish crayons",
+        "Replenish lego"
+      ]
+    }
+  ]
+}
