@@ -26,9 +26,6 @@ html {
   padding: $pad;
 }
 
-body {
-}
-
 ul {
   list-style: none;
 }
@@ -136,7 +133,7 @@ ul {
   padding-top: $pad;
   display: none;
   .c-task:first-child & {
-    //display: block;
+    display: block;
   }
 }
 

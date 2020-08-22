@@ -1,9 +1,8 @@
 import React from "react";
+import Locations from "./Locations";
 
-interface Props {}
-
-const Tasklist: React.FC<Props> = () => {
-  return <></>;
+const Tasklist: React.FC<iTaskMeta> = ({ tasklist }) => {
+  return <Locations tasksByLocation={tasklist} />;
 };
 
 export default Tasklist;

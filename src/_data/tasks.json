@@ -2,7 +2,7 @@
   "tasks": [
     // {
     //     "title"         :   "",
-    //     "area"          :   "",
+    //     "location"          :   "",
     //     "category"      :   "",
     //     "frequency"     :   1, // in days
     //     "restricted"    :   false, // e.g. Manager
@@ -13,14 +13,21 @@
 
     {
       "title": "Tables",
-      "area": "Floor",
+      "location": "Floor",
       "category": "Furniture",
       "subtasks": ["Clean ’em (undersides too)"]
     },
 
     {
+      "title": "TEST TITLE",
+      "location": "TEST LOCATION",
+      "category": "TEST CATEGORY",
+      "subtasks": ["TEST #1", "TEST#2"]
+    },
+
+    {
       "title": "Booths",
-      "area": "Floor",
+      "location": "Floor",
       "category": "Furniture",
       "subtasks": [
         "Clean ’em with booth juice: top, bottom, back and sides"
@@ -29,7 +36,7 @@
 
     {
       "title": "High-chairs",
-      "area": "Floor",
+      "location": "Floor",
       "category": "Furniture",
       "subtasks": [
         "Clean ’em with booth juice",
@@ -39,35 +46,35 @@
 
     {
       "title": "Stools & Chairs",
-      "area": "Floor",
+      "location": "Floor",
       "category": "Furniture",
       "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
     },
 
     {
       "title": "Furniture",
-      "area": "Floor",
+      "location": "Floor",
       "category": "Outside",
       "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
     },
 
     {
       "title": "A-Board",
-      "area": "Floor",
+      "location": "Floor",
       "category": "Outside",
       "subtasks": ["Store inside, by entrance door"]
     },
 
     {
       "title": "Clean & Sweep",
-      "area": "Floor",
+      "location": "Floor",
       "category": "Outside",
       "subtasks": ["Make the area spick and span"]
     },
 
     {
       "title": "Cutlery",
-      "area": "Floor",
+      "location": "Floor",
       "category": "Prepwork",
       "subtasks": [
         "Polish with boiling water and a squeeze of lemon juice"
@@ -76,7 +83,7 @@
 
     {
       "title": "Sauces",
-      "area": "Floor",
+      "location": "Floor",
       "category": "Prepwork",
       "subtasks": [
         "Soak and rinse lids",
@@ -87,17 +94,8 @@
     },
 
     {
-      "title": "Cutlery",
-      "area": "Floor",
-      "category": "Prepwork",
-      "subtasks": [
-        "Polish with boiling water and a squeeze of lemon juice"
-      ]
-    },
-
-    {
       "title": "Bus Stand",
-      "area": "Floor",
+      "location": "Floor",
       "category": "Prepwork",
       "subtasks": [
         "Clean and tidy",

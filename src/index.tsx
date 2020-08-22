@@ -1,10 +1,17 @@
 import React from "react";
 import { render } from "react-dom";
-import tasklist from "./_data/tasks.json";
+import taskJson from "./_data/tasks.json";
+import parser from "./_helpers/tasklistParser";
+import Tasklist from "./_components/Tasklist/";
 
 const Application: React.FC = () => {
-  console.log(tasklist);
+  const tasklist = parser.parse(taskJson["tasks"]);
+  function renderTasklist() {
+    if (Object.keys(tasklist).length !== 0) {
+      return <Tasklist tasklist={tasklist} />;
+    }
+  }
 
-  return <h1>Test</h1>;
+  return <>{renderTasklist()}</>;
 };
 render(<Application />, document.getElementById("root"));
