@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Title from "./Title";
 import Actions from "./Actions";
 
@@ -9,8 +9,49 @@ const Task: React.FC<Task> = ({
   permission = "any",
   subtasks = [],
 }) => {
+  const [overflow, setOverflow] = useState(false);
+  const [completion, setCompletion] = useState(false);
+
+  function toggleOverflow(e: React.MouseEvent) {
+    setOverflow(!overflow);
+  }
+
+  function toggleCompletion(e: React.MouseEvent) {
+    console.log(e.target);
+
+    setCompletion(!completion);
+  }
+
   function renderTitle() {
-    return <Title title={title} />;
+    return <Title title={title} clickHandler={toggleCompletion} />;
+  }
+
+  function renderOverflow() {
+    const overflowClassName =
+      "[ c-task__overflow ]" + (overflow ? " [ js-show ]" : "");
+
+    return (
+      <>
+        <div
+          className="[ c-task__menuWrap ]"
+          onClick={toggleOverflow}
+        >
+          <svg
+            className="[ c-task__menu ]"
+            viewBox="0 0 64 304"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="m32 120c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32zm-32-88c0 17.7 14.3 32 32 32s32-14.3 32-32-14.3-32-32-32-32 14.3-32 32zm0 240c0 17.7 14.3 32 32 32s32-14.3 32-32-14.3-32-32-32-32 14.3-32 32z" />
+          </svg>
+        </div>
+        <div className="c-task__overflowWrap">
+          <div className="c-task__overflow">
+            {renderActions()}
+            {renderSubtasks()}
+          </div>
+        </div>
+      </>
+    );
   }
 
   function renderActions() {
@@ -21,7 +62,13 @@ const Task: React.FC<Task> = ({
     if (subtasks.length) {
       const subtaskList = subtasks.map((subtask) => {
         if ("string" === typeof subtask) {
-          return <li className="[ c-task__item ]">{subtask}</li>;
+          const k = subtask.replace(" ", "_").substring(0, 50);
+
+          return (
+            <li key={k} className="[ c-task__item ]">
+              {subtask}
+            </li>
+          );
         }
       });
 
@@ -33,13 +80,15 @@ const Task: React.FC<Task> = ({
 
   function renderTask() {
     if (title) {
-      return (
-        <li className="[ c-task ]">
-          {renderTitle()}
-          {renderActions()}
-          {renderSubtasks()}
+      let taskClassName = "c-task";
 
-          <div className="[ c-task__checkbox ]"></div>
+      taskClassName += overflow ? " js-show " : "";
+      taskClassName += completion ? " js-complete " : "";
+
+      return (
+        <li key={title} className={taskClassName}>
+          {renderTitle()}
+          {renderOverflow()}
         </li>
       );
     }

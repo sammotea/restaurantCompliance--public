@@ -1,7 +1,16 @@
 import React from "react";
 
-const Title: React.FC<{ title: string }> = ({ title }) => {
-  return <h1 className="[ c-task__title ]">{title}</h1>;
+interface Props {
+  title: string;
+  clickHandler(e: React.MouseEvent): void;
+}
+
+const Title: React.FC<Props> = ({ title, clickHandler }) => {
+  return (
+    <h1 className="[ c-task__title ]" onClick={clickHandler}>
+      {title}
+    </h1>
+  );
 };
 
 export default Title;

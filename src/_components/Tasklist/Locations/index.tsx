@@ -2,8 +2,6 @@ import React from "react";
 import Location from "./Location/index";
 
 const Locations: React.FC<iTaskMeta> = ({ tasksByLocation }) => {
-  console.log(tasksByLocation);
-
   const locations: JSX.Element[] = [];
 
   for (const location in tasksByLocation) {

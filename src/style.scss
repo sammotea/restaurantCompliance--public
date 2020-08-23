@@ -4,6 +4,7 @@ $c--highlight: #bb9a53;
 $black: black;
 $white: white;
 $t--1: #f2f2f2;
+$t--2: #aaa;
 
 $f1: orpheuspro;
 $f2: freight-sans-condensed-pro;
@@ -100,8 +101,38 @@ ul {
   font-weight: 300;
   line-height: 1;
 
+  .js-complete & {
+    color: $t--2;
+  }
+
   & + .c-task__actions {
     margin-top: 0.5 * $pad;
+  }
+
+  .js-complete & {
+    text-decoration: line-through;
+  }
+}
+
+.c-task__overflowWrap {
+  padding-right: 1rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.3s cubic-bezier(0.01, 0, 0.06, 1);
+
+  .js-show & {
+    max-height: 1000px;
+    transition: 0.75s cubic-bezier(0.81, 0.01, 0.22, 1);
+  }
+}
+
+.c-task__overflow {
+  transform: translate3d(0, -100%, 0);
+  transition: 0.25s ease-in;
+
+  .js-show & {
+    transform: translate3d(0, 0, 0);
+    transition: 0.2s ease 0.1s;
   }
 }
 
@@ -130,36 +161,34 @@ ul {
 }
 
 .c-task__items {
-  padding-top: $pad;
-  display: none;
-  .c-task:first-child & {
-    display: block;
-  }
+  padding-top: 0.5 * $pad;
 }
 
 .c-task__item {
   font-family: $f4;
-  width: calc(100% + #{2 * $pad});
-  margin-left: -$pad;
   padding: 0.125em 0;
-  padding-left: $pad;
 
   &:before {
     content: "+ ";
   }
-
-  &:nth-child(odd) {
-    background: $white;
-  }
 }
 
-.c-task__checkbox {
+.c-task__menuWrap {
   position: absolute;
   top: $pad;
   right: $pad;
   width: 1rem;
   height: 1rem;
-  border: 2px $black solid;
-  border-radius: 4px;
   margin-top: #{0.5 * ($bravo - $alpha)};
+  background-size: contain;
+}
+
+.c-task__menu {
+  width: 1rem;
+  height: 1rem;
+  fill: $t--2;
+  transition: 0.5s;
+  .js-show & {
+    fill: $black;
+  }
 }

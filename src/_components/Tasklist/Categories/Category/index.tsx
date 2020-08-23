@@ -27,7 +27,6 @@ const Category: React.FC<Props> = ({ name, tasks }) => {
     const taskList = tasks.map((task) => (
       <Task key={name + "_" + task.title} {...task} />
     ));
-    console.log(taskList);
     return <ul className="[ c-tasks ]">{taskList}</ul>;
   }
 
