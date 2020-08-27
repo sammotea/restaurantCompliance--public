@@ -6,6 +6,7 @@ const tasklistParser = {
 
     if (Array.isArray(tasklistRaw)) {
       this.parseTasks(tasklistRaw);
+      console.log(this.parsedList);
       return this.parsedList;
     } else {
       throw new Error();
@@ -19,31 +20,21 @@ const tasklistParser = {
   },
 
   parseTask(task: iTaskAsJson): void {
-    const {
-      title,
-      location,
-      category,
-      subtasks = [],
-      permission = "any",
-    } = { ...task };
+    const { title, location, subtasks = [], permission = "any" } = {
+      ...task,
+    };
 
     if (
       title &&
       "string" === typeof title &&
       location &&
-      "string" === typeof location &&
-      category &&
-      "string" === typeof category
+      "string" === typeof location
     ) {
       if (!this.parsedList[location]) {
-        this.parsedList[location] = {};
+        this.parsedList[location] = [];
       }
 
-      if (!this.parsedList[location][category]) {
-        this.parsedList[location][category] = [];
-      }
-
-      this.parsedList[location][category].push({
+      this.parsedList[location].push({
         title,
         subtasks,
         permission,

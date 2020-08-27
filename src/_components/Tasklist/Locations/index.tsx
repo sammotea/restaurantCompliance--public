@@ -1,23 +1,35 @@
 import React from "react";
-import Location from "./Location/index";
+import Tasks from "../Tasks";
 
 const Locations: React.FC<iTaskMeta> = ({ tasksByLocation }) => {
-  const locations: JSX.Element[] = [];
+  function renderTasks(tasks: Task[]) {
+    if (tasks.length > 0) {
+      return <Tasks tasks={tasks} />;
+    }
+  }
 
-  for (const location in tasksByLocation) {
-    locations.push(
-      <Location
-        key={location}
-        name={location}
-        tasksByCategory={tasksByLocation[location]}
-      />
+  function renderLocationTitle(locationTitle) {
+    return (
+      <h1 className="[ c-location__title ]">
+        <span>The</span>
+        {" " + locationTitle}
+      </h1>
     );
   }
 
   function renderLocations() {
-    if (locations.length) {
-      return <ul className="[ c-locations ]">{locations}</ul>;
+    const locations: JSX.Element[] = [];
+
+    for (const location in tasksByLocation) {
+      locations.push(
+        <li key={location} className="[ c-location ]">
+          {renderLocationTitle(location)}
+          {renderTasks(tasksByLocation[location])}
+        </li>
+      );
     }
+
+    return <ul className="[ c-locations ]">{locations}</ul>;
   }
 
   return <>{renderLocations()}</>;
