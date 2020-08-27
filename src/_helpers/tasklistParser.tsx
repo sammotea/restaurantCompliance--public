@@ -20,7 +20,7 @@ const tasklistParser = {
   },
 
   parseTask(task: iTaskAsJson): void {
-    const { title, location, subtasks = [], permission = "any" } = {
+    const { title, location } = {
       ...task,
     };
 
@@ -31,14 +31,10 @@ const tasklistParser = {
       "string" === typeof location
     ) {
       if (!this.parsedList[location]) {
-        this.parsedList[location] = [];
+        this.parsedList[location] = {};
       }
 
-      this.parsedList[location].push({
-        title,
-        subtasks,
-        permission,
-      });
+      this.parsedList[location][title] = task;
     }
   },
 };

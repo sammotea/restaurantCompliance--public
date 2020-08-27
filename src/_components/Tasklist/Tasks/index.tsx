@@ -2,15 +2,18 @@ import React from "react";
 import Task from "./Task";
 
 interface Props {
-  tasks: Task[];
+  tasks: iTaskList;
 }
 
 const Tasks: React.FC<Props> = ({ tasks }) => {
   function renderTasks() {
-    const taskList = tasks.map((task) => (
-      <Task key={name + "_" + task.title} {...task} />
-    ));
-    return <ul className="[ c-tasks ]">{taskList}</ul>;
+    const taskArr: JSX.Element[] = [];
+
+    for (const [title, task] of Object.entries(tasks)) {
+      taskArr.push(<Task key={title} {...task} />);
+    }
+
+    return <ul className="[ c-tasks ]">{taskArr}</ul>;
   }
 
   return <>{renderTasks()}</>;

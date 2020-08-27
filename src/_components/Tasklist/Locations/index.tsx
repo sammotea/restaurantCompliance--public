@@ -2,13 +2,13 @@ import React from "react";
 import Tasks from "../Tasks";
 
 const Locations: React.FC<iTaskMeta> = ({ tasksByLocation }) => {
-  function renderTasks(tasks: Task[]) {
-    if (tasks.length > 0) {
+  function renderTasks(tasks: iTaskList) {
+    if (Object.keys(tasks).length !== 0) {
       return <Tasks tasks={tasks} />;
     }
   }
 
-  function renderLocationTitle(locationTitle) {
+  function renderLocationTitle(locationTitle: string) {
     return (
       <h1 className="[ c-location__title ]">
         <span>The</span>

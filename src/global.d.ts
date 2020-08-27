@@ -11,6 +11,9 @@ interface iTaskMeta {
   [k: string]: Object;
 }
 
+interface iTaskList {
+  [k: string]: Task;
+}
 type Task = {
   title: string;
   permission?: string;
