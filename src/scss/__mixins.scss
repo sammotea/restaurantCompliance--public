@@ -1,72 +1,94 @@
 @mixin break_word() {
-	overflow-wrap: break-word;
-	word-wrap: break-word;
+  details-wrap: break-word;
+  word-wrap: break-word;
 }
 
 @mixin hide() {
-    position: absolute !important;
-    top: -9999px !important;
-    left: -9999px !important;
-    visibility: hidden !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  visibility: hidden !important;
 }
 
-@mixin bg( $backgroundColor, $url, $type, $position, $repeat, $backgroundSize, $retina: true ) {
-    
-    background-color: $backgroundColor;
-    background-image: url( $url + '.' + $type );
-    background-position: $position;
-    background-repeat: $repeat;
-    background-size: $backgroundSize;
-    
-    @if $retina {
-        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi){
-            background-image: url( $url + '--2x.' + $type );
-            background-size: $backgroundSize;
-        }
+@mixin bg(
+  $backgroundColor,
+  $url,
+  $type,
+  $position,
+  $repeat,
+  $backgroundSize,
+  $retina: true
+) {
+  background-color: $backgroundColor;
+  background-image: url($url + "." + $type);
+  background-position: $position;
+  background-repeat: $repeat;
+  background-size: $backgroundSize;
+
+  @if $retina {
+    @media (-webkit-min-device-pixel-ratio: 1.5),
+      (min-resolution: 144dpi) {
+      background-image: url($url + "--2x." + $type);
+      background-size: $backgroundSize;
     }
-    
+  }
 }
 
-@mixin retinize( $file, $suffix, $type, $posX, $posY, $repeat, $width : auto, $height : auto, $color : transparent ) {
-        
-    @if $suffix == "" {
-        background: $color url('img/' + $file + '.' + $type) $posX $posY $repeat;    
-    }
-    @else {
-        background: $color url('img/' + $file + $suffix + '.' + $type) $posX $posY $repeat;
-    }
-    
-    @if $height == "" {
+@mixin retinize(
+  $file,
+  $suffix,
+  $type,
+  $posX,
+  $posY,
+  $repeat,
+  $width: auto,
+  $height: auto,
+  $color: transparent
+) {
+  @if $suffix == "" {
+    background: $color
+      url("img/" + $file + "." + $type)
+      $posX
+      $posY
+      $repeat;
+  } @else {
+    background: $color
+      url("img/" + $file + $suffix + "." + $type)
+      $posX
+      $posY
+      $repeat;
+  }
+
+  @if $height == "" {
+    background-size: $width;
+  }
+
+  @if ($MQs) {
+    @media #{$retina} {
+      @if $suffix == "" {
+        background-image: url("img/" + $file + "_2x." + $type);
+      } @else {
+        background-image: url("img/" + $file + $suffix + "_2x." + $type);
+      }
+
+      @if $height == "" {
         background-size: $width;
+      } @else {
+        background-size: $width $height;
+      }
     }
-    
-    @if ($MQs) {
-      
-        @media #{$retina} {
-            @if $suffix == "" {
-                background-image: url('img/' + $file + '_2x.' + $type);    
-            }
-            @else {
-                background-image: url('img/' + $file + $suffix + '_2x.' + $type);
-            }
-            
-            
-            @if $height == "" {
-                background-size: $width;
-            }
-            @else {
-                background-size: $width $height;
-            }
-        }
-    }
+  }
 }
 
 @mixin visuallyHidden {
-    position: absolute; 
-    overflow: hidden; 
-    clip: rect(0 0 0 0); 
-    height: 1px; width: 1px; 
-    margin: -1px; padding: 0; border: 0;
+  position: absolute;
+  details: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
 }
 
 @mixin clearFix {
@@ -78,216 +100,251 @@
 }
 
 .clearFix {
-    @include clearFix;
+  @include clearFix;
 }
 
-@mixin transform( $transform... ) {
-    -webkit-transform : $transform;
-    -moz-transform : $transform;
-    -ms-transform : $transform;
-    -o-transform : $transform;
-    transform : $transform; 
+@mixin transform($transform...) {
+  -webkit-transform: $transform;
+  -moz-transform: $transform;
+  -ms-transform: $transform;
+  -o-transform: $transform;
+  transform: $transform;
 }
 
-@mixin transform-origin( $transformOrigin... ) {
-    -webkit-transform-origin : $transformOrigin;
-    -moz-transform-origin : $transformOrigin;
-    -ms-transform-origin : $transformOrigin;
-    -o-transform-origin : $transformOrigin;
-    transform-origin : $transformOrigin;   
+@mixin transform-origin($transformOrigin...) {
+  -webkit-transform-origin: $transformOrigin;
+  -moz-transform-origin: $transformOrigin;
+  -ms-transform-origin: $transformOrigin;
+  -o-transform-origin: $transformOrigin;
+  transform-origin: $transformOrigin;
 }
 
 @mixin translate3d($x: 0, $y: 0, $z: 0) {
-    -webkit-transform : translate3d($x, $y, $z);
-    -moz-transform : translate3d($x, $y, $z);
-    -ms-transform : translate3d($x, $y, $z);
-    -o-transform : translate3d($x, $y, $z);
-    transform : translate3d($x, $y, $z); 
+  -webkit-transform: translate3d($x, $y, $z);
+  -moz-transform: translate3d($x, $y, $z);
+  -ms-transform: translate3d($x, $y, $z);
+  -o-transform: translate3d($x, $y, $z);
+  transform: translate3d($x, $y, $z);
 }
 
 @mixin rotate($deg) {
-    -webkit-transform : rotate($deg);
-    -moz-transform : rotate($deg);
-    -ms-transform : rotate($deg);
-    -o-transform : rotate($deg);
-    transform : rotate($deg); 
+  -webkit-transform: rotate($deg);
+  -moz-transform: rotate($deg);
+  -ms-transform: rotate($deg);
+  -o-transform: rotate($deg);
+  transform: rotate($deg);
 }
 
 @mixin transition($transition...) {
-    -webkit-transition : $transition;
-    transition : $transition; 
+  -webkit-transition: $transition;
+  transition: $transition;
 }
 
-@mixin box-shadow( $shadow... ) {
-    -webkit-box-shadow : $shadow;
-    -moz-box-shadow : $shadow;
-    box-shadow : $shadow; 
+@mixin box-shadow($shadow...) {
+  -webkit-box-shadow: $shadow;
+  -moz-box-shadow: $shadow;
+  box-shadow: $shadow;
 }
 
 @mixin box-sizing() {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 @mixin scale($ratio) {
-    -webkit-transform : scale($ratio);
-    -moz-transform : scale($ratio);
-    -ms-transform : scale($ratio);
-    -o-transform : scale($ratio);
-    transform : scale($ratio); 
+  -webkit-transform: scale($ratio);
+  -moz-transform: scale($ratio);
+  -ms-transform: scale($ratio);
+  -o-transform: scale($ratio);
+  transform: scale($ratio);
 }
 
 @mixin vertical($startColor, $endColor) {
-    background-image  : -webkit-gradient(linear, 0 0, 0 100%, from($startColor), to($endColor)); // Safari 4+, Chrome 2+
-    background-image  : -webkit-linear-gradient(top, $startColor, $endColor); 					 // Safari 5.1+, Chrome 10+
-    background-color  : $endColor;
-    background-image  : -moz-linear-gradient(top, $startColor, $endColor);   					 // FF 3.6+
-    background-image  : -ms-linear-gradient(top, $startColor, $endColor); 						 // IE10
-    background-image  : -o-linear-gradient(top, $startColor, $endColor); 						 // Opera 11.10
-    background-image  : linear-gradient(top, $startColor, $endColor); 							 // W3C
-    background-repeat : repeat-x; 
+  background-image: -webkit-gradient(
+    linear,
+    0 0,
+    0 100%,
+    from($startColor),
+    to($endColor)
+  ); // Safari 4+, Chrome 2+
+  background-image: -webkit-linear-gradient(
+    top,
+    $startColor,
+    $endColor
+  ); // Safari 5.1+, Chrome 10+
+  background-color: $endColor;
+  background-image: -moz-linear-gradient(
+    top,
+    $startColor,
+    $endColor
+  ); // FF 3.6+
+  background-image: -ms-linear-gradient(
+    top,
+    $startColor,
+    $endColor
+  ); // IE10
+  background-image: -o-linear-gradient(
+    top,
+    $startColor,
+    $endColor
+  ); // Opera 11.10
+  background-image: linear-gradient(
+    top,
+    $startColor,
+    $endColor
+  ); // W3C
+  background-repeat: repeat-x;
 }
 
-@mixin bp( $where, $bp, $bp2 : '' ) {
-    
-    @if $where == 'before' {
-        @media( max-width: #{$bp - .001rem} ) { @content }  
+@mixin bp($where, $bp, $bp2: "") {
+  @if $where == "before" {
+    @media ( max-width: #{$bp - .001rem} ) {
+      @content;
     }
-    @else if $where == 'after' {
-        @media( min-width: $bp ) { @content }
+  } @else if $where == "after" {
+    @media (min-width: $bp) {
+      @content;
     }
-    @else if $where == 'between' {
-        @media( min-width: $bp ) and ( max-width: #{ $bp2 - .001rem } ) { @content }
+  } @else if $where == "between" {
+    @media ( min-width: $bp ) and ( max-width: #{ $bp2 - .001rem } ) {
+      @content;
     }
-    
+  }
 }
 
 @mixin keyframes($name) {
-    @-webkit-keyframes #{$name} { @content; }
-    @-moz-keyframes #{$name} { @content; }
-    @-ms-keyframes #{$name} { @content; }
-    @keyframes #{$name} { @content; } 
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
 }
 
 // Mixin for animations
 @mixin animation($prop) {
-    -webkit-animation: $prop;
-    -moz-animation: $prop;
-    -o-animation: $prop;
-    animation: $prop;
+  -webkit-animation: $prop;
+  -moz-animation: $prop;
+  -o-animation: $prop;
+  animation: $prop;
 }
 
 @mixin animation-name($prop) {
-    -webkit-animation-name: $prop;
-    -moz-animation-name: $prop;
-    -o-animation-name: $prop;
-    animation-name: $prop;
+  -webkit-animation-name: $prop;
+  -moz-animation-name: $prop;
+  -o-animation-name: $prop;
+  animation-name: $prop;
 }
 
 @mixin animation-duration($prop) {
-    -webkit-animation-duration: $prop;
-    -moz-animation-duration: $prop;
-    -o-animation-duration: $prop;
-    animation-duration: $prop;
+  -webkit-animation-duration: $prop;
+  -moz-animation-duration: $prop;
+  -o-animation-duration: $prop;
+  animation-duration: $prop;
 }
 
 @mixin animation-delay($prop) {
-    -webkit-animation-delay: $prop;
-    -moz-animation-delay: $prop;
-    -o-animation-delay: $prop;
-    animation-delay: $prop;
+  -webkit-animation-delay: $prop;
+  -moz-animation-delay: $prop;
+  -o-animation-delay: $prop;
+  animation-delay: $prop;
 }
 
-@mixin column-count( $prop ) {
-    -webkit-column-count: $prop;
-    -moz-column-count: $prop;
-    column-count: $prop;
+@mixin column-count($prop) {
+  -webkit-column-count: $prop;
+  -moz-column-count: $prop;
+  column-count: $prop;
 }
 
-@mixin column-width( $prop ) {
-    -webkit-column-width: $prop;
-    -moz-column-width: $prop;
-    column-width: $prop;
+@mixin column-width($prop) {
+  -webkit-column-width: $prop;
+  -moz-column-width: $prop;
+  column-width: $prop;
 }
 
-@mixin column-gap( $prop ) {
-    -webkit-column-gap: $prop;
-    -moz-column-gap: $prop;
-    column-gap: $prop;
+@mixin column-gap($prop) {
+  -webkit-column-gap: $prop;
+  -moz-column-gap: $prop;
+  column-gap: $prop;
 }
 
 @mixin column-span() {
-	-webkit-column-span: all; 
-    column-span: all; 
+  -webkit-column-span: all;
+  column-span: all;
 }
 
-
 @mixin flex() {
-    display: flex;
-    display: -webkit-flex;
+  display: flex;
+  display: -webkit-flex;
 }
 
 @mixin inline_flex() {
-	display: inline-flex;
-    display: -webkit-inline-flex;
+  display: inline-flex;
+  display: -webkit-inline-flex;
 }
 
-@mixin justify_content( $v ) {
-    justify-content: $v;
-    -webkit-justify-content: $v;
+@mixin justify_content($v) {
+  justify-content: $v;
+  -webkit-justify-content: $v;
 }
 
-@mixin flex_wrap( $v ) {
-    flex-wrap: $v;
-    -webkit-flex-wrap: $v;
+@mixin flex_wrap($v) {
+  flex-wrap: $v;
+  -webkit-flex-wrap: $v;
 }
 
-@mixin align_items( $v ) {
-    align-items: $v;
-    -webkit-align-items: $v;
+@mixin align_items($v) {
+  align-items: $v;
+  -webkit-align-items: $v;
 }
 
-@mixin align_content( $v ) {
-    align-content: $v;
-    -webkit-align-items: $v;
+@mixin align_content($v) {
+  align-content: $v;
+  -webkit-align-items: $v;
 }
 
-@mixin flex_direction( $v ) {
-    flex-direction: $v;
-    -webkit-flex-direction: $v;
+@mixin flex_direction($v) {
+  flex-direction: $v;
+  -webkit-flex-direction: $v;
 }
 
-@mixin flex_grow( $v ) {
-    flex-grow: $v;
-    -webkit-flex-grow: $v;
+@mixin flex_grow($v) {
+  flex-grow: $v;
+  -webkit-flex-grow: $v;
 }
 
-@mixin flex_shrink( $v ) {
-    flex-shrink: $v;
-    -webkit-flex-shrink: $v;
+@mixin flex_shrink($v) {
+  flex-shrink: $v;
+  -webkit-flex-shrink: $v;
 }
 
-@mixin flex_basis( $v ) {
-    flex-basis: $v;
-    -webkit-flex-basis: $v;
+@mixin flex_basis($v) {
+  flex-basis: $v;
+  -webkit-flex-basis: $v;
 }
 
-@mixin align_self( $v ) {
-    align-self: $v;
-    -webkit-align-self: $v;
+@mixin align_self($v) {
+  align-self: $v;
+  -webkit-align-self: $v;
 }
 
-@mixin order( $v ) {
-    order: $v;
-    -webkit-order: $v;
+@mixin order($v) {
+  order: $v;
+  -webkit-order: $v;
 }
 
-@mixin clip-path( $v ) {
-    clip-path: $v;
-    -webkit-clip-path: $v;
+@mixin clip-path($v) {
+  clip-path: $v;
+  -webkit-clip-path: $v;
 }
 
 @mixin hide_text() {
-	font-size: 0em;
-	color: transparent;
+  font-size: 0em;
+  color: transparent;
 }

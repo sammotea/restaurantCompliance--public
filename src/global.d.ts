@@ -1,21 +1,21 @@
 interface iTaskAsJson {
   title: string;
-  location: string;
-  category: string;
+  type: string;
   subtasks?: string[];
   frequency?: number;
   permission?: string;
 }
 
-interface iTaskMeta {
+interface iTasksByX {
   [k: string]: Object;
 }
 
 interface iTaskList {
-  [k: string]: Task;
+  [k: string]: iTask;
 }
-type Task = {
+
+interface iTask {
   title: string;
   permission?: string;
-  subtasks?: string[];
-};
+  requirements?: string[];
+}

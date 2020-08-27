@@ -7,7 +7,7 @@ interface Props {
 
 const Title: React.FC<Props> = ({ title, clickHandler }) => {
   return (
-    <h1 className="[ c-task__title ]" onClick={clickHandler}>
+    <h1 className="[ c-todo__title ]" onClick={clickHandler}>
       {title}
     </h1>
   );

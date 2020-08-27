@@ -2,43 +2,43 @@
   "tasks": [
     // {
     //     "title"         :   "",
-    //     "location"          :   "",
+    //     "type"          :   "",
     //     "category"      :   "",
     //     "frequency"     :   1, // in days
     //     "restricted"    :   false, // e.g. Manager
-    //     "subtasks"      :   [
+    //     "requirements"      :   [
 
     //     ]
     // },
 
     {
       "title": "Tables",
-      "location": "Floor",
+      "type": "Floor",
       "category": "Furniture",
-      "subtasks": ["Clean ’em (undersides too)"]
+      "requirements": ["Clean ’em (undersides too)"]
     },
 
     {
       "title": "TEST TITLE",
-      "location": "TEST LOCATION",
+      "type": "TEST type",
       "category": "TEST CATEGORY",
-      "subtasks": ["TEST #1", "TEST#2"]
+      "requirements": ["TEST #1", "TEST#2"]
     },
 
     {
       "title": "Booths",
-      "location": "Floor",
+      "type": "Floor",
       "category": "Furniture",
-      "subtasks": [
+      "requirements": [
         "Clean ’em with booth juice: top, bottom, back and sides"
       ]
     },
 
     {
       "title": "High-chairs",
-      "location": "Floor",
+      "type": "Floor",
       "category": "Furniture",
-      "subtasks": [
+      "requirements": [
         "Clean ’em with booth juice",
         "Stack ’em in AREA X"
       ]
@@ -46,46 +46,46 @@
 
     {
       "title": "Stools & Chairs",
-      "location": "Floor",
+      "type": "Floor",
       "category": "Furniture",
-      "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
+      "requirements": ["Clean ’em", "Stack ’em in AREA X"]
     },
 
     {
       "title": "Furniture",
-      "location": "Floor",
+      "type": "Floor",
       "category": "Outside",
-      "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
+      "requirements": ["Clean ’em", "Stack ’em in AREA X"]
     },
 
     {
       "title": "A-Board",
-      "location": "Floor",
+      "type": "Floor",
       "category": "Outside",
-      "subtasks": ["Store inside, by entrance door"]
+      "requirements": ["Store inside, by entrance door"]
     },
 
     {
       "title": "Clean & Sweep",
-      "location": "Floor",
+      "type": "Floor",
       "category": "Outside",
-      "subtasks": ["Make the area spick and span"]
+      "requirements": ["Make the area spick and span"]
     },
 
     {
       "title": "Cutlery",
-      "location": "Floor",
+      "type": "Floor",
       "category": "Prepwork",
-      "subtasks": [
+      "requirements": [
         "Polish with boiling water and a squeeze of lemon juice"
       ]
     },
 
     {
       "title": "Sauces",
-      "location": "Floor",
+      "type": "Floor",
       "category": "Prepwork",
-      "subtasks": [
+      "requirements": [
         "Soak and rinse lids",
         "Marry-up sauces",
         "Clean bottles",
@@ -95,9 +95,9 @@
 
     {
       "title": "Bus Stand",
-      "location": "Floor",
+      "type": "Floor",
       "category": "Prepwork",
-      "subtasks": [
+      "requirements": [
         "Clean and tidy",
         "Replenish cutlery",
         "Replenish kitchen roll",
