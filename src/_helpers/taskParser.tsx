@@ -6,7 +6,6 @@ const taskParser = {
 
     if (Array.isArray(tasks)) {
       this.parseTasks(tasks);
-      console.log(this.tasksByType);
       return this.tasksByType;
     } else {
       throw new Error();
@@ -34,6 +33,10 @@ const taskParser = {
         this.tasksByType[type] = {};
       }
 
+      if (!task.hasOwnProperty("isComplete")) {
+        task["isComplete"] = false;
+      }
+      task["permission"] = "any";
       this.tasksByType[type][title] = task;
     }
   },

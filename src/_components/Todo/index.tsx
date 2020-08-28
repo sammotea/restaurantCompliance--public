@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 
-const Todo: React.FC<iTask> = ({ title, requirements = [] }) => {
+interface Props extends iTask {
+  hCompleteTodo(title: string, type: string): void;
+}
+
+const Todo: React.FC<Props> = ({
+  title,
+  requirements = [],
+  type,
+  hCompleteTodo,
+  isComplete = false,
+}) => {
   const [details, setDetails] = useState(false);
-  const [completion, setCompletion] = useState(false);
 
   function showDetails(e: React.MouseEvent) {
     setDetails(!details);
-  }
-
-  function markAsComplete(e: React.MouseEvent) {
-    setCompletion(!completion);
   }
 
   function renderRequirements() {
@@ -63,7 +68,10 @@ const Todo: React.FC<iTask> = ({ title, requirements = [] }) => {
 
   function renderTitle() {
     return (
-      <h1 className="[ c-todo__title ]" onClick={markAsComplete}>
+      <h1
+        className="[ c-todo__title ]"
+        onClick={() => hCompleteTodo(title, type)}
+      >
         {title}
       </h1>
     );
@@ -74,7 +82,7 @@ const Todo: React.FC<iTask> = ({ title, requirements = [] }) => {
       let taskClassName = "c-todo";
 
       taskClassName += details ? " js-show " : "";
-      taskClassName += completion ? " js-complete " : "";
+      taskClassName += isComplete ? " js-complete " : "";
 
       return (
         <li key={title} className={taskClassName}>

@@ -16,6 +16,8 @@ interface iTaskList {
 
 interface iTask {
   title: string;
+  type: string;
   permission?: string;
   requirements?: string[];
+  isComplete: boolean;
 }

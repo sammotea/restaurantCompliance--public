@@ -3,15 +3,18 @@ import Todo from "../Todo";
 
 interface Props {
   tasksByType: iTasksByX;
+  hCompleteTodo(title: string, type: string): void;
 }
 
-const Todos: React.FC<Props> = ({ tasksByType }) => {
+const Todos: React.FC<Props> = ({ tasksByType, hCompleteTodo }) => {
   function renderTodoList(tasks: iTaskList) {
     if (Object.keys(tasks).length !== 0) {
       const todos: JSX.Element[] = [];
 
       for (const [title, task] of Object.entries(tasks)) {
-        todos.push(<Todo key={title} {...task} />);
+        todos.push(
+          <Todo key={title} hCompleteTodo={hCompleteTodo} {...task} />
+        );
       }
 
       if (todos.length) {
