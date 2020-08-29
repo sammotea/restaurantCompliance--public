@@ -33,12 +33,48 @@ const taskParser = {
         this.tasksByType[type] = {};
       }
 
-      if (!task.hasOwnProperty("isComplete")) {
-        task["isComplete"] = false;
-      }
-      task["permission"] = "any";
+      task = this.addMissingFields(task);
       this.tasksByType[type][title] = task;
     }
+  },
+
+  addMissingFields(task: iTaskRaw): iTask {
+    [
+      "permission",
+      "hasProblem",
+      "isComplete",
+      "completedBy",
+      "confirmedBy",
+      "review",
+    ].forEach((k) => {
+      switch (k) {
+        case "permission":
+          if (!task.hasOwnProperty(k)) {
+            task[k] = "any";
+          }
+          break;
+
+        case "hasProblem":
+        case "isComplete":
+          if (!task.hasOwnProperty(k)) {
+            task[k] = false;
+          }
+          break;
+
+        case "completedBy":
+        case "confirmedBy":
+        case "review":
+          if (!task.hasOwnProperty(k)) {
+            task[k] = "";
+          }
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    return task as iTask;
   },
 };
 

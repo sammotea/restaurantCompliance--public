@@ -14,10 +14,18 @@ interface iTaskList {
   [k: string]: iTask;
 }
 
-interface iTask {
+interface iTaskRaw {
   title: string;
   type: string;
-  permission?: string;
-  requirements?: string[];
+}
+
+interface iTask extends iTaskRaw {
+  permission: string;
+  hasProblem: boolean;
   isComplete: boolean;
+  completedBy: string;
+  confirmedBy: string;
+  review: string;
+  subtasks?: string[];
+  comments?: [];
 }

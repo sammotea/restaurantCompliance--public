@@ -6,10 +6,10 @@ interface Props extends iTask {
 
 const Todo: React.FC<Props> = ({
   title,
-  requirements = [],
+  subtasks = [],
   type,
+  isComplete,
   hCompleteTodo,
-  isComplete = false,
 }) => {
   const [details, setDetails] = useState(false);
 
@@ -17,25 +17,23 @@ const Todo: React.FC<Props> = ({
     setDetails(!details);
   }
 
-  function renderRequirements() {
-    if (requirements.length) {
-      const requirementList = requirements.map((requirement) => {
-        if ("string" === typeof requirement) {
-          const k = requirement.replace(" ", "_").substring(0, 50);
+  function renderSubtasks() {
+    if (subtasks.length) {
+      const subtaskList = subtasks.map((subtask) => {
+        if ("string" === typeof subtask) {
+          const k = subtask.replace(" ", "_").substring(0, 50);
 
           return (
-            <li key={k} className="[ c-todo__requirement ]">
-              {requirement}
+            <li key={k} className="[ c-todo__subtask ]">
+              {subtask}
             </li>
           );
         }
       });
 
-      if (requirementList.length) {
+      if (subtaskList.length) {
         return (
-          <ul className="[ c-todo__requirements ]">
-            {requirementList}
-          </ul>
+          <ul className="[ c-todo__subtasks ]">{subtaskList}</ul>
         );
       }
     }
@@ -44,7 +42,7 @@ const Todo: React.FC<Props> = ({
   function renderDetails() {
     return (
       <div className="c-todo__detailsWrap">
-        <div className="c-todo__details">{renderRequirements()}</div>
+        <div className="c-todo__details">{renderSubtasks()}</div>
       </div>
     );
   }
