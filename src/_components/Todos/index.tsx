@@ -38,9 +38,14 @@ const Todos: React.FC<Props> = ({ tasksByType, hCompleteTodo }) => {
 
       if (toreviews.length) {
         todoList.push(
-          <ul key="toreviews" className="[ c-toreviews ]">
-            {toreviews}
-          </ul>
+          <>
+            <h1 className="todoSection__subtitle">
+              Awaiting sign-off
+            </h1>
+            <ul key="toreviews" className="[ c-toreviews ]">
+              {toreviews}
+            </ul>
+          </>
         );
       }
 

@@ -22,9 +22,12 @@ const Toreview: React.FC<Props> = ({ title, type, completedBy }) => {
 
     ["accepted", "fixed", "failed"].forEach((option) => {
       reviewOptions.push(
-        <li key={option} className="c-toreview__option">
-          {option}
-        </li>
+        <li
+          key={option}
+          className={
+            "c-toreview__option c-toreview__option--" + option
+          }
+        ></li>
       );
     });
 
@@ -39,15 +42,23 @@ const Toreview: React.FC<Props> = ({ title, type, completedBy }) => {
 
       switch (option) {
         case "completedBy":
-          el = completedBy ? completedBy : "unknown";
+          el = completedBy
+            ? completedBy
+            : "Incredibly long name that’s unrealistic";
           break;
 
         default:
+          el = "Add comment";
           break;
       }
 
       reviewDetails.push(
-        <li key={option} className="c-toreview__detail">
+        <li
+          key={option}
+          className={
+            "c-toreview__detail c-toreview__detail--" + option
+          }
+        >
           {el}
         </li>
       );
