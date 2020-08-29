@@ -11,10 +11,10 @@ const Todo: React.FC<Props> = ({
   isComplete,
   hCompleteTodo,
 }) => {
-  const [details, setDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
 
-  function showDetails(e: React.MouseEvent) {
-    setDetails(!details);
+  function toggleDetails(e: React.MouseEvent) {
+    setShowDetails(!showDetails);
   }
 
   function renderSubtasks() {
@@ -51,7 +51,7 @@ const Todo: React.FC<Props> = ({
     return (
       <div
         className="[ c-todo__detailsToggleWrap ]"
-        onClick={showDetails}
+        onClick={toggleDetails}
       >
         <svg
           className="[ c-todo__detailsToggle ]"
@@ -75,15 +75,15 @@ const Todo: React.FC<Props> = ({
     );
   }
 
-  function renderTask() {
+  function renderTodo() {
     if (title) {
-      let taskClassName = "c-todo";
+      let todoClassName = "c-todo";
 
-      taskClassName += details ? " js-show " : "";
-      taskClassName += isComplete ? " js-complete " : "";
+      todoClassName += showDetails ? " js-show " : "";
+      todoClassName += isComplete ? " js-complete " : "";
 
       return (
-        <li key={title} className={taskClassName}>
+        <li key={title} className={todoClassName}>
           {renderTitle()}
           {renderDetailsToggle()}
           {renderDetails()}
@@ -92,7 +92,7 @@ const Todo: React.FC<Props> = ({
     }
   }
 
-  return <>{renderTask()}</>;
+  return <>{renderTodo()}</>;
 };
 
 export default Todo;
