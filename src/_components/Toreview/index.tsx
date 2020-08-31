@@ -1,9 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import User from "../../_data/user";
 
-interface Props extends iTask {}
+interface Props extends iTask {
+  handlers: TodoActions;
+}
 
-const Toreview: React.FC<Props> = ({ title }) => {
+const Toreview: React.FC<Props> = ({
+  title,
+  type,
+  doer,
+  handlers,
+}) => {
   const [showDetails, setShowDetails] = useState(false);
+  const user = useContext(User);
+
+  function handleCompleted() {
+    handlers.complete(title, type, doer, user);
+    handlers.flagDoer(title, type, false);
+  }
+
+  function handleFixed() {
+    handlers.complete(title, type, doer, user);
+    handlers.flagDoer(title, type, true);
+  }
+
+  function handleFailed() {
+    handlers.fail(title, type, doer, user);
+    handlers.flagDoer(title, type, false);
+  }
 
   function toggleDetails(e: React.MouseEvent) {
     setShowDetails(!showDetails);
@@ -20,13 +44,34 @@ const Toreview: React.FC<Props> = ({ title }) => {
   function renderReviewOptions() {
     const reviewOptions: JSX.Element[] = [];
 
-    ["accepted", "fixed", "failed"].forEach((option) => {
+    ["completed", "fixed", "failed"].forEach((option) => {
+      console.log(option);
+      let handler;
+
+      switch (option) {
+        case "completed":
+          handler = handleCompleted;
+          break;
+
+        case "fixed":
+          handler = handleFixed;
+          break;
+
+        case "failed":
+          handler = handleFailed;
+          break;
+
+        default:
+          throw new Error();
+          break;
+      }
       reviewOptions.push(
         <li
           key={option}
           className={
             "c-toreview__option c-toreview__option--" + option
           }
+          onClick={handler}
         ></li>
       );
     });
@@ -37,18 +82,12 @@ const Toreview: React.FC<Props> = ({ title }) => {
   function renderDetails() {
     const reviewDetails: JSX.Element[] = [];
 
-    ["doneBy", "addComment"].forEach((option) => {
+    ["doer"].forEach((option) => {
       let el = "";
 
       switch (option) {
-        case "doneBy":
-        // el = doneBy
-        //   ? doneBy
-        //   : "Incredibly long name that’s unrealistic";
-        // break;
-
-        default:
-          el = "Add comment";
+        case "doer":
+          el = doer;
           break;
       }
 

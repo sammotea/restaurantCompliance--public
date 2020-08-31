@@ -228,7 +228,7 @@ $c--fail: #e84c31;
   }
 }
 
-.c-toreview__option--accepted {
+.c-toreview__option--completed {
   background-color: lighten($c--success, 0%);
 
   &:before {
@@ -290,7 +290,7 @@ $c--fail: #e84c31;
   max-width: 10rem;
 }
 
-.c-toreview__detail--doneBy {
+.c-toreview__detail--doer {
   &:before {
     content: "By ";
   }

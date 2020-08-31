@@ -15,12 +15,14 @@ const Todos: React.FC<Props> = ({ tasksByType, handlers }) => {
       const toreviews: JSX.Element[] = [];
 
       for (const [title, task] of Object.entries(tasks)) {
-        if (!task.isComplete) {
+        if (!task.doer) {
           todos.push(
             <Todo key={title} handlers={handlers} {...task} />
           );
         } else {
-          toreviews.push(<Toreview key={title} {...task} />);
+          toreviews.push(
+            <Toreview key={title} handlers={handlers} {...task} />
+          );
         }
       }
 

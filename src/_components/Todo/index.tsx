@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import User from "../../_data/user";
 
 interface Props extends iTask {
   handlers: TodoActions;
@@ -12,6 +13,7 @@ const Todo: React.FC<Props> = ({
   handlers,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
+  const user = useContext(User);
 
   function toggleDetails(e: React.MouseEvent) {
     setShowDetails(!showDetails);
@@ -21,7 +23,11 @@ const Todo: React.FC<Props> = ({
     if (doer) {
       handlers.reset(title, type, "doer");
     } else {
-      handlers.markForReview(title, type, "testUser");
+      if (user !== "manager") {
+        handlers.markForReview(title, type, user);
+      } else {
+        handlers.complete(title, type, user, user);
+      }
     }
   }
 

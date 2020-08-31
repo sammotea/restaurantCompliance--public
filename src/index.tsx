@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { render } from "react-dom";
 import taskJson from "./_data/tasks.json";
+import User from "./_data/user";
 import parser from "./_helpers/taskParser";
 import Todos from "./_components/Todos";
 
 const ComplianceList: React.FC = () => {
   const [tasks, setTasks] = useState(parser.parse(taskJson["tasks"]));
-
+  const [user, setUser] = useState("notManager");
   const todoActions: TodoActions = {
     setDoer: function (todo, doer) {
       todo["doer"] = doer;
@@ -46,8 +47,8 @@ const ComplianceList: React.FC = () => {
         let todo = state[type][title];
         todo = this.setDoer(todo, doer);
         todo = this.setReviewer(todo, reviewer);
-        todo = this.setComplete(true, todo);
-        todo = this.setFail(false, todo);
+        todo = this.setComplete(todo, true);
+        todo = this.setFail(todo, false);
         return { ...state };
       });
     },
@@ -57,7 +58,8 @@ const ComplianceList: React.FC = () => {
         let todo = state[type][title];
         todo = this.setDoer(todo, doer);
         todo = this.setReviewer(todo, reviewer);
-        todo = this.setCompletion(true, todo);
+        todo = this.setComplete(todo, false);
+        todo = this.setFail(todo, true);
         return { ...state };
       });
     },
@@ -65,7 +67,7 @@ const ComplianceList: React.FC = () => {
     flagDoer: function (title, type, flag = true) {
       setTasks((state) => {
         let todo = state[type][title];
-        todo = this.setFlag(flag, todo);
+        todo = this.setFlag(todo, flag);
         return { ...state };
       });
     },
@@ -107,10 +109,35 @@ const ComplianceList: React.FC = () => {
 
   function renderTodos() {
     if (Object.keys(tasks).length !== 0) {
-      return <Todos tasksByType={tasks} handlers={todoActions} />;
+      return (
+        <User.Provider value={user}>
+          <Todos tasksByType={tasks} handlers={todoActions} />
+        </User.Provider>
+      );
     }
   }
 
-  return <>{renderTodos()}</>;
+  function renderUserSwitch() {
+    return (
+      <button
+        onClick={() => {
+          if (user === "notManager") {
+            setUser("manager");
+          } else {
+            setUser("notManager");
+          }
+        }}
+      >
+        USER = {user}
+      </button>
+    );
+  }
+
+  return (
+    <>
+      {renderUserSwitch()}
+      {renderTodos()}
+    </>
+  );
 };
 render(<ComplianceList />, document.getElementById("root"));
