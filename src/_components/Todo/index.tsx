@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 
 interface Props extends iTask {
-  hCompleteTodo(title: string, type: string): void;
+  handlers: TodoActions;
 }
 
 const Todo: React.FC<Props> = ({
   title,
   subtasks = [],
+  doer,
   type,
-  isComplete,
-  hCompleteTodo,
+  handlers,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
 
@@ -18,7 +18,11 @@ const Todo: React.FC<Props> = ({
   }
 
   function hTitleClick() {
-    hCompleteTodo(title, type);
+    if (doer) {
+      handlers.reset(title, type, "doer");
+    } else {
+      handlers.markForReview(title, type, "testUser");
+    }
   }
 
   function renderSubtasks() {
@@ -81,7 +85,7 @@ const Todo: React.FC<Props> = ({
       let todoClassName = "c-todo";
 
       todoClassName += showDetails ? " js-show " : "";
-      todoClassName += isComplete ? " js-complete " : "";
+      todoClassName += doer !== "" ? " js-complete " : "";
 
       return (
         <li key={title} className={todoClassName}>

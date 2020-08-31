@@ -1,15 +1,8 @@
 import React, { useState } from "react";
 
-interface Props extends iTask {
-  hCompleteTodo(title: string, type: string): void;
-}
+interface Props extends iTask {}
 
-const Toreview: React.FC<Props> = ({
-  title,
-  type,
-  completedBy,
-  hCompleteTodo,
-}) => {
+const Toreview: React.FC<Props> = ({ title }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   function toggleDetails(e: React.MouseEvent) {
@@ -44,15 +37,15 @@ const Toreview: React.FC<Props> = ({
   function renderDetails() {
     const reviewDetails: JSX.Element[] = [];
 
-    ["completedBy", "addComment"].forEach((option) => {
+    ["doneBy", "addComment"].forEach((option) => {
       let el = "";
 
       switch (option) {
-        case "completedBy":
-          el = completedBy
-            ? completedBy
-            : "Incredibly long name that’s unrealistic";
-          break;
+        case "doneBy":
+        // el = doneBy
+        //   ? doneBy
+        //   : "Incredibly long name that’s unrealistic";
+        // break;
 
         default:
           el = "Add comment";

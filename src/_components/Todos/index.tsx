@@ -4,20 +4,10 @@ import Toreview from "../Toreview";
 
 interface Props {
   tasksByType: iTasksByX;
-  hCompleteTodo(title: string, type: string): void;
-  hReviewTodo(
-    review: string,
-    reviewBy: string,
-    todoTitle: string,
-    todoType: string
-  ): void;
+  handlers: TodoActions;
 }
 
-const Todos: React.FC<Props> = ({
-  tasksByType,
-  hCompleteTodo,
-  hReviewTodo,
-}) => {
+const Todos: React.FC<Props> = ({ tasksByType, handlers }) => {
   function renderTodoList(tasks: iTaskList) {
     if (Object.keys(tasks).length !== 0) {
       const todoList: JSX.Element[] = [];
@@ -27,20 +17,10 @@ const Todos: React.FC<Props> = ({
       for (const [title, task] of Object.entries(tasks)) {
         if (!task.isComplete) {
           todos.push(
-            <Todo
-              key={title}
-              hCompleteTodo={hCompleteTodo}
-              {...task}
-            />
+            <Todo key={title} handlers={handlers} {...task} />
           );
         } else {
-          toreviews.push(
-            <Toreview
-              key={title}
-              hReviewTodo={hReviewTodo}
-              {...task}
-            />
-          );
+          toreviews.push(<Toreview key={title} {...task} />);
         }
       }
 

@@ -20,12 +20,33 @@ interface iTaskRaw {
 }
 
 interface iTask extends iTaskRaw {
-  permission: string;
-  isFailed: boolean;
+  doer: string;
+  reviewer: string;
   isComplete: boolean;
-  completedBy: string;
-  reviewBy: string;
-  review: string;
+  isFailed: boolean;
+  doerFlag?: boolean;
   subtasks?: string[];
-  comments?: [];
+}
+
+interface TodoActions {
+  setDoer(todo: iTask, doer: string): iTask;
+  setReviewer(todo: iTask, reviewer: string): iTask;
+  setComplete(todo: iTask, complete: boolean): iTask;
+  setFail(todo: iTask, fail: boolean): iTask;
+  setFlag(todo: iTask, flag: boolean): iTask;
+  markForReview(title: string, type: string, doer: string): void;
+  complete(
+    title: string,
+    type: string,
+    doer: string,
+    reviewer: string
+  ): void;
+  fail(
+    title: string,
+    type: string,
+    doer: string,
+    reviewer: string
+  ): void;
+  flagDoer(title: string, type: string, flag: boolean): void;
+  reset(title: string, type: string, key?: string): void;
 }
