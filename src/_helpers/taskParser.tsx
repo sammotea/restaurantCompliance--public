@@ -41,10 +41,10 @@ const taskParser = {
   addMissingFields(task: iTaskRaw): iTask {
     [
       "permission",
-      "hasProblem",
+      "isFailed",
       "isComplete",
       "completedBy",
-      "confirmedBy",
+      "reviewBy",
       "review",
     ].forEach((k) => {
       switch (k) {
@@ -54,7 +54,7 @@ const taskParser = {
           }
           break;
 
-        case "hasProblem":
+        case "isFailed":
         case "isComplete":
           if (!task.hasOwnProperty(k)) {
             task[k] = false;
@@ -62,7 +62,7 @@ const taskParser = {
           break;
 
         case "completedBy":
-        case "confirmedBy":
+        case "reviewBy":
         case "review":
           if (!task.hasOwnProperty(k)) {
             task[k] = "";

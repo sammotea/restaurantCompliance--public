@@ -21,10 +21,10 @@ interface iTaskRaw {
 
 interface iTask extends iTaskRaw {
   permission: string;
-  hasProblem: boolean;
+  isFailed: boolean;
   isComplete: boolean;
   completedBy: string;
-  confirmedBy: string;
+  reviewBy: string;
   review: string;
   subtasks?: string[];
   comments?: [];

@@ -17,6 +17,10 @@ const Todo: React.FC<Props> = ({
     setShowDetails(!showDetails);
   }
 
+  function hTitleClick() {
+    hCompleteTodo(title, type);
+  }
+
   function renderSubtasks() {
     if (subtasks.length) {
       const subtaskList = subtasks.map((subtask) => {
@@ -66,10 +70,7 @@ const Todo: React.FC<Props> = ({
 
   function renderTitle() {
     return (
-      <h1
-        className="[ c-todo__title ]"
-        onClick={() => hCompleteTodo(title, type)}
-      >
+      <h1 className="[ c-todo__title ]" onClick={hTitleClick}>
         {title}
       </h1>
     );

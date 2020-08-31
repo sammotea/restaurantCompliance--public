@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 
-interface Props extends iTask {}
+interface Props extends iTask {
+  hCompleteTodo(title: string, type: string): void;
+}
 
-const Toreview: React.FC<Props> = ({ title, type, completedBy }) => {
+const Toreview: React.FC<Props> = ({
+  title,
+  type,
+  completedBy,
+  hCompleteTodo,
+}) => {
   const [showDetails, setShowDetails] = useState(false);
 
   function toggleDetails(e: React.MouseEvent) {

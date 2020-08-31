@@ -7,7 +7,21 @@ import Todos from "./_components/Todos";
 const ComplianceList: React.FC = () => {
   const [tasks, setTasks] = useState(parser.parse(taskJson["tasks"]));
 
-  function handleTodoCompletion(todoTitle: string, todoType: string) {
+  function reviewTodo(
+    review: string,
+    reviewBy: string,
+    todoTitle: string,
+    todoType: string
+  ) {
+    setTasks((prevState) => {
+      prevState[todoType][todoTitle]["review"] = review;
+      prevState[todoType][todoTitle]["reviewBy"] = reviewBy;
+
+      return { ...prevState };
+    });
+  }
+
+  function completeTodo(todoTitle: string, todoType: string) {
     setTasks((prevState) => {
       prevState[todoType][todoTitle]["isComplete"] = !prevState[
         todoType
@@ -22,7 +36,8 @@ const ComplianceList: React.FC = () => {
       return (
         <Todos
           tasksByType={tasks}
-          hCompleteTodo={handleTodoCompletion}
+          hCompleteTodo={completeTodo}
+          hReviewTodo={reviewTodo}
         />
       );
     }
