@@ -131,7 +131,8 @@ const ComplianceList: React.FC = () => {
 
   function renderUserSwitch() {
     return (
-      <button
+      <div
+        className="c-userWrap"
         onClick={() => {
           if (user === "notManager") {
             setUser("manager");
@@ -140,8 +141,8 @@ const ComplianceList: React.FC = () => {
           }
         }}
       >
-        USER = {user}
-      </button>
+        <div className={"c-user c-user--" + user}>{user}</div>
+      </div>
     );
   }
 

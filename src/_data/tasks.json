@@ -19,13 +19,6 @@
     },
 
     {
-      "title": "TEST TITLE",
-      "type": "TEST type",
-      "category": "TEST CATEGORY",
-      "subtasks": ["TEST #1", "TEST#2"]
-    },
-
-    {
       "title": "Booths",
       "type": "Floor",
       "category": "Furniture",

@@ -66,26 +66,22 @@ const Todo: React.FC<Props> = ({
   function renderDetails() {
     return (
       <div className="c-todo__detailsWrap">
-        <div onClick={hFailureClick}>FAILURE</div>
-        <div className="c-todo__details">{renderSubtasks()}</div>
+        <div className="c-todo__details">
+          <div className="c-todo__addProblem" onClick={hFailureClick}>
+            Raise an issue?
+          </div>
+          {renderSubtasks()}
+        </div>
       </div>
     );
   }
 
   function renderDetailsToggle() {
     return (
-      <div
-        className="[ c-todo__detailsToggleWrap ]"
+      <span
+        className="[ c-todo__toggle ]"
         onClick={toggleDetails}
-      >
-        <svg
-          className="[ c-todo__detailsToggle ]"
-          viewBox="0 0 64 304"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="m32 120c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32zm-32-88c0 17.7 14.3 32 32 32s32-14.3 32-32-14.3-32-32-32-32 14.3-32 32zm0 240c0 17.7 14.3 32 32 32s32-14.3 32-32-14.3-32-32-32-32 14.3-32 32z" />
-        </svg>
-      </div>
+      ></span>
     );
   }
 

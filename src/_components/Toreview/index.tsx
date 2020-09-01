@@ -112,7 +112,14 @@ const Toreview: React.FC<Props> = ({
 
     return <ul className="c-toreview__details">{reviewDetails}</ul>;
   }
-
+  function renderDetailsToggle() {
+    return (
+      <span
+        className="[ c-toreview__toggle ]"
+        onClick={toggleDetails}
+      ></span>
+    );
+  }
   function renderToreview() {
     if (title) {
       let toreviewClassName = "c-toreview";
@@ -123,6 +130,7 @@ const Toreview: React.FC<Props> = ({
       return (
         <li key={title} className={toreviewClassName}>
           {renderTitle()}
+          {renderDetailsToggle()}
           {renderReviewOptions()}
           {renderDetails()}
         </li>
