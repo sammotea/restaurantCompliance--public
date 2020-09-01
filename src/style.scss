@@ -5,6 +5,9 @@ $black: black;
 $white: white;
 $t--1: #f2f2f2;
 $t--2: #aaa;
+$c--success: #90cb54;
+$c--warning: #ecaa34;
+$c--fail: #e84c31;
 
 $f1: orpheuspro;
 $f2: freight-sans-pro;
@@ -86,16 +89,19 @@ ul {
   font-weight: 300;
   line-height: 1;
 
-  .js-complete & {
+  .c-todo--awaitingReview &,
+  .c-todo--hasProblem & {
+    text-decoration: line-through;
+  }
+  .c-todo--awaitingReview & {
     color: $t--2;
+  }
+  .c-todo--hasProblem & {
+    color: $c--fail;
   }
 
   & + .c-todo__actions {
     margin-top: 0.5 * $pad;
-  }
-
-  .js-complete & {
-    text-decoration: line-through;
   }
 }
 
@@ -190,6 +196,11 @@ ul {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  .c-toreview--hasProblem & {
+    color: $c--fail;
+    font-weight: 900;
+  }
 }
 
 .c-toreview__options {
@@ -207,6 +218,10 @@ $c--fail: #e84c31;
   height: $bralpha;
   position: relative;
   text-align: center;
+
+  .c-toreview--hasProblem & {
+    width: (1.5 * $bralpha) + (0.5 * $pad);
+  }
 
   &:before {
     content: "" !important;
@@ -228,7 +243,7 @@ $c--fail: #e84c31;
   }
 }
 
-.c-toreview__option--completed {
+.c-toreview__option--reviewed {
   background-color: lighten($c--success, 0%);
 
   &:before {

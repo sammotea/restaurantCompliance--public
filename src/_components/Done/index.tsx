@@ -5,9 +5,15 @@ interface Props extends iTask {
   handlers: TodoActions;
 }
 
-const Done: React.FC<Props> = ({ title }) => {
+const Done: React.FC<Props> = ({ title, isFailed }) => {
   function renderDone() {
-    return <h1>{title}</h1>;
+    const text = isFailed ? "FAIL! " : "";
+    return (
+      <h1>
+        {text}
+        {title}
+      </h1>
+    );
   }
 
   return <>{renderDone()}</>;

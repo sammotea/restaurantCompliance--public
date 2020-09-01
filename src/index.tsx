@@ -33,6 +33,10 @@ const ComplianceList: React.FC = () => {
       todo["doerFlag"] = flag;
       return todo;
     },
+    setProblem: function (todo, problem) {
+      todo["hasProblem"] = problem;
+      return todo;
+    },
 
     markForReview: function (title, type, doer) {
       setTasks((state) => {
@@ -53,6 +57,14 @@ const ComplianceList: React.FC = () => {
       });
     },
 
+    problemize: function (title, type, doer, problem = true) {
+      setTasks((state) => {
+        let todo = state[type][title];
+        todo = this.setDoer(todo, doer);
+        todo = this.setProblem(todo, problem);
+        return { ...state };
+      });
+    },
     fail: function (title, type, doer, reviewer) {
       setTasks((state) => {
         let todo = state[type][title];

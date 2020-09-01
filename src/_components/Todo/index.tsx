@@ -9,14 +9,24 @@ const Todo: React.FC<Props> = ({
   title,
   subtasks = [],
   doer,
+  hasProblem,
   type,
   handlers,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const user = useContext(User);
 
-  function toggleDetails(e: React.MouseEvent) {
+  function toggleDetails() {
     setShowDetails(!showDetails);
+  }
+
+  function hFailureClick() {
+    if (user !== "manager") {
+      handlers.problemize(title, type, user, true);
+    } else {
+      handlers.fail(title, type, user, user);
+    }
+    toggleDetails();
   }
 
   function hTitleClick() {
@@ -56,6 +66,7 @@ const Todo: React.FC<Props> = ({
   function renderDetails() {
     return (
       <div className="c-todo__detailsWrap">
+        <div onClick={hFailureClick}>FAILURE</div>
         <div className="c-todo__details">{renderSubtasks()}</div>
       </div>
     );
@@ -91,6 +102,14 @@ const Todo: React.FC<Props> = ({
       let todoClassName = "c-todo";
 
       todoClassName += showDetails ? " js-show " : "";
+
+      if (doer) {
+        if (hasProblem) {
+          todoClassName += " c-todo--hasProblem ";
+        } else {
+          todoClassName += " c-todo--awaitingReview ";
+        }
+      }
       todoClassName += doer !== "" ? " js-complete " : "";
 
       return (

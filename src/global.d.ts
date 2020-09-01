@@ -23,6 +23,7 @@ interface iTask extends iTaskRaw {
   doer: string;
   reviewer: string;
   isComplete: boolean;
+  hasProblem: boolean;
   isFailed: boolean;
   doerFlag?: boolean;
   subtasks?: string[];
@@ -33,8 +34,15 @@ interface TodoActions {
   setReviewer(todo: iTask, reviewer: string): iTask;
   setComplete(todo: iTask, complete: boolean): iTask;
   setFail(todo: iTask, fail: boolean): iTask;
+  setProblem(todo: iTask, problem: boolean): iTask;
   setFlag(todo: iTask, flag: boolean): iTask;
   markForReview(title: string, type: string, doer: string): void;
+  problemize(
+    title: string,
+    type: string,
+    doer: string,
+    problem?: boolean
+  ): void;
   complete(
     title: string,
     type: string,

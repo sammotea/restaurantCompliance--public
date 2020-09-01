@@ -20,7 +20,7 @@ const Todos: React.FC<Props> = ({ tasksByType, handlers }) => {
       const dones: JSX.Element[] = [];
 
       for (const [title, task] of Object.entries(tasks)) {
-        if (!task.isComplete) {
+        if (!task.isComplete && !task.isFailed) {
           if (!task.doer) {
             todos.push(
               <Todo key={title} handlers={handlers} {...task} />

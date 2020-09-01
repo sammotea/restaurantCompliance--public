@@ -9,6 +9,7 @@ const Toreview: React.FC<Props> = ({
   title,
   type,
   doer,
+  hasProblem,
   handlers,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -43,13 +44,19 @@ const Toreview: React.FC<Props> = ({
 
   function renderReviewOptions() {
     const reviewOptions: JSX.Element[] = [];
+    let options = ["reviewed", "fixed", "failed"];
 
-    ["completed", "fixed", "failed"].forEach((option) => {
+    if (hasProblem)
+      options = options.filter((item) => item !== "fixed");
+
+    console.log(options);
+
+    options.forEach((option) => {
       console.log(option);
       let handler;
 
       switch (option) {
-        case "completed":
+        case "reviewed":
           handler = handleCompleted;
           break;
 
@@ -110,7 +117,8 @@ const Toreview: React.FC<Props> = ({
     if (title) {
       let toreviewClassName = "c-toreview";
 
-      toreviewClassName += showDetails ? " js-show " : "";
+      if (showDetails) toreviewClassName += " js-show ";
+      if (hasProblem) toreviewClassName += " c-toreview--hasProblem ";
 
       return (
         <li key={title} className={toreviewClassName}>
