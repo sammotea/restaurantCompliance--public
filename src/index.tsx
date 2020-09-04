@@ -4,6 +4,7 @@ import taskJson from "./_data/tasks.json";
 import User from "./_data/user";
 import parser from "./_helpers/taskParser";
 import Todos from "./_components/Todos";
+import UserSwitch from "./_components/UserSwitch";
 
 const ComplianceList: React.FC = () => {
   const [tasks, setTasks] = useState(parser.parse(taskJson["tasks"]));
@@ -129,26 +130,13 @@ const ComplianceList: React.FC = () => {
     }
   }
 
-  function renderUserSwitch() {
-    return (
-      <div
-        className="c-userWrap"
-        onClick={() => {
-          if (user === "notManager") {
-            setUser("manager");
-          } else {
-            setUser("notManager");
-          }
-        }}
-      >
-        <div className={"c-user c-user--" + user}>{user}</div>
-      </div>
-    );
+  function renderUser() {
+    return <UserSwitch user={user} hSwitch={setUser} />;
   }
 
   return (
     <>
-      {renderUserSwitch()}
+      {renderUser()}
       {renderTodos()}
     </>
   );
