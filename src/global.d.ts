@@ -30,6 +30,8 @@ interface iTask extends iTaskRaw {
 }
 
 interface TodoActions {
+  stateSetter: any;
+  init(stateSetter: any);
   setDoer(todo: iTask, doer: string): iTask;
   setReviewer(todo: iTask, reviewer: string): iTask;
   setComplete(todo: iTask, complete: boolean): iTask;
