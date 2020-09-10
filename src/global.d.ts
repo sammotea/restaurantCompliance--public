@@ -1,62 +1,71 @@
 interface iTaskAsJson {
-  title: string;
-  type: string;
-  subtasks?: string[];
-  frequency?: number;
-  permission?: string;
+   title: string;
+   type: string;
+   subtasks?: string[];
+   frequency?: number;
+   permission?: string;
 }
 
 interface iTasksByX {
-  [k: string]: Object;
+   [k: string]: Object;
 }
 
 interface iTaskList {
-  [k: string]: iTask;
+   [k: string]: iTask;
 }
 
 interface iTaskRaw {
-  title: string;
-  type: string;
+   title: string;
+   type: string;
 }
 
+// interface iTask extends iTaskRaw {
+//   worker: string;
+//   reviewer: string;
+//   isComplete: boolean;
+//   hasProblem: boolean;
+//   isFailed: boolean;
+//   flagWorker?: boolean;
+//   subtasks?: string[];
+// }
+
 interface iTask extends iTaskRaw {
-  doer: string;
-  reviewer: string;
-  isComplete: boolean;
-  hasProblem: boolean;
-  isFailed: boolean;
-  doerFlag?: boolean;
-  subtasks?: string[];
+   subtasks?: string[];
+   compliance: iComplianceObj;
+}
+
+interface iComplianceObj {
+   status: string;
+   worker: string;
+   reviewer: string;
+   flagWorker: boolean; // Quality assurance
 }
 
 interface TodoActions {
-  stateSetter: any;
-  init(stateSetter: any);
-  setDoer(todo: iTask, doer: string): iTask;
-  setReviewer(todo: iTask, reviewer: string): iTask;
-  setComplete(todo: iTask, complete: boolean): iTask;
-  setFail(todo: iTask, fail: boolean): iTask;
-  setProblem(todo: iTask, problem: boolean): iTask;
-  setFlag(todo: iTask, flag: boolean): iTask;
-  markForReview(title: string, type: string, doer: string): void;
-  problemize(
-    title: string,
-    type: string,
-    doer: string,
-    problem?: boolean
-  ): void;
-  complete(
-    title: string,
-    type: string,
-    doer: string,
-    reviewer: string
-  ): void;
-  fail(
-    title: string,
-    type: string,
-    doer: string,
-    reviewer: string
-  ): void;
-  flagDoer(title: string, type: string, flag: boolean): void;
-  reset(title: string, type: string, key?: string): void;
+   stateSetter: any;
+   init(stateSetter: any);
+   setStatus(todo: iTask, status: string);
+   setworker(todo: iTask, worker: string): iTask;
+   setReviewer(todo: iTask, reviewer: string): iTask;
+   setflagWorker(todo: iTask, flag: boolean): iTask;
+   forReview(
+      title: string,
+      type: string,
+      worker: string,
+      isBlocked?: boolean
+   ): void;
+   isComplete(
+      title: string,
+      type: string,
+      worker: string,
+      reviewer: string,
+      flagWorker?: boolean
+   ): void;
+   isFailed(
+      title: string,
+      type: string,
+      worker: string,
+      reviewer: string
+   ): void;
+   reset(title: string, type: string, key?: string): void;
 }

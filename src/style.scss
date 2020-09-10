@@ -27,268 +27,268 @@ $border: 0.125rem;
 $borderette: 0.5 * $border;
 
 html {
-  font-size: 20px;
-  padding: $pad;
+   font-size: 20px;
+   padding: $pad;
 }
 
 ul {
-  list-style: none;
+   list-style: none;
 }
 
 .c-user {
-  padding: $pad;
-  background: $t--1;
-  text-transform: uppercase;
-  font-family: $f2;
-  font-size: $alpha;
-  font-weight: 900;
-  text-align: center;
-  margin-bottom: $space;
-  transition: 0.25s;
-  border: 2px $t--2 solid;
+   padding: $pad;
+   background: $t--1;
+   text-transform: uppercase;
+   font-family: $f2;
+   font-size: $alpha;
+   font-weight: 900;
+   text-align: center;
+   margin-bottom: $space;
+   transition: 0.25s;
+   border: 2px $t--2 solid;
 }
 
 .c-user--manager {
-  background: $t--2;
-  border-color: transparent;
-  color: $white;
+   background: $t--2;
+   border-color: transparent;
+   color: $white;
 }
 .c-todoSection {
-  padding: 0 $pad;
-  & + & {
-    margin-top: 2 * $space;
-  }
+   padding: 0 $pad;
+   & + & {
+      margin-top: 2 * $space;
+   }
 }
 
 .c-todoSection__title {
-  font-family: $f1;
-  font-size: $charlie;
-  font-weight: 700;
-  > span {
-    font-style: italic;
-    font-weight: 400;
-  }
+   font-family: $f1;
+   font-size: $charlie;
+   font-weight: 700;
+   > span {
+      font-style: italic;
+      font-weight: 400;
+   }
 }
 
 .todoSection__subtitle {
-  font-family: $f1;
-  font-size: $bralpha;
-  position: relative;
-  font-weight: bold;
+   font-family: $f1;
+   font-size: $bralpha;
+   position: relative;
+   font-weight: bold;
 
-  * + & {
-    margin-top: 2 * $space;
-  }
+   * + & {
+      margin-top: 2 * $space;
+   }
 }
 
 .c-todos {
-  margin-top: $pad;
-  position: relative;
+   margin-top: $pad;
+   position: relative;
 
-  &:after {
-    content: "";
-    position: absolute;
-    right: $space + $pad;
-    top: 0;
-    bottom: 0;
-    border-right: 2px $black dotted;
-  }
+   &:after {
+      content: "";
+      position: absolute;
+      right: $space + $pad;
+      top: 0;
+      bottom: 0;
+      border-right: 2px $black dotted;
+   }
 }
 
 .c-todo {
-  position: relative;
-  & + & {
-    margin-top: $pad;
-    padding-top: $pad;
-    &:before {
-      content: "";
-      position: absolute;
-      border-top: 2px $black dotted;
-      left: 0;
-      right: 0;
-      top: -1px;
-    }
-  }
+   position: relative;
+   & + & {
+      margin-top: $pad;
+      padding-top: $pad;
+      &:before {
+         content: "";
+         position: absolute;
+         border-top: 2px $black dotted;
+         left: 0;
+         right: 0;
+         top: -1px;
+      }
+   }
 }
 
 .c-todo__title {
-  font-family: $f2;
-  font-size: $bravo;
-  font-weight: 300;
-  line-height: 1;
-  padding-right: (2 * $space) + $pad;
+   font-family: $f2;
+   font-size: $bravo;
+   font-weight: 300;
+   line-height: 1;
+   padding-right: (2 * $space) + $pad;
 
-  .c-todo--awaitingReview &,
-  .c-todo--hasProblem & {
-    text-decoration: line-through;
-  }
-  .c-todo--awaitingReview & {
-    color: $t--2;
-  }
-  .c-todo--hasProblem & {
-    color: $c--fail;
-  }
+   .c-todo--forReview &,
+   .c-todo--hasProblem & {
+      text-decoration: line-through;
+   }
+   .c-todo--forReview & {
+      color: $t--2;
+   }
+   .c-todo--hasProblem & {
+      color: $c--fail;
+   }
 
-  & + .c-todo__actions {
-    margin-top: 0.5 * $pad;
-  }
+   & + .c-todo__actions {
+      margin-top: 0.5 * $pad;
+   }
 }
 
 .c-todo__toggle {
-  width: $bravo;
-  height: $bravo;
-  position: absolute;
-  top: $pad;
-  right: 0;
-  text-align: center;
-  transform-origin: center center;
-  transition: 0.25s;
+   width: $bravo;
+   height: $bravo;
+   position: absolute;
+   top: $pad;
+   right: 0;
+   text-align: center;
+   transform-origin: center center;
+   transition: 0.25s;
 
-  &:after {
-    content: "+";
-    font-size: $bralpha;
-  }
+   &:after {
+      content: "+";
+      font-size: $bralpha;
+   }
 
-  :first-child > & {
-    top: 0;
-  }
+   :first-child > & {
+      top: 0;
+   }
 
-  .js-show & {
-    transform: rotate(45deg);
-  }
+   .js-show & {
+      transform: rotate(45deg);
+   }
 }
 
 .c-todo__detailsWrap {
-  padding-right: 1rem;
-  padding-right: (2 * $space) + $pad;
-  max-height: 0;
-  overflow: hidden;
-  transition: 0.3s cubic-bezier(0.01, 0, 0.06, 1);
+   padding-right: 1rem;
+   padding-right: (2 * $space) + $pad;
+   max-height: 0;
+   overflow: hidden;
+   transition: 0.3s cubic-bezier(0.01, 0, 0.06, 1);
 
-  .js-show & {
-    max-height: 1000px;
-    transition: 0.75s cubic-bezier(0.81, 0.01, 0.22, 1);
-  }
+   .js-show & {
+      max-height: 1000px;
+      transition: 0.75s cubic-bezier(0.81, 0.01, 0.22, 1);
+   }
 }
 
 .c-todo__details {
-  transform: translate3d(0, -100%, 0);
-  transition: 0.25s ease-in;
+   transform: translate3d(0, -100%, 0);
+   transition: 0.25s ease-in;
 
-  .js-show & {
-    transform: translate3d(0, 0, 0);
-    transition: 0.2s ease 0.1s;
-  }
+   .js-show & {
+      transform: translate3d(0, 0, 0);
+      transition: 0.2s ease 0.1s;
+   }
 }
 
 .c-todo__addProblem {
-  font-family: $f2;
-  font-weight: 900;
-  text-transform: uppercase;
-  font-size: $omega;
-  display: inline-block;
-  position: relative;
+   font-family: $f2;
+   font-weight: 900;
+   text-transform: uppercase;
+   font-size: $omega;
+   display: inline-block;
+   position: relative;
 
-  &:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-bottom: 2px $c--fail solid;
-  }
+   &:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-bottom: 2px $c--fail solid;
+   }
 }
 .c-todo__subtasks {
-  padding-top: 0.5 * $pad;
+   padding-top: 0.5 * $pad;
 }
 
 .c-todo__subtask {
-  font-family: $f3;
-  padding: 0.125em 0;
+   font-family: $f3;
+   padding: 0.125em 0;
 
-  &:before {
-    content: "+ ";
-  }
+   &:before {
+      content: "+ ";
+   }
 }
 
 .c-toreviews {
-  margin-top: $pad;
-  position: relative;
+   margin-top: $pad;
+   position: relative;
 
-  &:after {
-    content: "";
-    position: absolute;
-    right: $space + $pad;
-    top: 0;
-    bottom: 0;
-    border-right: 2px $black dotted;
-  }
+   &:after {
+      content: "";
+      position: absolute;
+      right: $space + $pad;
+      top: 0;
+      bottom: 0;
+      border-right: 2px $black dotted;
+   }
 }
 
 .c-toreview {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  position: relative;
-  padding-right: (2 * $space) + $pad;
-  & + & {
-    margin-top: ($bralpha / $bravo) * $pad;
-    padding-top: ($bralpha / $bravo) * $pad;
-    &:before {
-      content: "";
-      position: absolute;
-      border-top: 2px $black dotted;
-      left: 0;
-      right: 0;
-      top: -1px;
-    }
-  }
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   position: relative;
+   padding-right: (2 * $space) + $pad;
+   & + & {
+      margin-top: ($bralpha / $bravo) * $pad;
+      padding-top: ($bralpha / $bravo) * $pad;
+      &:before {
+         content: "";
+         position: absolute;
+         border-top: 2px $black dotted;
+         left: 0;
+         right: 0;
+         top: -1px;
+      }
+   }
 }
 
 .c-toreview__toggle {
-  width: $bravo;
-  height: $bravo;
-  position: absolute;
-  top: $pad;
-  right: 0;
-  text-align: center;
-  transform-origin: center center;
-  transition: 0.25s;
+   width: $bravo;
+   height: $bravo;
+   position: absolute;
+   top: $pad;
+   right: 0;
+   text-align: center;
+   transform-origin: center center;
+   transition: 0.25s;
 
-  &:after {
-    content: "+";
-    font-size: $bralpha;
-  }
+   &:after {
+      content: "+";
+      font-size: $bralpha;
+   }
 
-  :first-child > & {
-    top: 0;
-  }
+   :first-child > & {
+      top: 0;
+   }
 
-  .js-show & {
-    transform: rotate(45deg);
-  }
+   .js-show & {
+      transform: rotate(45deg);
+   }
 }
 
 .c-toreview__title {
-  width: 50%;
-  position: relative;
-  font-family: $f2;
-  font-size: $bralpha;
-  font-weight: 300;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+   width: 50%;
+   position: relative;
+   font-family: $f2;
+   font-size: $bralpha;
+   font-weight: 300;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
 
-  .c-toreview--hasProblem & {
-    color: $c--fail;
-    font-weight: 900;
-  }
+   .c-toreview--hasProblem & {
+      color: $c--fail;
+      font-weight: 900;
+   }
 }
 
 .c-toreview__options {
-  width: 50%;
-  display: flex;
-  justify-content: flex-end;
+   width: 50%;
+   display: flex;
+   justify-content: flex-end;
 }
 
 $c--success: #90cb54;
@@ -296,100 +296,100 @@ $c--warning: #ecaa34;
 $c--fail: #e84c31;
 
 .c-toreview__option {
-  width: $bralpha;
-  height: $bralpha;
-  position: relative;
-  text-align: center;
+   width: $bralpha;
+   height: $bralpha;
+   position: relative;
+   text-align: center;
 
-  .c-toreview--hasProblem & {
-    width: (1.5 * $bralpha) + (0.5 * $pad);
-  }
+   .c-toreview--hasProblem & {
+      width: (1.5 * $bralpha) + (0.5 * $pad);
+   }
 
-  &:before {
-    content: "" !important;
-  }
+   &:before {
+      content: "" !important;
+   }
 
-  &:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transform: translate3d(-2 * $borderette, -2 * $borderette, 0);
-    border: $borderette black solid;
-  }
+   &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      transform: translate3d(-2 * $borderette, -2 * $borderette, 0);
+      border: $borderette black solid;
+   }
 
-  & + & {
-    margin-left: $pad;
-  }
+   & + & {
+      margin-left: $pad;
+   }
 }
 
 .c-toreview__option--reviewed {
-  background-color: lighten($c--success, 0%);
+   background-color: lighten($c--success, 0%);
 
-  &:before {
-    content: "\002713";
-    color: darken($c--success, 50%);
-    font-weight: bold;
-  }
+   &:before {
+      content: "\002713";
+      color: darken($c--success, 50%);
+      font-weight: bold;
+   }
 
-  &:after {
-    border-color: darken($c--success, 25%);
-  }
+   &:after {
+      border-color: darken($c--success, 25%);
+   }
 }
 
 .c-toreview__option--fixed {
-  background-color: lighten($c--warning, 0%);
-  &:before {
-    content: "!";
-    color: darken($c--warning, 50%);
-  }
-  &:after {
-    border-color: darken($c--warning, 25%);
-  }
+   background-color: lighten($c--warning, 0%);
+   &:before {
+      content: "!";
+      color: darken($c--warning, 50%);
+   }
+   &:after {
+      border-color: darken($c--warning, 25%);
+   }
 }
 
 .c-toreview__option--failed {
-  background-color: lighten($c--fail, 0%);
+   background-color: lighten($c--fail, 0%);
 
-  &:before {
-    content: "\010102";
-    color: darken($c--fail, 50%);
-  }
+   &:before {
+      content: "\010102";
+      color: darken($c--fail, 50%);
+   }
 
-  &:after {
-    border-color: darken($c--fail, 25%);
-  }
+   &:after {
+      border-color: darken($c--fail, 25%);
+   }
 }
 
 .c-toreview__details {
-  width: 100%;
-  margin-top: 0.25 * $pad;
-  display: flex;
-  justify-content: space-between;
-  max-height: 0;
-  overflow: hidden;
-  transition: 0.3s cubic-bezier(0.01, 0, 0.06, 1);
-  padding-right: (2 * $space) + $pad;
-  .js-show & {
-    max-height: 2 * $omega;
-  }
+   width: 100%;
+   margin-top: 0.25 * $pad;
+   display: flex;
+   justify-content: space-between;
+   max-height: 0;
+   overflow: hidden;
+   transition: 0.3s cubic-bezier(0.01, 0, 0.06, 1);
+   padding-right: (2 * $space) + $pad;
+   .js-show & {
+      max-height: 2 * $omega;
+   }
 }
 
 .c-toreview__detail {
-  font-family: $f2;
-  font-size: $omega;
-  font-weight: 300;
-  text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 10rem;
+   font-family: $f2;
+   font-size: $omega;
+   font-weight: 300;
+   text-transform: uppercase;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   max-width: 10rem;
 }
 
-.c-toreview__detail--doer {
-  &:before {
-    content: "By ";
-  }
+.c-toreview__detail--worker {
+   &:before {
+      content: "By ";
+   }
 }
