@@ -2,17 +2,28 @@ const taskReducer = (state, action) => {
    if (!action.payload.taskId || !action.payload.taskCat)
       throw new Error();
 
-   function setWorker(task, worker) {
+   const {
+      taskId,
+      taskCat,
+      worker = "",
+      reviewer = "",
+      flagWorker = false,
+      isBlocked = false,
+      subtype,
+   } = action.payload;
+   let task = { ...state[taskCat][taskId] };
+
+   function setTaskWorker(worker) {
       task["compliance"]["worker"] = worker;
       return task;
    }
 
-   function setReviewer(task, reviewer) {
+   function setTaskReviewer(reviewer) {
       task["compliance"]["reviewer"] = reviewer;
       return task;
    }
 
-   function setStatus(task, status) {
+   function setTaskStatus(status) {
       if (
          ![
             "pending",
@@ -28,35 +39,63 @@ const taskReducer = (state, action) => {
       return task;
    }
 
-   function setflagWorker(task, flagWorker = false) {
+   function setTaskFlagWorker(flagWorker = false) {
       task["compliance"]["flagWorker"] = flagWorker;
       return task;
    }
 
+   function mergeTaskWithState() {
+      return {
+         ...state,
+         [taskCat]: {
+            ...state[taskCat],
+            [taskId]: task,
+         },
+      };
+   }
+
    switch (action.type) {
-      case "COMPLETETASK":
-         const {
-            taskId,
-            taskCat,
-            worker = "",
-            reviewer = "",
-            flagWorker = false,
-         } = action.payload;
+      case "COMPLETE":
+         setTaskStatus("complete");
+         setTaskWorker(worker);
+         setTaskReviewer(reviewer);
+         setTaskFlagWorker(flagWorker);
 
-         let task = { ...state[taskCat][taskId] };
+         return mergeTaskWithState();
+
+         break;
+
+      case "FORREVIEW":
+         setTaskStatus(isBlocked ? "blocked" : "forReview");
+         setTaskWorker(worker);
+
+         return mergeTaskWithState();
+
+         break;
+
+      case "FAILED":
+         setTaskStatus("failed");
+         setTaskWorker(worker);
+         setTaskReviewer(reviewer);
+
+         return mergeTaskWithState();
+
+         break;
+
+      case "RESET":
          console.log(task);
-         task = setWorker(task, worker);
-         task = setReviewer(task, reviewer);
-         task = setStatus(task, "complete");
-         task = setflagWorker(task, flagWorker);
 
-         return {
-            ...state,
-            [taskCat]: {
-               ...state[taskCat],
-               [taskId]: task,
-            },
-         };
+         if (subtype) {
+            switch (subtype) {
+            }
+         } else {
+            setTaskStatus("pending");
+            setTaskWorker("");
+            setTaskReviewer("");
+            setTaskFlagWorker(false);
+         }
+
+         return mergeTaskWithState();
 
          break;
 

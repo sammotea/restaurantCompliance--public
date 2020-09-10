@@ -22,22 +22,53 @@ const Todo: React.FC<Props> = ({
 
    function hFailureClick() {
       if (user !== "manager") {
-         //handlers.forReview(title, type, user, true);
+         dispatch({
+            type: "FORREVIEW",
+            payload: {
+               taskId: title,
+               taskCat: type,
+               worker: user,
+               isBlocked: true,
+            },
+         });
       } else {
-         //handlers.isFailed(title, type, user, user);
+         dispatch({
+            type: "FAILED",
+            payload: {
+               taskId: title,
+               taskCat: type,
+               worker: user,
+               reviewer: user,
+            },
+         });
       }
       toggleDetails();
    }
 
    function hTitleClick() {
-      if (worker) {
+      if (status !== "pending") {
          console.log("RESET");
-         //handlers.reset(title, type);
+         dispatch({
+            type: "RESET",
+            payload: {
+               taskId: title,
+               taskCat: type,
+            },
+         });
       } else {
          if (user !== "manager") {
-            console.log("TESTCOMPLETION");
             dispatch({
-               type: "COMPLETETASK",
+               type: "FORREVIEW",
+               payload: {
+                  taskId: title,
+                  taskCat: type,
+                  worker: user,
+               },
+            });
+         } else {
+            console.log("COMPLETE");
+            dispatch({
+               type: "COMPLETE",
                payload: {
                   taskId: title,
                   taskCat: type,
@@ -45,12 +76,6 @@ const Todo: React.FC<Props> = ({
                   reviewer: user,
                },
             });
-
-            //console.log("FOREVIEW");
-            //handlers.forReview(title, type, user);
-         } else {
-            console.log("COMPLETE");
-            //handlers.isComplete(title, type, user, user);
          }
       }
    }

@@ -1,29 +1,54 @@
 import React, { useState, useContext } from "react";
 import User from "../../_contexts/user";
+import TasksDispatch from "../../_contexts/tasksDispatch";
 
-interface Props extends iTask {
-   handlers: TodoActions;
-}
+interface Props extends iTask {}
 
 const Toreview: React.FC<Props> = ({
    title,
    type,
    compliance: { worker, status },
-   handlers,
 }) => {
    const [showDetails, setShowDetails] = useState(false);
    const user = useContext(User);
+   const dispatch = useContext(TasksDispatch);
 
    function handleCompleted() {
-      handlers.isComplete(title, type, worker, user);
+      console.log("COMPLETE");
+      dispatch({
+         type: "COMPLETE",
+         payload: {
+            taskId: title,
+            taskCat: type,
+            worker: user,
+            reviewer: user,
+         },
+      });
    }
 
    function handleFixed() {
-      handlers.isComplete(title, type, worker, user, true);
+      dispatch({
+         type: "COMPLETE",
+         payload: {
+            taskId: title,
+            taskCat: type,
+            worker: user,
+            reviewer: user,
+            flagWorker: true,
+         },
+      });
    }
 
    function handleFailed() {
-      handlers.isFailed(title, type, worker, user);
+      dispatch({
+         type: "FAILED",
+         payload: {
+            taskId: title,
+            taskCat: type,
+            worker: user,
+            reviewer: user,
+         },
+      });
    }
 
    function toggleDetails(e: React.MouseEvent) {

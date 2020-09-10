@@ -19,24 +19,16 @@ const Todos: React.FC<Props> = ({ tasksByType }) => {
          const dones: JSX.Element[] = [];
 
          for (const [title, task] of Object.entries(tasks)) {
-            if (
-               task.status !== "complete" &&
-               task.status !== "failed"
-            ) {
-               if (!task.worker) {
-                  todos.push(<Todo key={title} {...task} />);
+            const { status } = task.compliance;
+
+            if (!(status === "complete" || status === "failed")) {
+               if (
+                  (status === "forReview" || status === "blocked") &&
+                  user === "manager"
+               ) {
+                  toreviews.push(<Toreview key={title} {...task} />);
                } else {
-                  if (user === "manager") {
-                     if (task.worker === user) {
-                        dones.push(<Done key={title} {...task} />);
-                     } else {
-                        toreviews.push(
-                           <Toreview key={title} {...task} />
-                        );
-                     }
-                  } else {
-                     todos.push(<Todo key={title} {...task} />);
-                  }
+                  todos.push(<Todo key={title} {...task} />);
                }
             } else {
                if (user === "manager") {
