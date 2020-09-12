@@ -4,7 +4,7 @@ import TasksDispatch from "../../_contexts/tasksDispatch";
 
 interface Props extends iTask {}
 
-const Toreview: React.FC<Props> = ({
+const forReview: React.FC<Props> = ({
    title,
    type,
    compliance: { worker, status },
@@ -14,7 +14,6 @@ const Toreview: React.FC<Props> = ({
    const dispatch = useContext(TasksDispatch);
 
    function handleCompleted() {
-      console.log("COMPLETE");
       dispatch({
          type: "COMPLETE",
          payload: {
@@ -58,7 +57,7 @@ const Toreview: React.FC<Props> = ({
    function renderTitle() {
       return (
          <h1
-            className="[ c-toreview__title ]"
+            className="[ c-forReview__title ]"
             onClick={toggleDetails}
          >
             {title}
@@ -73,10 +72,7 @@ const Toreview: React.FC<Props> = ({
       if (status === "blocked")
          options = options.filter((item) => item !== "fixed");
 
-      console.log(options);
-
       options.forEach((option) => {
-         console.log(option);
          let handler;
 
          switch (option) {
@@ -100,14 +96,16 @@ const Toreview: React.FC<Props> = ({
             <li
                key={option}
                className={
-                  "c-toreview__option c-toreview__option--" + option
+                  "c-forReview__option c-forReview__option--" + option
                }
                onClick={handler}
             ></li>
          );
       });
 
-      return <ul className="c-toreview__options">{reviewOptions}</ul>;
+      return (
+         <ul className="c-forReview__options">{reviewOptions}</ul>
+      );
    }
 
    function renderDetails() {
@@ -126,7 +124,7 @@ const Toreview: React.FC<Props> = ({
             <li
                key={option}
                className={
-                  "c-toreview__detail c-toreview__detail--" + option
+                  "c-forReview__detail c-forReview__detail--" + option
                }
             >
                {el}
@@ -134,26 +132,28 @@ const Toreview: React.FC<Props> = ({
          );
       });
 
-      return <ul className="c-toreview__details">{reviewDetails}</ul>;
+      return (
+         <ul className="c-forReview__details">{reviewDetails}</ul>
+      );
    }
    function renderDetailsToggle() {
       return (
          <span
-            className="[ c-toreview__toggle ]"
+            className="[ c-forReview__detailToggle ]"
             onClick={toggleDetails}
          ></span>
       );
    }
-   function renderToreview() {
+   function renderforReview() {
       if (title) {
-         let toreviewClassName = "c-toreview";
+         let forReviewClassName = "c-forReview";
 
-         if (showDetails) toreviewClassName += " js-show ";
+         if (showDetails) forReviewClassName += " js-show ";
          if (status === "blocked")
-            toreviewClassName += " c-toreview--hasProblem ";
+            forReviewClassName += " c-forReview--isBlocked ";
 
          return (
-            <li key={title} className={toreviewClassName}>
+            <li key={title} className={forReviewClassName}>
                {renderTitle()}
                {renderDetailsToggle()}
                {renderReviewOptions()}
@@ -163,7 +163,7 @@ const Toreview: React.FC<Props> = ({
       }
    }
 
-   return <>{renderToreview()}</>;
+   return <>{renderforReview()}</>;
 };
 
-export default Toreview;
+export default forReview;

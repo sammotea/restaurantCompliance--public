@@ -2,11 +2,7 @@ import React, { useState, useContext } from "react";
 import User from "../../_contexts/user";
 import TasksDispatch from "../../_contexts/tasksDispatch";
 
-interface Props extends iTask {
-   //handlers: TodoActions;
-}
-
-const Todo: React.FC<Props> = ({
+const Pending: React.FC<iTask> = ({
    title,
    subtasks = [],
    compliance: { status, worker, reviewer },
@@ -16,66 +12,70 @@ const Todo: React.FC<Props> = ({
    const user = useContext(User);
    const dispatch = useContext(TasksDispatch);
 
-   function toggleDetails() {
-      setShowDetails(!showDetails);
+   function markTaskForReview(isBlocked = false) {
+      dispatch({
+         type: "FORREVIEW",
+         payload: {
+            taskId: title,
+            taskCat: type,
+            worker: user,
+            isBlocked: isBlocked,
+         },
+      });
+   }
+
+   function failTask() {
+      dispatch({
+         type: "FAILED",
+         payload: {
+            taskId: title,
+            taskCat: type,
+            worker: user,
+            reviewer: user,
+         },
+      });
+   }
+
+   function resetTask() {
+      dispatch({
+         type: "RESET",
+         payload: {
+            taskId: title,
+            taskCat: type,
+         },
+      });
+   }
+
+   function completeTask() {
+      dispatch({
+         type: "COMPLETE",
+         payload: {
+            taskId: title,
+            taskCat: type,
+            worker: user,
+            reviewer: user,
+         },
+      });
    }
 
    function hFailureClick() {
       if (user !== "manager") {
-         dispatch({
-            type: "FORREVIEW",
-            payload: {
-               taskId: title,
-               taskCat: type,
-               worker: user,
-               isBlocked: true,
-            },
-         });
+         markTaskForReview(true);
       } else {
-         dispatch({
-            type: "FAILED",
-            payload: {
-               taskId: title,
-               taskCat: type,
-               worker: user,
-               reviewer: user,
-            },
-         });
+         failTask();
       }
+
       toggleDetails();
    }
 
    function hTitleClick() {
       if (status !== "pending") {
-         console.log("RESET");
-         dispatch({
-            type: "RESET",
-            payload: {
-               taskId: title,
-               taskCat: type,
-            },
-         });
+         resetTask();
       } else {
          if (user !== "manager") {
-            dispatch({
-               type: "FORREVIEW",
-               payload: {
-                  taskId: title,
-                  taskCat: type,
-                  worker: user,
-               },
-            });
+            markTaskForReview();
          } else {
-            console.log("COMPLETE");
-            dispatch({
-               type: "COMPLETE",
-               payload: {
-                  taskId: title,
-                  taskCat: type,
-                  worker: user,
-                  reviewer: user,
-               },
-            });
+            completeTask();
          }
       }
    }
@@ -87,7 +87,7 @@ const Todo: React.FC<Props> = ({
                const k = subtask.replace(" ", "_").substring(0, 50);
 
                return (
-                  <li key={k} className="[ c-todo__subtask ]">
+                  <li key={k} className="[ c-pending__subtask ]">
                      {subtask}
                   </li>
                );
@@ -96,7 +96,9 @@ const Todo: React.FC<Props> = ({
 
          if (subtaskList.length) {
             return (
-               <ul className="[ c-todo__subtasks ]">{subtaskList}</ul>
+               <ul className="[ c-pending__subtasks ]">
+                  {subtaskList}
+               </ul>
             );
          }
       }
@@ -104,10 +106,10 @@ const Todo: React.FC<Props> = ({
 
    function renderDetails() {
       return (
-         <div className="c-todo__detailsWrap">
-            <div className="c-todo__details">
+         <div className="c-pending__detailsWrap">
+            <div className="c-pending__details">
                <div
-                  className="c-todo__addProblem"
+                  className="c-pending__blockLink"
                   onClick={hFailureClick}
                >
                   Raise an issue?
@@ -118,10 +120,14 @@ const Todo: React.FC<Props> = ({
       );
    }
 
+   function toggleDetails() {
+      setShowDetails(!showDetails);
+   }
+
    function renderDetailsToggle() {
       return (
          <span
-            className="[ c-todo__toggle ]"
+            className="[ c-pending__detailToggle ]"
             onClick={toggleDetails}
          ></span>
       );
@@ -129,7 +135,7 @@ const Todo: React.FC<Props> = ({
 
    function renderTitle() {
       return (
-         <h1 className="[ c-todo__title ]" onClick={hTitleClick}>
+         <h1 className="[ c-pending__title ]" onClick={hTitleClick}>
             {title}
          </h1>
       );
@@ -137,18 +143,15 @@ const Todo: React.FC<Props> = ({
 
    function renderTodo() {
       if (title) {
-         let todoClassName = "c-todo";
+         let todoClassName = "c-pending";
 
          todoClassName += showDetails ? " js-show " : "";
 
-         if (title === "Tables") {
-            console.log(worker);
-         }
          if (worker) {
             if (status === "blocked") {
-               todoClassName += " c-todo--hasProblem ";
+               todoClassName += " c-pending--isBlocked ";
             } else {
-               todoClassName += " c-todo--forReview ";
+               todoClassName += " c-pending--forReview ";
             }
          }
          todoClassName += worker !== "" ? " js-complete " : "";
@@ -166,4 +169,4 @@ const Todo: React.FC<Props> = ({
    return <>{renderTodo()}</>;
 };
 
-export default Todo;
+export default Pending;

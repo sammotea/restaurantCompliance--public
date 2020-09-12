@@ -53,14 +53,14 @@ ul {
    border-color: transparent;
    color: $white;
 }
-.c-todoSection {
+.c-pendingSection {
    padding: 0 $pad;
    & + & {
       margin-top: 2 * $space;
    }
 }
 
-.c-todoSection__title {
+.c-pendingSection__title {
    font-family: $f1;
    font-size: $charlie;
    font-weight: 700;
@@ -81,7 +81,7 @@ ul {
    }
 }
 
-.c-todos {
+.c-pendings {
    margin-top: $pad;
    position: relative;
 
@@ -95,7 +95,7 @@ ul {
    }
 }
 
-.c-todo {
+.c-pending {
    position: relative;
    & + & {
       margin-top: $pad;
@@ -111,30 +111,30 @@ ul {
    }
 }
 
-.c-todo__title {
+.c-pending__title {
    font-family: $f2;
    font-size: $bravo;
    font-weight: 300;
    line-height: 1;
    padding-right: (2 * $space) + $pad;
 
-   .c-todo--forReview &,
-   .c-todo--hasProblem & {
+   .c-pending--forReview &,
+   .c-pending--isBlocked & {
       text-decoration: line-through;
    }
-   .c-todo--forReview & {
+   .c-pending--forReview & {
       color: $t--2;
    }
-   .c-todo--hasProblem & {
+   .c-pending--isBlocked & {
       color: $c--fail;
    }
 
-   & + .c-todo__actions {
+   & + .c-pending__actions {
       margin-top: 0.5 * $pad;
    }
 }
 
-.c-todo__toggle {
+.c-pending__detailToggle {
    width: $bravo;
    height: $bravo;
    position: absolute;
@@ -158,7 +158,7 @@ ul {
    }
 }
 
-.c-todo__detailsWrap {
+.c-pending__detailsWrap {
    padding-right: 1rem;
    padding-right: (2 * $space) + $pad;
    max-height: 0;
@@ -171,7 +171,7 @@ ul {
    }
 }
 
-.c-todo__details {
+.c-pending__details {
    transform: translate3d(0, -100%, 0);
    transition: 0.25s ease-in;
 
@@ -181,7 +181,7 @@ ul {
    }
 }
 
-.c-todo__addProblem {
+.c-pending__blockLink {
    font-family: $f2;
    font-weight: 900;
    text-transform: uppercase;
@@ -198,11 +198,11 @@ ul {
       border-bottom: 2px $c--fail solid;
    }
 }
-.c-todo__subtasks {
+.c-pending__subtasks {
    padding-top: 0.5 * $pad;
 }
 
-.c-todo__subtask {
+.c-pending__subtask {
    font-family: $f3;
    padding: 0.125em 0;
 
@@ -211,7 +211,7 @@ ul {
    }
 }
 
-.c-toreviews {
+.c-forReviews {
    margin-top: $pad;
    position: relative;
 
@@ -225,7 +225,7 @@ ul {
    }
 }
 
-.c-toreview {
+.c-forReview {
    display: flex;
    flex-wrap: wrap;
    align-items: center;
@@ -245,7 +245,7 @@ ul {
    }
 }
 
-.c-toreview__toggle {
+.c-forReview__detailToggle {
    width: $bravo;
    height: $bravo;
    position: absolute;
@@ -269,7 +269,7 @@ ul {
    }
 }
 
-.c-toreview__title {
+.c-forReview__title {
    width: 50%;
    position: relative;
    font-family: $f2;
@@ -279,13 +279,13 @@ ul {
    overflow: hidden;
    text-overflow: ellipsis;
 
-   .c-toreview--hasProblem & {
+   .c-forReview--isBlocked & {
       color: $c--fail;
       font-weight: 900;
    }
 }
 
-.c-toreview__options {
+.c-forReview__options {
    width: 50%;
    display: flex;
    justify-content: flex-end;
@@ -295,13 +295,13 @@ $c--success: #90cb54;
 $c--warning: #ecaa34;
 $c--fail: #e84c31;
 
-.c-toreview__option {
+.c-forReview__option {
    width: $bralpha;
    height: $bralpha;
    position: relative;
    text-align: center;
 
-   .c-toreview--hasProblem & {
+   .c-forReview--isBlocked & {
       width: (1.5 * $bralpha) + (0.5 * $pad);
    }
 
@@ -325,7 +325,7 @@ $c--fail: #e84c31;
    }
 }
 
-.c-toreview__option--reviewed {
+.c-forReview__option--reviewed {
    background-color: lighten($c--success, 0%);
 
    &:before {
@@ -339,7 +339,7 @@ $c--fail: #e84c31;
    }
 }
 
-.c-toreview__option--fixed {
+.c-forReview__option--fixed {
    background-color: lighten($c--warning, 0%);
    &:before {
       content: "!";
@@ -350,7 +350,7 @@ $c--fail: #e84c31;
    }
 }
 
-.c-toreview__option--failed {
+.c-forReview__option--failed {
    background-color: lighten($c--fail, 0%);
 
    &:before {
@@ -363,7 +363,7 @@ $c--fail: #e84c31;
    }
 }
 
-.c-toreview__details {
+.c-forReview__details {
    width: 100%;
    margin-top: 0.25 * $pad;
    display: flex;
@@ -377,7 +377,7 @@ $c--fail: #e84c31;
    }
 }
 
-.c-toreview__detail {
+.c-forReview__detail {
    font-family: $f2;
    font-size: $omega;
    font-weight: 300;
@@ -388,7 +388,7 @@ $c--fail: #e84c31;
    max-width: 10rem;
 }
 
-.c-toreview__detail--worker {
+.c-forReview__detail--worker {
    &:before {
       content: "By ";
    }
