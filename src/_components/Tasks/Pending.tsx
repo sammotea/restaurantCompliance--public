@@ -5,7 +5,7 @@ import TasksDispatch from "../../_contexts/tasksDispatch";
 const Pending: React.FC<iTask> = ({
    title,
    subtasks = [],
-   compliance: { status, worker, reviewer },
+   compliance: { status, worker },
    type,
 }) => {
    const [showDetails, setShowDetails] = useState(false);

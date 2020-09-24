@@ -23,7 +23,7 @@ const taskReducer = (state, action) => {
       return task;
    }
 
-   function setTaskStatus(status) {
+   function validateStatus(status) {
       if (
          ![
             "pending",
@@ -34,7 +34,13 @@ const taskReducer = (state, action) => {
          ].includes(status)
       ) {
          throw new Error();
+      } else {
+         return status;
       }
+   }
+
+   function setTaskStatus(status) {
+      status = validateStatus(status);
       task["compliance"]["status"] = status;
       return task;
    }
@@ -83,8 +89,6 @@ const taskReducer = (state, action) => {
          break;
 
       case "RESET":
-         console.log(task);
-
          if (subtype) {
             switch (subtype) {
             }

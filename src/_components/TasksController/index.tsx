@@ -42,13 +42,13 @@ const TasksController: React.FC<Props> = ({ tasksByCategoryObj }) => {
       return test;
    }
 
-   function renderTasksByStatus(tasksArr) {
+   function renderTasksByStatus(tasksObj) {
       const tasksByStatus: JSX.Element[] = [];
 
       const canReview = user === "manager";
       const viewPermission = !canReview ? "limited" : "full";
 
-      const tasksByStatusObj = Object.values(tasksArr).reduce(
+      const tasksByStatusObj = Object.values(tasksObj).reduce(
          taskStatusReducer[viewPermission],
          {
             Pending: [], // limited
