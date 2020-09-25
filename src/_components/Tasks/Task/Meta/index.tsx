@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 
-interface Props {
-   parent: string;
-}
+interface Props {}
 
-const TaskMeta: React.FC<Props> = ({ parent, children }) => {
+const TaskMeta: React.FC<Props> = ({ children }) => {
    const [showMeta, setShowMeta] = useState(false);
    const cl = showMeta ? " isVisible " : "";
    function toggleMeta() {

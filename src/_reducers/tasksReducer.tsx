@@ -9,7 +9,6 @@ const taskReducer = (state, action) => {
       reviewer = "",
       flagWorker = false,
       isBlocked = false,
-      subtype,
    } = action.payload;
    let task = { ...state[taskCat][taskId] };
 
@@ -74,6 +73,9 @@ const taskReducer = (state, action) => {
       case "FORREVIEW":
          setTaskStatus(isBlocked ? "blocked" : "forReview");
          setTaskWorker(worker);
+         // Undo reviewed
+         setTaskReviewer("");
+         setTaskFlagWorker(false);
 
          return mergeTaskWithState();
 
@@ -89,15 +91,10 @@ const taskReducer = (state, action) => {
          break;
 
       case "RESET":
-         if (subtype) {
-            switch (subtype) {
-            }
-         } else {
-            setTaskStatus("pending");
-            setTaskWorker("");
-            setTaskReviewer("");
-            setTaskFlagWorker(false);
-         }
+         setTaskStatus("pending");
+         setTaskWorker("");
+         setTaskReviewer("");
+         setTaskFlagWorker(false);
 
          return mergeTaskWithState();
 

@@ -1,11 +1,12 @@
 import React, { useState, useContext } from "react";
 import User from "../../../_contexts/user";
-import TasksDispatch from "../../../_contexts/tasksDispatch";
 import taskHandlers from "../../../_helpers/taskHandlers";
-import TaskMeta from "../TaskMeta";
-import Toolbar from "../TaskMeta/MetaToolbar";
-import ReportProblem from "../TaskMeta/MetaToolbar/ReportProblem";
-import Subtasks from "../TaskMeta/Subtasks";
+import Task from "./";
+import TaskMeta from "./Meta";
+import Toolbar from "./Meta/Toolbar";
+import ReportProblem from "./Meta/Toolbar/ReportProblem";
+import Subtasks from "./Meta/Subtasks";
+import Title from "./Title";
 
 const Pending: React.FC<iTask> = ({
    title,
@@ -52,11 +53,7 @@ const Pending: React.FC<iTask> = ({
    }
 
    function renderTitle() {
-      return (
-         <h1 className="c-pendingTask__title" onClick={hTitleClick}>
-            {title}
-         </h1>
-      );
+      return <Title title={title} handler={hTitleClick} />;
    }
 
    function renderToolbar() {
@@ -68,12 +65,14 @@ const Pending: React.FC<iTask> = ({
    }
 
    function renderSubtasks() {
-      return <Subtasks tasks={subtasks} />;
+      if (subtasks.length) {
+         return <Subtasks tasks={subtasks} />;
+      }
    }
 
    function renderMeta() {
       return (
-         <TaskMeta parent="pendingTask">
+         <TaskMeta>
             {renderToolbar()}
             {renderSubtasks()}
          </TaskMeta>
@@ -81,13 +80,11 @@ const Pending: React.FC<iTask> = ({
    }
 
    function renderTask() {
-      const cl = "c-pendingTask c-pendingTask--" + status;
-
       return (
-         <li className={cl}>
+         <Task title={title} status={status}>
             {renderTitle()}
             {renderMeta()}
-         </li>
+         </Task>
       );
    }
 

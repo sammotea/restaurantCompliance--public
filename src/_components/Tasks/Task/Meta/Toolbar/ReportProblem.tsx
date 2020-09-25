@@ -8,7 +8,7 @@ const ReportProblem: React.FC<Props> = ({ handler, children }) => {
    return (
       <>
          <li
-            className="c-metaToolbar__item c-metaToolbar__item--reportProblem"
+            className="c-toolbar__item c-toolbar__item--reportProblem c-toolbar__item--link"
             onClick={handler}
          >
             Report a problem

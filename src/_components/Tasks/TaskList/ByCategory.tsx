@@ -4,11 +4,8 @@ interface Props {
    title: string;
 }
 
-const TasksByCategoryList: React.FC<Props> = ({
-   title,
-   children,
-}) => {
-   return <ul className="[ c-pendingTasksections ]">{children}</ul>;
+const TasksByCategoryList: React.FC<Props> = ({ children }) => {
+   return <ul className="c-taskSections">{children}</ul>;
 };
 
 export default TasksByCategoryList;

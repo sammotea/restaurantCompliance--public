@@ -53,36 +53,36 @@ ul {
    border-color: transparent;
    color: $white;
 }
-.c-pendingTasksection {
-   padding: 0 $pad;
-   & + & {
-      margin-top: 2 * $space;
-   }
-}
 
-.c-pendingTasksection__title {
+.c-taskCategory__title {
    font-family: $f1;
    font-size: $charlie;
    font-weight: 700;
+
    > span {
       font-style: italic;
       font-weight: 400;
    }
 }
 
-.todoSection__subtitle {
-   font-family: $f1;
-   font-size: $bralpha;
-   position: relative;
-   font-weight: bold;
+.c-taskSections {
+   list-style: none;
+}
 
-   * + & {
+.c-taskSection {
+   & + & {
       margin-top: 2 * $space;
    }
 }
 
-.c-pendingTasks {
-   margin-top: $pad;
+.c-taskSection__title {
+   font-family: $f1;
+   font-size: $bralpha;
+   position: relative;
+   font-weight: bold;
+}
+
+.c-tasks {
    position: relative;
 
    &:after {
@@ -93,13 +93,19 @@ ul {
       bottom: 0;
       border-right: 2px $black dotted;
    }
+
+   .c-taskSection__title + & {
+      margin-top: $pad;
+   }
 }
 
-.c-pendingTask {
+.c-task {
    position: relative;
+
    & + & {
       margin-top: $pad;
       padding-top: $pad;
+
       &:before {
          content: "";
          position: absolute;
@@ -109,29 +115,23 @@ ul {
          top: -1px;
       }
    }
+
+   .c-forReviewTask & + &,
+   .c-doneTask & + & {
+      margin-top: ($bralpha / $bravo) * $pad;
+      padding-top: ($bralpha / $bravo) * $pad;
+   }
 }
 
-.c-pendingTask__title {
+$fs_title--big: $bravo;
+$fs_title--small: $bralpha;
+
+.c-task__title {
    font-family: $f2;
-   font-size: $bravo;
    font-weight: 300;
    line-height: 1;
    padding-right: (2 * $space) + $pad;
-
-   .c-pendingTask--forReview &,
-   .c-pendingTask--blocked & {
-      text-decoration: line-through;
-   }
-   .c-pendingTask--forReview & {
-      color: $t--2;
-   }
-   .c-pendingTask--blocked & {
-      color: $c--fail;
-   }
-
-   & + .c-pending__actions {
-      margin-top: 0.5 * $pad;
-   }
+   font-size: $fs_title--small;
 }
 
 .c-taskMeta__toggle {
@@ -143,11 +143,13 @@ ul {
    text-align: center;
    transform-origin: center center;
    transition: 0.25s;
-
-   &:after {
-      content: "+";
-      font-size: $bralpha;
-   }
+   background: url(_img/plus-duotone.svg) center center no-repeat;
+   background-size: 50%;
+   transform: translate3d(
+      0,
+      -#{0.5 * ($fs_title--big - $fs_title--small)},
+      0
+   );
 
    :first-child > & {
       top: 0;
@@ -181,96 +183,114 @@ ul {
    }
 }
 
-.c-metaToolbar__item--reportProblem {
-   font-family: $f2;
-   font-weight: 900;
-   text-transform: uppercase;
-   font-size: $omega;
-   display: inline-block;
-   position: relative;
-
-   &:before {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border-bottom: 2px $c--fail solid;
-   }
-}
-
-.c-subtasks {
-   padding-top: 0.5 * $pad;
-}
-
-.c-subtask {
-   font-family: $f3;
-   padding: 0.125em 0;
-
-   &:before {
-      content: "+ ";
-   }
-}
-
-.c-forReviews {
-   margin-top: $pad;
-   position: relative;
-
-   &:after {
-      content: "";
-      position: absolute;
-      right: $space + $pad;
-      top: 0;
-      bottom: 0;
-      border-right: 2px $black dotted;
-   }
-}
-
-.c-forReview {
+.c-toolbar {
    display: flex;
-   flex-wrap: wrap;
    align-items: center;
-   position: relative;
-   padding-right: (2 * $space) + $pad;
+   margin-top: 0.5 * $pad;
+}
+
+$h--toolbar__item: 2 * $omega;
+$ratio: 0.66;
+$w--icon: 0.9 * $h--toolbar__item * $ratio;
+
+.c-toolbar__item {
+   font-size: $omega;
+   text-transform: uppercase;
+   line-height: $h--toolbar__item;
+   font-family: $f2;
+   background: $t--1;
+   padding: 0 $pad;
+
    & + & {
-      margin-top: ($bralpha / $bravo) * $pad;
-      padding-top: ($bralpha / $bravo) * $pad;
-      &:before {
-         content: "";
-         position: absolute;
-         border-top: 2px $black dotted;
-         left: 0;
-         right: 0;
-         top: -1px;
-      }
+      margin-left: 0.5 * $pad;
    }
 }
 
-.c-forReview__detailToggle {
-   width: $bravo;
-   height: $bravo;
-   position: absolute;
-   top: $pad;
-   right: 0;
-   text-align: center;
-   transform-origin: center center;
-   transition: 0.25s;
-
-   &:after {
-      content: "+";
-      font-size: $bralpha;
-   }
-
-   :first-child > & {
+.c-toolbar__item--link {
+   position: relative;
+   text-indent: $w--icon + (0.5 * $pad);
+   &:before {
+      content: "";
+      position: absolute;
+      display: inline-block;
+      margin-right: 0.5 * $pad;
+      width: $w--icon;
+      background-position: center center;
+      background-size: contain;
+      background-repeat: no-repeat;
       top: 0;
-   }
-
-   .js-show & {
-      transform: rotate(45deg);
+      bottom: 0;
+      left: $pad;
    }
 }
 
-.c-forReview__title {
+.c-toolbar__item--worker {
+   &:before {
+      content: "Doer: ";
+   }
+}
+
+.c-toolbar__item--reviewer {
+   &:before {
+      content: "Reviewer: ";
+   }
+}
+
+.c-toolbar__item--reportProblem {
+   &:before {
+      background-image: url(_img/skull-crossbones-duotone.svg);
+   }
+}
+
+.c-toolbar__item--undo {
+   &:before {
+      background-image: url(_img/undo-duotone.svg);
+   }
+}
+
+.c-pendingTasks {
+   .c-task__title {
+      font-size: $fs_title--big;
+   }
+
+   .c-taskMeta__toggle {
+      transform: none;
+   }
+
+   .c-task--forReview .c-task__title,
+   .c-task--blocked .c-task__title {
+      text-decoration: line-through;
+   }
+
+   .c-task--forReview .c-task__title {
+      color: $t--2;
+   }
+
+   .c-task--blocked .c-task__title {
+      color: $c--fail;
+   }
+}
+
+.c-forReviewTasks {
+   .c-task {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      position: relative;
+      padding-right: (2 * $space) + $pad;
+   }
+
+   .c-task__title {
+      padding-right: 0;
+      width: 50%;
+      position: relative;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+   }
+}
+
+.c-forReviewTask__title {
    width: 50%;
    position: relative;
    font-family: $f2;
@@ -280,31 +300,21 @@ ul {
    overflow: hidden;
    text-overflow: ellipsis;
 
-   .c-forReview--isBlocked & {
+   .c-forReviewTask--blocked & {
       color: $c--fail;
       font-weight: 900;
    }
 }
 
-.c-forReview__options {
+.c-task__actions {
    width: 50%;
    display: flex;
    justify-content: flex-end;
 }
 
-$c--success: #90cb54;
-$c--warning: #ecaa34;
-$c--fail: #e84c31;
-
-.c-forReview__option {
-   width: $bralpha;
-   height: $bralpha;
+.c-task__action {
    position: relative;
    text-align: center;
-
-   .c-forReview--isBlocked & {
-      width: (1.5 * $bralpha) + (0.5 * $pad);
-   }
 
    &:before {
       content: "" !important;
@@ -326,7 +336,21 @@ $c--fail: #e84c31;
    }
 }
 
-.c-forReview__option--reviewed {
+.c-forReviewTask__actions {
+   .c-task__action {
+      width: $bralpha;
+      height: $bralpha;
+   }
+}
+
+.c-blockedTask__actions {
+   .c-task__action {
+      height: $bralpha;
+      width: (1.5 * $bralpha) + (0.5 * $pad);
+   }
+}
+
+.c-task__action--reviewed {
    background-color: lighten($c--success, 0%);
 
    &:before {
@@ -340,7 +364,7 @@ $c--fail: #e84c31;
    }
 }
 
-.c-forReview__option--fixed {
+.c-task__action--fixed {
    background-color: lighten($c--warning, 0%);
    &:before {
       content: "!";
@@ -351,7 +375,7 @@ $c--fail: #e84c31;
    }
 }
 
-.c-forReview__option--failed {
+.c-task__action--failed {
    background-color: lighten($c--fail, 0%);
 
    &:before {
@@ -364,33 +388,15 @@ $c--fail: #e84c31;
    }
 }
 
-.c-forReview__details {
-   width: 100%;
-   margin-top: 0.25 * $pad;
-   display: flex;
-   justify-content: space-between;
-   max-height: 0;
-   overflow: hidden;
-   transition: 0.3s cubic-bezier(0.01, 0, 0.06, 1);
-   padding-right: (2 * $space) + $pad;
-   .js-show & {
-      max-height: 2 * $omega;
-   }
+.c-subtasks {
+   padding-top: 0.5 * $pad;
 }
 
-.c-forReview__detail {
-   font-family: $f2;
-   font-size: $omega;
-   font-weight: 300;
-   text-transform: uppercase;
-   white-space: nowrap;
-   overflow: hidden;
-   text-overflow: ellipsis;
-   max-width: 10rem;
-}
+.c-subtask {
+   font-family: $f3;
+   padding: 0.125em 0;
 
-.c-forReview__detail--worker {
    &:before {
-      content: "By ";
+      content: "+ ";
    }
 }

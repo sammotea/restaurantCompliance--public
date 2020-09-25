@@ -4,7 +4,6 @@ const taskHandlers = {
    },
 
    markTaskForReview(payload) {
-      console.log(payload);
       this.dispatch({
          type: "FORREVIEW",
          payload: payload,

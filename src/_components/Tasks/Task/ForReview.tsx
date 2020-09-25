@@ -1,6 +1,12 @@
 import React, { useState, useContext } from "react";
 import User from "../../../_contexts/user";
-import TasksDispatch from "../../../_contexts/tasksDispatch";
+import taskHandlers from "../../../_helpers/taskHandlers";
+import Task from "./";
+import Title from "./Title";
+import TaskMeta from "./Meta";
+import Toolbar from "./Meta/Toolbar";
+import Worker from "./Meta/Toolbar/Worker";
+import Undo from "./Meta/Toolbar/Undo";
 
 interface Props extends iTask {}
 
@@ -9,161 +15,111 @@ const forReview: React.FC<Props> = ({
    type,
    compliance: { worker, status },
 }) => {
-   const [showDetails, setShowDetails] = useState(false);
    const user = useContext(User);
-   const dispatch = useContext(TasksDispatch);
+   const payload = {
+      taskId: title,
+      taskCat: type,
+      worker: worker,
+      reviewer: user,
+   };
 
-   function handleCompleted() {
-      dispatch({
-         type: "COMPLETE",
-         payload: {
-            taskId: title,
-            taskCat: type,
-            worker: user,
-            reviewer: user,
-         },
+   function hCompleteClick() {
+      taskHandlers.completeTask(payload);
+   }
+
+   function hFixedClick() {
+      taskHandlers.completeTask({
+         ...payload,
+         flagWorker: true,
       });
    }
 
-   function handleFixed() {
-      dispatch({
-         type: "COMPLETE",
-         payload: {
-            taskId: title,
-            taskCat: type,
-            worker: user,
-            reviewer: user,
-            flagWorker: true,
-         },
-      });
+   function hFailedClick() {
+      taskHandlers.failTask(payload);
    }
 
-   function handleFailed() {
-      dispatch({
-         type: "FAILED",
-         payload: {
-            taskId: title,
-            taskCat: type,
-            worker: user,
-            reviewer: user,
-         },
-      });
-   }
-
-   function toggleDetails(e: React.MouseEvent) {
-      setShowDetails(!showDetails);
+   function hUndoClick() {
+      taskHandlers.resetTask(payload);
    }
 
    function renderTitle() {
-      return (
-         <h1
-            className="[ c-forReview__title ]"
-            onClick={toggleDetails}
-         >
-            {title}
-         </h1>
-      );
+      return <Title title={title} />;
    }
 
-   function renderReviewOptions() {
-      const reviewOptions: JSX.Element[] = [];
-      let options = ["reviewed", "fixed", "failed"];
+   function getTaskActions(actions) {
+      const taskActions: JSX.Element[] = [];
 
-      if (status === "blocked")
-         options = options.filter((item) => item !== "fixed");
-
-      options.forEach((option) => {
+      actions.forEach((action) => {
          let handler;
 
-         switch (option) {
+         switch (action) {
             case "reviewed":
-               handler = handleCompleted;
+               handler = hCompleteClick;
                break;
 
             case "fixed":
-               handler = handleFixed;
+               handler = hFixedClick;
                break;
 
             case "failed":
-               handler = handleFailed;
+               handler = hFailedClick;
                break;
 
             default:
                throw new Error();
                break;
          }
-         reviewOptions.push(
+
+         taskActions.push(
             <li
-               key={option}
-               className={
-                  "c-forReview__option c-forReview__option--" + option
-               }
+               key={action}
+               className={`c-task__action  c-task__action--${action}`}
                onClick={handler}
             ></li>
          );
       });
 
+      return taskActions;
+   }
+
+   function renderTaskActions() {
+      let actions = ["reviewed", "fixed", "failed"];
+
+      // Remove ‘fixed’ option if already flagged
+      if (status === "blocked")
+         actions = actions.filter((item) => item !== "fixed");
+
       return (
-         <ul className="c-forReview__options">{reviewOptions}</ul>
+         <ul className={`c-task__actions c-${status}Task__actions`}>
+            {getTaskActions(actions)}
+         </ul>
       );
    }
 
-   function renderDetails() {
-      const reviewDetails: JSX.Element[] = [];
+   function renderMeta() {
+      return <TaskMeta>{renderToolbar()}</TaskMeta>;
+   }
 
-      ["worker"].forEach((option) => {
-         let el = "";
-
-         switch (option) {
-            case "worker":
-               el = worker;
-               break;
-         }
-
-         reviewDetails.push(
-            <li
-               key={option}
-               className={
-                  "c-forReview__detail c-forReview__detail--" + option
-               }
-            >
-               {el}
-            </li>
-         );
-      });
-
+   function renderToolbar() {
       return (
-         <ul className="c-forReview__details">{reviewDetails}</ul>
+         <Toolbar>
+            <Undo handler={hUndoClick} />
+            <Worker name={worker} />
+         </Toolbar>
       );
    }
-   function renderDetailsToggle() {
+
+   function renderTask() {
       return (
-         <span
-            className="[ c-forReview__detailToggle ]"
-            onClick={toggleDetails}
-         ></span>
+         <Task title={title} status={status}>
+            {renderTitle()}
+            {renderTaskActions()}
+            {renderMeta()}
+         </Task>
       );
    }
-   function renderforReview() {
-      if (title) {
-         let forReviewClassName = "c-forReview";
 
-         if (showDetails) forReviewClassName += " js-show ";
-         if (status === "blocked")
-            forReviewClassName += " c-forReview--isBlocked ";
-
-         return (
-            <li key={title} className={forReviewClassName}>
-               {renderTitle()}
-               {renderDetailsToggle()}
-               {renderReviewOptions()}
-               {renderDetails()}
-            </li>
-         );
-      }
-   }
-
-   return <>{renderforReview()}</>;
+   return <>{renderTask()}</>;
 };
 
 export default forReview;

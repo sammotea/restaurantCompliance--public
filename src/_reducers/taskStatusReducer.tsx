@@ -5,7 +5,7 @@ const taskStatusReducer = {
 
       // Workers see tasks they have done awaiting review as Pending.
       if (!isDone) {
-         acc["Pending"].push(cur);
+         acc["pending"].push(cur);
       }
 
       return acc;
@@ -20,12 +20,12 @@ const taskStatusReducer = {
 
       if (!isDone) {
          if (needsReview) {
-            view = "ForReview";
+            view = "forReview";
          } else {
-            view = "Pending";
+            view = "pending";
          }
       } else {
-         view = "Done";
+         view = "done";
       }
 
       acc[view].push(cur);

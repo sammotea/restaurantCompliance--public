@@ -5,35 +5,36 @@ interface Props {
 }
 
 const TasksByStatusList: React.FC<Props> = ({ status, children }) => {
-   function getTitle(title) {
-      return <h1 className="todoSection__subtitle">{title}</h1>;
+   function getTitleText() {
+      let title = "";
+
+      switch (status) {
+         case "forReview":
+            title = "Awaiting sign-off";
+            break;
+
+         case "done":
+            title = "Reviewed";
+      }
+
+      return title;
    }
 
-   let title, cName;
+   function renderTitle() {
+      const title = getTitleText();
 
-   switch (status) {
-      case "Pending":
-         cName = "c-pendingTasks";
-         break;
-
-      case "ForReview":
-         title = "Awaiting sign-off";
-         cName = "c-forReviews";
-         break;
-
-      case "Done":
-         title = "Reviewed";
-         cName = "c-dones";
+      if (title) {
+         return <h1 className="c-taskSection__title">{title}</h1>;
+      }
    }
 
-   if (title) {
-      title = getTitle(title);
-   }
+   const simpleStatus = status === "blocked" ? "forReview" : status;
+   const cl = `c-tasks c-${simpleStatus}Tasks`;
 
    return (
       <>
-         {title}
-         <ul className={cName}>{children}</ul>
+         {renderTitle()}
+         <ul className={cl}>{children}</ul>
       </>
    );
 };

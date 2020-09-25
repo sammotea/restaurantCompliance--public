@@ -20,15 +20,15 @@ const TasksController: React.FC<Props> = ({ tasksByCategoryObj }) => {
          task.key = task.title;
 
          switch (status) {
-            case "Pending":
+            case "pending":
                el = <Pending {...task} />;
                break;
 
-            case "ForReview":
+            case "forReview":
                el = <ForReview {...task} />;
                break;
 
-            case "Done":
+            case "done":
                el = <Done {...task} />;
                break;
 
@@ -51,18 +51,20 @@ const TasksController: React.FC<Props> = ({ tasksByCategoryObj }) => {
       const tasksByStatusObj = Object.values(tasksObj).reduce(
          taskStatusReducer[viewPermission],
          {
-            Pending: [], // limited
-            ForReview: [], // full
-            Done: [], // full
+            pending: [], // limited
+            forReview: [], // full
+            done: [], // full
          }
       );
 
       for (const status in tasksByStatusObj) {
          if (tasksByStatusObj[status].length) {
             tasksByStatus.push(
-               <TasksByStatusList key={status} status={status}>
-                  {renderTasks(status, tasksByStatusObj[status])}
-               </TasksByStatusList>
+               <li className="c-taskSection" key={status}>
+                  <TasksByStatusList key={status} status={status}>
+                     {renderTasks(status, tasksByStatusObj[status])}
+                  </TasksByStatusList>
+               </li>
             );
          }
       }
@@ -70,6 +72,7 @@ const TasksController: React.FC<Props> = ({ tasksByCategoryObj }) => {
       return tasksByStatus;
    }
 
+   // MISNAMED!
    function renderTasksByCategory() {
       const tasksByCategory: JSX.Element[] = [];
 
