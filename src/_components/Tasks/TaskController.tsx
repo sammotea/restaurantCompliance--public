@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import User from "../../_contexts/user";
-import Pending from "../Tasks/Pending";
-import ForReview from "../Tasks/ForReview";
-import Done from "../Tasks/Done";
+import Pending from "./Task/Pending";
+import ForReview from "./Task/ForReview";
+import Done from "./Task/Done";
 import taskStatusReducer from "../../_reducers/taskStatusReducer";
-import TasksByCategoryList from "../../_components/Lists/TasksByCategoryList";
-import TasksByStatusList from "../../_components/Lists/TasksByStatusList";
+import TasksByCategoryList from "./TaskList/ByCategory";
+import TasksByStatusList from "./TaskList/ByStatus";
 
 interface Props {
    tasksByCategoryObj: iTasksByX;

@@ -53,14 +53,14 @@ ul {
    border-color: transparent;
    color: $white;
 }
-.c-pendingSection {
+.c-pendingTasksection {
    padding: 0 $pad;
    & + & {
       margin-top: 2 * $space;
    }
 }
 
-.c-pendingSection__title {
+.c-pendingTasksection__title {
    font-family: $f1;
    font-size: $charlie;
    font-weight: 700;
@@ -81,7 +81,7 @@ ul {
    }
 }
 
-.c-pendings {
+.c-pendingTasks {
    margin-top: $pad;
    position: relative;
 
@@ -95,7 +95,7 @@ ul {
    }
 }
 
-.c-pending {
+.c-pendingTask {
    position: relative;
    & + & {
       margin-top: $pad;
@@ -111,21 +111,21 @@ ul {
    }
 }
 
-.c-pending__title {
+.c-pendingTask__title {
    font-family: $f2;
    font-size: $bravo;
    font-weight: 300;
    line-height: 1;
    padding-right: (2 * $space) + $pad;
 
-   .c-pending--forReview &,
-   .c-pending--isBlocked & {
+   .c-pendingTask--forReview &,
+   .c-pendingTask--blocked & {
       text-decoration: line-through;
    }
-   .c-pending--forReview & {
+   .c-pendingTask--forReview & {
       color: $t--2;
    }
-   .c-pending--isBlocked & {
+   .c-pendingTask--blocked & {
       color: $c--fail;
    }
 
@@ -134,7 +134,7 @@ ul {
    }
 }
 
-.c-pending__detailToggle {
+.c-taskMeta__toggle {
    width: $bravo;
    height: $bravo;
    position: absolute;
@@ -153,35 +153,35 @@ ul {
       top: 0;
    }
 
-   .js-show & {
+   &.isVisible {
       transform: rotate(45deg);
    }
 }
 
-.c-pending__detailsWrap {
+.c-taskMetaWrap {
    padding-right: 1rem;
    padding-right: (2 * $space) + $pad;
    max-height: 0;
    overflow: hidden;
    transition: 0.3s cubic-bezier(0.01, 0, 0.06, 1);
 
-   .js-show & {
+   &.isVisible {
       max-height: 1000px;
       transition: 0.75s cubic-bezier(0.81, 0.01, 0.22, 1);
    }
 }
 
-.c-pending__details {
+.c-taskMeta {
    transform: translate3d(0, -100%, 0);
    transition: 0.25s ease-in;
 
-   .js-show & {
+   .isVisible & {
       transform: translate3d(0, 0, 0);
       transition: 0.2s ease 0.1s;
    }
 }
 
-.c-pending__blockLink {
+.c-metaToolbar__item--reportProblem {
    font-family: $f2;
    font-weight: 900;
    text-transform: uppercase;
@@ -198,11 +198,12 @@ ul {
       border-bottom: 2px $c--fail solid;
    }
 }
-.c-pending__subtasks {
+
+.c-subtasks {
    padding-top: 0.5 * $pad;
 }
 
-.c-pending__subtask {
+.c-subtask {
    font-family: $f3;
    padding: 0.125em 0;
 

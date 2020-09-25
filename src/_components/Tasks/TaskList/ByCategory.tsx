@@ -8,7 +8,7 @@ const TasksByCategoryList: React.FC<Props> = ({
    title,
    children,
 }) => {
-   return <ul className="[ c-pendingSections ]">{children}</ul>;
+   return <ul className="[ c-pendingTasksections ]">{children}</ul>;
 };
 
 export default TasksByCategoryList;

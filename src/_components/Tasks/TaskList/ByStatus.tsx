@@ -13,7 +13,7 @@ const TasksByStatusList: React.FC<Props> = ({ status, children }) => {
 
    switch (status) {
       case "Pending":
-         cName = "c-pendings";
+         cName = "c-pendingTasks";
          break;
 
       case "ForReview":

@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import User from "../../_contexts/user";
 import TasksDispatch from "../../_contexts/tasksDispatch";
+import taskHandlers from "../../_helpers/taskHandlers";
 
 const Pending: React.FC<iTask> = ({
    title,
@@ -37,13 +38,17 @@ const Pending: React.FC<iTask> = ({
    }
 
    function resetTask() {
-      dispatch({
-         type: "RESET",
-         payload: {
-            taskId: title,
-            taskCat: type,
-         },
+      taskHandlers.resetTask({
+         taskId: title,
+         taskCat: type,
       });
+      // dispatch({
+      //    type: "RESET",
+      //    payload: {
+      //       taskId: title,
+      //       taskCat: type,
+      //    },
+      // });
    }
 
    function completeTask() {

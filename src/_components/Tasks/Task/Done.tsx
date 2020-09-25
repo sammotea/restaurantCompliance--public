@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import User from "../../_contexts/user";
+import User from "../../../_contexts/user";
 
 const Done: React.FC<iTask> = ({ title, compliance: { status } }) => {
    function renderDone() {

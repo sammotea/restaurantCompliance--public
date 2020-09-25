@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
-import User from "../../_contexts/user";
-import TasksDispatch from "../../_contexts/tasksDispatch";
+import User from "../../../_contexts/user";
+import TasksDispatch from "../../../_contexts/tasksDispatch";
 
 interface Props extends iTask {}
 
