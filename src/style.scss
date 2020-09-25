@@ -186,7 +186,7 @@ $fs_title--small: $bralpha;
 .c-toolbar {
    display: flex;
    align-items: center;
-   margin-top: 0.5 * $pad;
+   margin-top: 0.75 * $pad;
 }
 
 $h--toolbar__item: 2 * $omega;
@@ -290,19 +290,17 @@ $w--icon: 0.9 * $h--toolbar__item * $ratio;
    }
 }
 
-.c-forReviewTask__title {
-   width: 50%;
-   position: relative;
-   font-family: $f2;
-   font-size: $bralpha;
-   font-weight: 300;
-   white-space: nowrap;
-   overflow: hidden;
-   text-overflow: ellipsis;
+.c-doneTasks {
+   .c-task__title {
+      text-decoration: line-through;
+   }
 
-   .c-forReviewTask--blocked & {
+   .c-task--complete .c-task__title {
+      //color: $c--success;
+   }
+
+   .c-task--failed .c-task__title {
       color: $c--fail;
-      font-weight: 900;
    }
 }
 

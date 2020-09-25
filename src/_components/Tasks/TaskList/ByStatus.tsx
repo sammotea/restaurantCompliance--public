@@ -14,7 +14,7 @@ const TasksByStatusList: React.FC<Props> = ({ status, children }) => {
             break;
 
          case "done":
-            title = "Reviewed";
+            title = "Complete";
       }
 
       return title;
