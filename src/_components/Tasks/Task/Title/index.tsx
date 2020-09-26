@@ -5,7 +5,7 @@ interface Props {
    handler?: any;
 }
 
-const Title: React.FC<Props> = ({ title, handler = false }) => {
+const Title: React.FC<Props> = ({ title, handler = undefined }) => {
    const cl = `c-task__title`;
 
    return (
