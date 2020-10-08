@@ -39,6 +39,7 @@ interface iComplianceObj {
    worker: string;
    reviewer: string;
    flagWorker: boolean; // Quality assurance
+   comments?: any;
 }
 
 interface TodoActions {

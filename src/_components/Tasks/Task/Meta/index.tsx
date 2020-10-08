@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 interface Props {}
 
-const TaskMeta: React.FC<Props> = ({ children }) => {
+const Meta: React.FC<Props> = ({ children }) => {
    const [showMeta, setShowMeta] = useState(false);
    const cl = showMeta ? " isVisible " : "";
    function toggleMeta() {
@@ -23,4 +23,4 @@ const TaskMeta: React.FC<Props> = ({ children }) => {
    );
 };
 
-export default TaskMeta;
+export default Meta;

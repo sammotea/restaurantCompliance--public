@@ -3,7 +3,7 @@ import User from "../../../_contexts/user";
 import taskHandlers from "../../../_helpers/taskHandlers";
 import Task from "./";
 import Title from "./Title";
-import TaskMeta from "./Meta";
+import Meta from "./Meta";
 import Toolbar from "./Meta/Toolbar";
 import Worker from "./Meta/Toolbar/Worker";
 import Reviewer from "./Meta/Toolbar/Reviewer";
@@ -35,7 +35,7 @@ const Done: React.FC<iTask> = ({
    }
 
    function renderMeta() {
-      return <TaskMeta>{renderToolbar()}</TaskMeta>;
+      return <Meta>{renderToolbar()}</Meta>;
    }
 
    function renderToolbar() {

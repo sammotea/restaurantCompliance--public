@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import User from "../../../_contexts/user";
 import taskHandlers from "../../../_helpers/taskHandlers";
 import Task from "./";
-import TaskMeta from "./Meta";
+import Meta from "./Meta";
 import Toolbar from "./Meta/Toolbar";
 import ReportProblem from "./Meta/Toolbar/ReportProblem";
 import Subtasks from "./Meta/Subtasks";
@@ -72,10 +72,10 @@ const Pending: React.FC<iTask> = ({
 
    function renderMeta() {
       return (
-         <TaskMeta>
+         <Meta>
             {renderToolbar()}
             {renderSubtasks()}
-         </TaskMeta>
+         </Meta>
       );
    }
 

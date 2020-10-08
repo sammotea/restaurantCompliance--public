@@ -3,8 +3,9 @@ import User from "../../../_contexts/user";
 import taskHandlers from "../../../_helpers/taskHandlers";
 import Task from "./";
 import Title from "./Title";
-import TaskMeta from "./Meta";
+import Meta from "./Meta";
 import Toolbar from "./Meta/Toolbar";
+import Comments from "./Meta/Comments";
 import Worker from "./Meta/Toolbar/Worker";
 import Undo from "./Meta/Toolbar/Undo";
 
@@ -13,7 +14,7 @@ interface Props extends iTask {}
 const forReview: React.FC<Props> = ({
    title,
    type,
-   compliance: { worker, status },
+   compliance: { worker, status, comments = [] },
 }) => {
    const user = useContext(User);
    const payload = {
@@ -97,7 +98,18 @@ const forReview: React.FC<Props> = ({
    }
 
    function renderMeta() {
-      return <TaskMeta>{renderToolbar()}</TaskMeta>;
+      return (
+         <Meta>
+            {renderToolbar()}
+            {renderComments()}
+         </Meta>
+      );
+   }
+
+   function renderComments() {
+      if (comments.length) {
+         return <Comments comments={comments} />;
+      }
    }
 
    function renderToolbar() {

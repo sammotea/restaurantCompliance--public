@@ -157,8 +157,6 @@ $fs_title--small: $bralpha;
 }
 
 .c-taskMetaWrap {
-   padding-right: 1rem;
-   padding-right: (2 * $space) + $pad;
    max-height: 0;
    overflow: hidden;
    transition: 0.3s cubic-bezier(0.01, 0, 0.06, 1);
@@ -194,17 +192,23 @@ $w--icon: 0.9 * $h--toolbar__item * $ratio;
    text-transform: uppercase;
    line-height: $h--toolbar__item;
    font-family: $f2;
-   background: $t--1;
-   padding: 0 $pad;
 
    & + & {
       margin-left: 0.5 * $pad;
+   }
+
+   &:before {
+      font-weight: bold;
    }
 }
 
 .c-toolbar__item--link {
    position: relative;
    text-indent: $w--icon + (0.5 * $pad);
+   background: $t--1;
+   padding: 0 $pad;
+   cursor: pointer;
+
    &:before {
       content: "";
       position: absolute;
@@ -247,6 +251,7 @@ $w--icon: 0.9 * $h--toolbar__item * $ratio;
 .c-pendingTasks {
    .c-task__title {
       font-size: $fs_title--big;
+      cursor: pointer;
    }
 
    .c-taskMeta__toggle {
@@ -400,5 +405,69 @@ $w--icon: 0.9 * $h--toolbar__item * $ratio;
 
    &:before {
       content: "+ ";
+   }
+}
+
+.c-comments {
+   * + & {
+      margin-top: $space;
+   }
+}
+
+.c-comment {
+   position: relative;
+
+   & + & {
+      margin-top: $pad;
+   }
+}
+
+.c-comment__meta {
+   display: flex;
+   align-items: center;
+}
+
+.c-comment__author {
+   font-family: $f2;
+   text-transform: uppercase;
+   font-weight: bold;
+   line-height: 1.5em;
+
+   &:after {
+      content: " wrote:";
+      font-weight: normal;
+      text-transform: lowercase;
+   }
+}
+
+.c-comment__actions {
+   list-style: none;
+   margin-left: $space;
+}
+
+.c-comment__action {
+   width: 1em;
+   height: 1em;
+   display: inline-block;
+   background-position: center center;
+   background-size: contain;
+   background-repeat: no-repeat;
+
+   & + & {
+      margin-left: $pad;
+   }
+}
+
+.c-comment__action--edit {
+   background-image: url(_img/pencil-alt-duotone.svg);
+}
+
+.c-comment__action--delete {
+   background-image: url(_img/trash-alt-duotone.svg);
+}
+
+.c-comment__text {
+   .c-comment__author + & {
+      margin-top: 0.5 * $pad;
    }
 }
