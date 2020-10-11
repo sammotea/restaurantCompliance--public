@@ -421,6 +421,18 @@ $w--icon: 0.9 * $h--toolbar__item * $ratio;
    font-weight: bold;
 }
 
+@keyframes submit {
+   0% {
+      box-shadow: $c--success 0 0 0.25 * $pad 0.25 * $pad inset;
+      border-color: $c--success;
+   }
+
+   100% {
+      box-shadow: transparent 0 0 0.25 * $pad 0.25 * $pad inset;
+      border-color: $black;
+   }
+}
+
 .c-commentForm__textarea {
    width: 100%;
    padding: $pad;
@@ -432,6 +444,14 @@ $w--icon: 0.9 * $h--toolbar__item * $ratio;
    font-size: $alpha;
    font-family: $f3;
    font-style: normal;
+   border: 1px $black solid;
+   border-radius: none;
+
+   &.hasSubmitted {
+      animation-name: submit;
+      animation-duration: 0.25s;
+      animation-iteration-count: 1;
+   }
 
    * + & {
       margin-top: $pad;
@@ -505,17 +525,21 @@ $h--avatar: 2rem;
    padding-left: $h--avatar + $pad;
 
    & + & {
-      margin-top: $space;
+      margin-top: 2 * $space;
    }
 
    &:after {
       content: "";
       position: absolute;
-      top: $h--avatar + $pad;
-      bottom: $pad;
+      top: $h--avatar + (0.5 * $pad);
+      bottom: 0;
       left: 0.5 * $h--avatar;
       border-left: 6px $t--2 solid;
       margin-left: -3px;
+   }
+
+   &:nth-child(even):after {
+      border-color: $black;
    }
 }
 
@@ -533,47 +557,39 @@ $h--avatar: 2rem;
    background: url(./_img/user-astronaut-duotone.svg) center center
       no-repeat;
    background-size: contain;
-
-   .c-comment:nth-child(odd) & {
-      background-image: url(./_img/user-astronaut-duotone.svg);
-   }
-
-   .c-comment:nth-child(even) & {
-      background-image: url(./_img/user-robot-duotone.svg);
-   }
 }
 
-// .c-comment__avatar--astronaut {
-//    background-image: url(./_img/user-astronaut-duotone.svg);
-// }
+.c-comment__avatar--astronaut {
+   background-image: url(./_img/user-astronaut-duotone.svg);
+}
 
-// .c-comment__avatar--cowboy {
-//    background-image: url(./_img/user-cowboy-duotone.svg);
-// }
+.c-comment__avatar--cowboy {
+   background-image: url(./_img/user-cowboy-duotone.svg);
+}
 
-// .c-comment__avatar--crown {
-//    background-image: url(./_img/user-crown-duotone.svg);
-// }
+.c-comment__avatar--crown {
+   background-image: url(./_img/user-crown-duotone.svg);
+}
 
-// .c-comment__avatar--ninja {
-//    background-image: url(./_img/user-ninja-duotone.svg);
-// }
+.c-comment__avatar--ninja {
+   background-image: url(./_img/user-ninja-duotone.svg);
+}
 
-// .c-comment__avatar--robot {
-//    background-image: url(./_img/user-robot-duotone.svg);
-// }
+.c-comment__avatar--robot {
+   background-image: url(./_img/user-robot-duotone.svg);
+}
 
-// .c-comment__avatar--secret {
-//    background-image: url(./_img/user-secret-duotone.svg);
-// }
+.c-comment__avatar--secret {
+   background-image: url(./_img/user-secret-duotone.svg);
+}
 
-// .c-comment__avatar--tie {
-//    background-image: url(./_img/user-tie-duotone.svg);
-// }
+.c-comment__avatar--tie {
+   background-image: url(./_img/user-tie-duotone.svg);
+}
 
-// .c-comment__avatar--visor {
-//    background-image: url(./_img/user-visor-duotone.svg);
-// }
+.c-comment__avatar--visor {
+   background-image: url(./_img/user-visor-duotone.svg);
+}
 
 .c-comment__author {
    font-family: $f2;

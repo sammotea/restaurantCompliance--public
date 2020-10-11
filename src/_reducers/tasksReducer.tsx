@@ -17,8 +17,6 @@ const taskReducer = (state, action) => {
    } = action.payload;
    let task = { ...state[taskCat][taskId] };
 
-   console.log(action);
-
    function setTaskWorker(worker) {
       task["compliance"]["worker"] = worker;
       return task;
@@ -61,15 +59,11 @@ const taskReducer = (state, action) => {
          throw new Error();
       }
 
-      console.log("working!");
-
       const comment = {
          id: pseudoUid(),
          author: commentAuthor,
          comment: commentText,
       };
-
-      console.log(comment);
 
       task["compliance"]["comments"].push(comment);
 

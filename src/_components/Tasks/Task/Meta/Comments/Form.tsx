@@ -9,12 +9,13 @@ interface Props {
 const Form: React.FC<Props> = ({ hSubmit }) => {
    const user = useContext(User);
    const [comment, setComment] = useState("");
+   const [hasSubmitted, setHasSubmitted] = useState(false);
 
    function hButtonClick() {
-      console.log(comment);
-
       if (comment) {
          hSubmit(comment);
+         setComment("");
+         setHasSubmitted(true);
       }
    }
 
@@ -35,6 +36,7 @@ const Form: React.FC<Props> = ({ hSubmit }) => {
 
    function hUserInput(e) {
       setComment(e.target.value);
+      setHasSubmitted(false);
    }
 
    function renderTextArea() {
@@ -55,7 +57,10 @@ const Form: React.FC<Props> = ({ hSubmit }) => {
 
       return (
          <textarea
-            className="c-commentForm__textarea"
+            className={
+               "c-commentForm__textarea" +
+               (hasSubmitted ? " hasSubmitted" : "")
+            }
             placeholder={!comment ? placeholder : ""}
             onChange={hUserInput}
             value={comment}

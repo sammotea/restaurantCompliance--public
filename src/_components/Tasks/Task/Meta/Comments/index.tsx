@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import User from "../../../../../_contexts/user";
+import avatars from "../../../../../_misc/avatars";
 
 interface Props {
    comments: any;
@@ -24,23 +25,12 @@ const Comments: React.FC<Props> = ({
       );
    }
 
-   function renderAvatar() {
-      const avatars = [
-         "astronaut",
-         "cowboy",
-         "crown",
-         "ninja",
-         "robot",
-         "secret",
-         "tie",
-         "visor",
-      ];
+   function renderAvatar(author) {
+      const avatar = avatars[author] ? avatars[author] : "robot";
 
       return (
          <div
-            className={`c-comment__avatar c-comment__avatar--${
-               avatars[Math.floor(Math.random() * avatars.length)]
-            }`}
+            className={`c-comment__avatar c-comment__avatar--${avatar}`}
          ></div>
       );
    }
@@ -53,7 +43,7 @@ const Comments: React.FC<Props> = ({
       return (
          <li key={index} className="c-comment">
             <div className="c-comment__meta">
-               {renderAvatar()}
+               {renderAvatar(author)}
                <div className="c-comment__author">
                   {theirComment ? "You" : author} wrote:
                </div>
