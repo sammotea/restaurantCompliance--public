@@ -116,10 +116,13 @@ ul {
       }
    }
 
-   .c-forReviewTask & + &,
-   .c-doneTask & + & {
-      margin-top: ($bralpha / $bravo) * $pad;
-      padding-top: ($bralpha / $bravo) * $pad;
+   .c-forReviewTasks &,
+   .c-doneTasks & {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      position: relative;
+      padding-right: (2 * $space) + $pad;
    }
 }
 
@@ -274,14 +277,6 @@ $w--icon: 0.9 * $h--toolbar__item * $ratio;
 }
 
 .c-forReviewTasks {
-   .c-task {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      position: relative;
-      padding-right: (2 * $space) + $pad;
-   }
-
    .c-task__title {
       padding-right: 0;
       width: 50%;

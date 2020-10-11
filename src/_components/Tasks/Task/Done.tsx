@@ -6,6 +6,8 @@ import Task from "./";
 import Title from "./Title";
 import Meta from "./Meta";
 import Toolbar from "./Meta/Toolbar";
+import CommentsForm from "./Meta/Comments/Form";
+import Comments from "./Meta/Comments";
 import Worker from "./Meta/Toolbar/Worker";
 import Reviewer from "./Meta/Toolbar/Reviewer";
 import Undo from "./Meta/Toolbar/Undo";
@@ -13,7 +15,7 @@ import Undo from "./Meta/Toolbar/Undo";
 const Done: React.FC<iTask> = ({
    title,
    type,
-   compliance: { worker, reviewer, status },
+   compliance: { worker, reviewer, status, comments = [] },
 }) => {
    const user = useContext(User);
    const dispatch = useContext(TasksDispatch);
@@ -32,12 +34,51 @@ const Done: React.FC<iTask> = ({
       }
    }
 
+   function hCommentSubmit(commentText) {
+      taskHandlers.addComment(
+         {
+            ...payload,
+            commentAuthor: user,
+            commentText: commentText,
+         },
+         dispatch
+      );
+   }
+
+   function hCommentDelete(commentId) {
+      taskHandlers.deleteComment(
+         {
+            ...payload,
+            commentId: commentId,
+         },
+         dispatch
+      );
+   }
+
    function renderTitle() {
       return <Title title={title} />;
    }
 
    function renderMeta() {
-      return <Meta>{renderToolbar()}</Meta>;
+      return (
+         <Meta>
+            {renderToolbar()}
+            {renderCommentsForm()}
+            {renderComments()}
+         </Meta>
+      );
+   }
+
+   function renderCommentsForm() {
+      return <CommentsForm hSubmit={hCommentSubmit} />;
+   }
+
+   function renderComments() {
+      if (comments.length) {
+         return (
+            <Comments comments={comments} hDelete={hCommentDelete} />
+         );
+      }
    }
 
    function renderToolbar() {
