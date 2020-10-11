@@ -15,7 +15,7 @@ const ComplianceList: React.FC = () => {
       parser.parse(taskJson["tasks"])
    );
    const [user, setUser] = useState("notManager");
-   taskHandlers.setDispatch(dispatch);
+
    function renderTasks() {
       if (Object.keys(tasks).length !== 0) {
          return (

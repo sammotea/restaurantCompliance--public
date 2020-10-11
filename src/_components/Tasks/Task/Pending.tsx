@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import User from "../../../_contexts/user";
 import taskHandlers from "../../../_helpers/taskHandlers";
+import TasksDispatch from "../../../_contexts/tasksDispatch";
 import Task from "./";
 import Meta from "./Meta";
 import Toolbar from "./Meta/Toolbar";
@@ -15,6 +16,7 @@ const Pending: React.FC<iTask> = ({
    type,
 }) => {
    const user = useContext(User);
+   const dispatch = useContext(TasksDispatch);
 
    const userCanReview = user === "manager";
    const isPending = status === "pending";
@@ -31,24 +33,27 @@ const Pending: React.FC<iTask> = ({
 
    function hTitleClick() {
       if (!isPending) {
-         taskHandlers.resetTask(payload);
+         taskHandlers.resetTask(payload, dispatch);
       } else {
          if (userCanReview) {
-            taskHandlers.completeTask(payload);
+            taskHandlers.completeTask(payload, dispatch);
          } else {
-            taskHandlers.markTaskForReview(payload);
+            taskHandlers.markTaskForReview(payload, dispatch);
          }
       }
    }
 
    function hReportProblemClick() {
       if (userCanReview) {
-         taskHandlers.failTask(payload);
+         taskHandlers.failTask(payload, dispatch);
       } else {
-         taskHandlers.markTaskForReview({
-            ...payload,
-            isBlocked: true,
-         });
+         taskHandlers.markTaskForReview(
+            {
+               ...payload,
+               isBlocked: true,
+            },
+            dispatch
+         );
       }
    }
 

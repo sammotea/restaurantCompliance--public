@@ -71,12 +71,14 @@ const taskParser = {
          task["compliance"]["comments"] = [
             {
                author: "manager",
+               id: "125234",
                comment:
                   "TO FIX: Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius delectus aspernatur omnis incidunt ipsum voluptates minus explicabo minima, optio quis quae assumenda corrupti placeat eligendi enim amet vero ut dolores!",
             },
 
             {
                author: "Janet",
+               id: "42344",
                comment:
                   "PETER FAIL: Eius delectus aspernatur omnis incidunt ipsum voluptates minus explicabo minima, optio quis quae assumenda corrupti placeat eligendi enim amet vero ut dolores!",
             },

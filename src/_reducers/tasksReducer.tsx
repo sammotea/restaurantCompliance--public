@@ -1,3 +1,5 @@
+import pseudoUid from "../_utils/random";
+
 const taskReducer = (state, action) => {
    if (!action.payload.taskId || !action.payload.taskCat)
       throw new Error();
@@ -9,8 +11,13 @@ const taskReducer = (state, action) => {
       reviewer = "",
       flagWorker = false,
       isBlocked = false,
+      commentText = "",
+      commentAuthor = "",
+      commentId = "",
    } = action.payload;
    let task = { ...state[taskCat][taskId] };
+
+   console.log(action);
 
    function setTaskWorker(worker) {
       task["compliance"]["worker"] = worker;
@@ -49,6 +56,44 @@ const taskReducer = (state, action) => {
       return task;
    }
 
+   function addComment(commentAuthor, commentText) {
+      if (!commentAuthor || !commentText) {
+         throw new Error();
+      }
+
+      console.log("working!");
+
+      const comment = {
+         id: pseudoUid(),
+         author: commentAuthor,
+         comment: commentText,
+      };
+
+      console.log(comment);
+
+      task["compliance"]["comments"].push(comment);
+
+      return task;
+   }
+
+   function deleteComment(commentId) {
+      const comments = task["compliance"]["comments"];
+
+      if (commentId && comments.length) {
+         task["compliance"]["comments"] = comments.filter((el) => {
+            if (el.id === commentId) {
+               return false;
+            } else {
+               return true;
+            }
+         });
+
+         return task;
+      } else {
+         throw new Error();
+      }
+   }
+
    function mergeTaskWithState() {
       return {
          ...state,
@@ -66,8 +111,6 @@ const taskReducer = (state, action) => {
          setTaskReviewer(reviewer);
          setTaskFlagWorker(flagWorker);
 
-         return mergeTaskWithState();
-
          break;
 
       case "FORREVIEW":
@@ -77,16 +120,12 @@ const taskReducer = (state, action) => {
          setTaskReviewer("");
          setTaskFlagWorker(false);
 
-         return mergeTaskWithState();
-
          break;
 
       case "FAILED":
          setTaskStatus("failed");
          setTaskWorker(worker);
          setTaskReviewer(reviewer);
-
-         return mergeTaskWithState();
 
          break;
 
@@ -96,13 +135,23 @@ const taskReducer = (state, action) => {
          setTaskReviewer("");
          setTaskFlagWorker(false);
 
-         return mergeTaskWithState();
+         break;
+
+      case "ADDCOMMENT":
+         addComment(commentAuthor, commentText);
+
+         break;
+
+      case "DELETECOMMENT":
+         deleteComment(commentId);
 
          break;
 
       default:
          throw new Error();
    }
+
+   return mergeTaskWithState();
 };
 
 export default taskReducer;

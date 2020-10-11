@@ -1,10 +1,12 @@
 import React, { useState, useContext } from "react";
 import User from "../../../_contexts/user";
+import TasksDispatch from "../../../_contexts/tasksDispatch";
 import taskHandlers from "../../../_helpers/taskHandlers";
 import Task from "./";
 import Title from "./Title";
 import Meta from "./Meta";
 import Toolbar from "./Meta/Toolbar";
+import CommentsForm from "./Meta/Comments/Form";
 import Comments from "./Meta/Comments";
 import Worker from "./Meta/Toolbar/Worker";
 import Undo from "./Meta/Toolbar/Undo";
@@ -17,6 +19,8 @@ const forReview: React.FC<Props> = ({
    compliance: { worker, status, comments = [] },
 }) => {
    const user = useContext(User);
+   const dispatch = useContext(TasksDispatch);
+
    const payload = {
       taskId: title,
       taskCat: type,
@@ -25,22 +29,46 @@ const forReview: React.FC<Props> = ({
    };
 
    function hCompleteClick() {
-      taskHandlers.completeTask(payload);
+      taskHandlers.completeTask(payload, dispatch);
    }
 
    function hFixedClick() {
-      taskHandlers.completeTask({
-         ...payload,
-         flagWorker: true,
-      });
+      taskHandlers.completeTask(
+         {
+            ...payload,
+            flagWorker: true,
+         },
+         dispatch
+      );
    }
 
    function hFailedClick() {
-      taskHandlers.failTask(payload);
+      taskHandlers.failTask(payload, dispatch);
    }
 
    function hUndoClick() {
-      taskHandlers.resetTask(payload);
+      taskHandlers.resetTask(payload, dispatch);
+   }
+
+   function hCommentSubmit(commentText) {
+      taskHandlers.addComment(
+         {
+            ...payload,
+            commentAuthor: user,
+            commentText: commentText,
+         },
+         dispatch
+      );
+   }
+
+   function hCommentDelete(commentId) {
+      taskHandlers.deleteComment(
+         {
+            ...payload,
+            commentId: commentId,
+         },
+         dispatch
+      );
    }
 
    function renderTitle() {
@@ -101,14 +129,21 @@ const forReview: React.FC<Props> = ({
       return (
          <Meta>
             {renderToolbar()}
+            {renderCommentsForm()}
             {renderComments()}
          </Meta>
       );
    }
 
+   function renderCommentsForm() {
+      return <CommentsForm hSubmit={hCommentSubmit} />;
+   }
+
    function renderComments() {
       if (comments.length) {
-         return <Comments comments={comments} />;
+         return (
+            <Comments comments={comments} hDelete={hCommentDelete} />
+         );
       }
    }
 

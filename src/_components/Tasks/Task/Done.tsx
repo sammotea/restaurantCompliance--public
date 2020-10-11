@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import User from "../../../_contexts/user";
+import TasksDispatch from "../../../_contexts/tasksDispatch";
 import taskHandlers from "../../../_helpers/taskHandlers";
 import Task from "./";
 import Title from "./Title";
@@ -15,6 +16,7 @@ const Done: React.FC<iTask> = ({
    compliance: { worker, reviewer, status },
 }) => {
    const user = useContext(User);
+   const dispatch = useContext(TasksDispatch);
    const payload = {
       taskId: title,
       taskCat: type,
@@ -24,9 +26,9 @@ const Done: React.FC<iTask> = ({
 
    function hUndoClick() {
       if (worker === reviewer) {
-         taskHandlers.resetTask(payload);
+         taskHandlers.resetTask(payload, dispatch);
       } else {
-         taskHandlers.markTaskForReview(payload);
+         taskHandlers.markTaskForReview(payload, dispatch);
       }
    }
 
