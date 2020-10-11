@@ -41,7 +41,13 @@ const taskParser = {
    addMissingFields(task: iTaskRaw): iTask {
       task["compliance"] = {} as iComplianceObj;
 
-      ["worker", "reviewer", "status", "flagWorker"].forEach((k) => {
+      [
+         "worker",
+         "reviewer",
+         "status",
+         "flagWorker",
+         "comments",
+      ].forEach((k) => {
          switch (k) {
             case "worker":
             case "reviewer":
@@ -62,28 +68,16 @@ const taskParser = {
                }
                break;
 
+            case "comments":
+               if (!task.hasOwnProperty(k)) {
+                  task["compliance"][k] = [];
+               }
+               break;
+
             default:
                break;
          }
       });
-
-      if ("Tables" === task.title) {
-         task["compliance"]["comments"] = [
-            {
-               author: "Sam",
-               id: "125234",
-               comment:
-                  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius delectus aspernatur omnis incidunt ipsum voluptates minus explicabo minima, optio quis quae assumenda corrupti placeat eligendi enim amet vero ut dolores!",
-            },
-
-            {
-               author: "Tess",
-               id: "42344",
-               comment:
-                  "PETER FAIL: Eius delectus aspernatur omnis incidunt ipsum voluptates minus explicabo minima, optio quis quae assumenda corrupti placeat eligendi enim amet vero ut dolores!",
-            },
-         ];
-      }
 
       return task as iTask;
    },

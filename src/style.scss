@@ -158,6 +158,7 @@ $fs_title--small: $bralpha;
 
 .c-taskMetaWrap {
    max-height: 0;
+   width: 100%;
    overflow: hidden;
    transition: 0.3s cubic-bezier(0.01, 0, 0.06, 1);
 
@@ -517,6 +518,11 @@ $h--avatar: 2rem;
 .c-comments {
    * + & {
       margin-top: $space;
+   }
+
+   // Magic
+   &:last-child {
+      margin-bottom: $pad;
    }
 }
 
