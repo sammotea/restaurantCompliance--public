@@ -50,27 +50,6 @@ const forReview: React.FC<Props> = ({
       taskHandlers.resetTask(payload, dispatch);
    }
 
-   function hCommentSubmit(commentText) {
-      taskHandlers.addComment(
-         {
-            ...payload,
-            commentAuthor: user,
-            commentText: commentText,
-         },
-         dispatch
-      );
-   }
-
-   function hCommentDelete(commentId) {
-      taskHandlers.deleteComment(
-         {
-            ...payload,
-            commentId: commentId,
-         },
-         dispatch
-      );
-   }
-
    function renderTitle() {
       return <Title title={title} />;
    }
@@ -136,13 +115,17 @@ const forReview: React.FC<Props> = ({
    }
 
    function renderCommentsForm() {
-      return <CommentsForm hSubmit={hCommentSubmit} />;
+      return <CommentsForm taskId={title} taskCat={type} />;
    }
 
    function renderComments() {
       if (comments.length) {
          return (
-            <Comments comments={comments} hDelete={hCommentDelete} />
+            <Comments
+               comments={comments}
+               taskId={title}
+               taskCat={type}
+            />
          );
       }
    }

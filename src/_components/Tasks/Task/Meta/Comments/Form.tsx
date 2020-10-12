@@ -1,19 +1,32 @@
 import React, { useState, useContext } from "react";
 import User from "../../../../../_contexts/user";
+import TasksDispatch from "../../../../../_contexts/tasksDispatch";
+import taskHandlers from "../../../../../_helpers/taskHandlers";
 
 interface Props {
-   hSubmit: any;
-   hDelete: any;
+   taskId: string;
+   taskCat: string;
 }
 
-const Form: React.FC<Props> = ({ hSubmit }) => {
+const Form: React.FC<Props> = ({ taskId, taskCat }) => {
    const user = useContext(User);
+   const dispatch = useContext(TasksDispatch);
+
    const [comment, setComment] = useState("");
    const [hasSubmitted, setHasSubmitted] = useState(false);
 
    function hButtonClick() {
       if (comment) {
-         hSubmit(comment);
+         taskHandlers.addComment(
+            {
+               // TODO, delete line after reducer refactor
+               taskId: taskId,
+               taskCat: taskCat,
+               commentAuthor: user,
+               commentText: comment,
+            },
+            dispatch
+         );
          setComment("");
          setHasSubmitted(true);
       }

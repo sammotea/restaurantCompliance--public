@@ -1,25 +1,52 @@
 import React, { useContext } from "react";
 import User from "../../../../../_contexts/user";
 import avatars from "../../../../../_misc/avatars";
+import TasksDispatch from "../../../../../_contexts/tasksDispatch";
+import taskHandlers from "../../../../../_helpers/taskHandlers";
 
 interface Props {
    comments: any;
-   hDelete: any;
+   taskId: string;
+   taskCat: string;
 }
 
 const Comments: React.FC<Props> = ({
    comments: commentsArr,
-   hDelete,
+   taskId,
+   taskCat,
 }) => {
    const user = useContext(User);
+   const dispatch = useContext(TasksDispatch);
+
+   function hDelete(commentId) {
+      taskHandlers.deleteComment(
+         {
+            // TODO, delete line after reducer refactor
+            taskId: taskId,
+            taskCat: taskCat,
+            commentId: commentId,
+         },
+         dispatch
+      );
+   }
+
+   function hActionClick(actionType, commentId) {
+      switch (actionType) {
+         case "delete":
+            hDelete(commentId);
+            break;
+
+         default:
+            break;
+      }
+   }
 
    function renderActions(id) {
       return (
          <ul className="c-comment__actions">
-            {/* <li className="c-comment__action c-comment__action--edit"></li> */}
             <li
                className="c-comment__action c-comment__action--delete"
-               onClick={() => hDelete(id)}
+               onClick={() => hActionClick("delete", id)}
             ></li>
          </ul>
       );
