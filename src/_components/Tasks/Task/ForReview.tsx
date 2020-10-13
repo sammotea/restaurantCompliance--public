@@ -36,7 +36,7 @@ const forReview: React.FC<Props> = ({
       taskHandlers.completeTask(
          {
             ...payload,
-            flagWorker: true,
+            workerFlag: true,
          },
          dispatch
       );

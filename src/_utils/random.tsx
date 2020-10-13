@@ -1,7 +1,7 @@
 const pseudoUid = function () {
-   return (
+   return parseInt(
       new Date().getTime().toString() +
-      Math.floor(Math.random() * 1000)
+         Math.floor(Math.random() * 1000)
    );
 };
 

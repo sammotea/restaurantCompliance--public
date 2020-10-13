@@ -5,12 +5,12 @@ import User from "./_contexts/user";
 import TasksDispatch from "./_contexts/tasksDispatch";
 import TasksController from "./_components/Tasks/TaskController";
 import UserSwitch from "./_components/UserSwitch";
-import tasksReducer from "./_reducers/tasksReducer";
+import complianceReducer from "./_reducers/complianceReducer";
 import taskParser from "./_reducers/taskParser";
 
 const ComplianceList: React.FC = () => {
    const [tasks, dispatch] = useReducer(
-      tasksReducer,
+      complianceReducer,
       taskJson["tasks"].reduce(taskParser, {})
    );
    const [user, setUser] = useState("notManager");

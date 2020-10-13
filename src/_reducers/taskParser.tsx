@@ -5,7 +5,7 @@ function addComplianceDefaults(task) {
       worker: "",
       reviewer: "",
       status: "pending",
-      flagWorker: false,
+      workerFlag: false,
       comments: [],
    };
 
