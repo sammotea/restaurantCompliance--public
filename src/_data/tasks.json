@@ -1,102 +1,104 @@
 {
-  "tasks": [
-    // {
-    //     "title"         :   "",
-    //     "type"          :   "",
-    //     "category"      :   "",
-    //     "frequency"     :   1, // in days
-    //     "restricted"    :   false, // e.g. Manager
-    //     "subtasks"      :   [
+   "tasks": [
+      // {
+      //     "title"         :   "",
+      //     "type"          :   "",
+      //     "category"      :   "",
+      //     "frequency"     :   1, // in days
+      //     "restricted"    :   false, // e.g. Manager
+      //     "subtasks"      :   [
 
-    //     ]
-    // },
+      //     ]
+      // },
 
-    {
-      "title": "Tables",
-      "type": "Floor",
-      "category": "Furniture",
-      "subtasks": ["Clean ’em (undersides too)"]
-    },
+      {
+         "title": "Tables",
+         "type": "Floor",
+         "subtasks": ["Clean ’em (undersides too)"]
+      },
 
-    {
-      "title": "Booths",
-      "type": "Floor",
-      "category": "Furniture",
-      "subtasks": [
-        "Clean ’em with booth juice: top, bottom, back and sides"
-      ]
-    },
+      {
+         "title": "Surfaces",
+         "type": "Kitchen",
+         "subtasks": ["Clean ’em (undersides too)"]
+      },
 
-    {
-      "title": "High-chairs",
-      "type": "Floor",
-      "category": "Furniture",
-      "subtasks": [
-        "Clean ’em with booth juice",
-        "Stack ’em in AREA X"
-      ]
-    },
+      {
+         "title": "Booths",
+         "type": "Floor",
+         "subtasks": [
+            "Clean ’em with booth juice: top, bottom, back and sides"
+         ]
+      },
 
-    {
-      "title": "Stools & Chairs",
-      "type": "Floor",
-      "category": "Furniture",
-      "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
-    },
+      {
+         "title": "High-chairs",
+         "type": "Floor",
+         "subtasks": [
+            "Clean ’em with booth juice",
+            "Stack ’em in AREA X"
+         ]
+      },
 
-    {
-      "title": "Furniture",
-      "type": "Floor",
-      "category": "Outside",
-      "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
-    },
+      {
+         "title": "Stools & Chairs",
+         "type": "Floor",
+         "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
+      },
 
-    {
-      "title": "A-Board",
-      "type": "Floor",
-      "category": "Outside",
-      "subtasks": ["Store inside, by entrance door"]
-    },
+      {
+         "title": "Furniture",
+         "type": "Floor",
+         "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
+      },
 
-    {
-      "title": "Clean & Sweep",
-      "type": "Floor",
-      "category": "Outside",
-      "subtasks": ["Make the area spick and span"]
-    },
+      {
+         "title": "Beer taps",
+         "type": "Bar",
+         "subtasks": ["Store inside, by entrance door"]
+      },
 
-    {
-      "title": "Cutlery",
-      "type": "Floor",
-      "category": "Prepwork",
-      "subtasks": [
-        "Polish with boiling water and a squeeze of lemon juice"
-      ]
-    },
+      {
+         "title": "Coffee Machine",
+         "type": "Bar",
+         "subtasks": ["Store inside, by entrance door"]
+      },
 
-    {
-      "title": "Sauces",
-      "type": "Floor",
-      "category": "Prepwork",
-      "subtasks": [
-        "Soak and rinse lids",
-        "Marry-up sauces",
-        "Clean bottles",
-        "Store in cellar"
-      ]
-    },
+      {
+         "title": "Empty Fryer",
+         "type": "Kitchen",
+         "subtasks": ["Make the area spick and span"]
+      },
 
-    {
-      "title": "Bus Stand",
-      "type": "Floor",
-      "category": "Prepwork",
-      "subtasks": [
-        "Clean and tidy",
-        "Replenish cutlery",
-        "Replenish kitchen roll",
-        "Replenish crayons",
-        "Replenish lego"
-      ]
-    }
-  ]
+      {
+         "title": "Clean cellar",
+         "type": "Kitchen",
+         "subtasks": [
+            "Polish with boiling water and a squeeze of lemon juice"
+         ]
+      },
+
+      {
+         "title": "Sauces",
+         "type": "Floor",
+         "subtasks": [
+            "Soak and rinse lids",
+            "Marry-up sauces",
+            "Clean bottles",
+            "Store in cellar"
+         ]
+      },
+
+      {
+         "title": "Bus Stand",
+         "type": "Floor",
+         "subtasks": [
+            "Clean and tidy",
+            "Replenish cutlery",
+            "Replenish kitchen roll",
+            "Replenish crayons",
+            "Replenish lego"
+         ]
+      }
+   ]
 }
