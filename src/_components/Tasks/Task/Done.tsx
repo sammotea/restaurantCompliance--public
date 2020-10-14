@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import User from "../../../_contexts/user";
 import TasksDispatch from "../../../_contexts/tasksDispatch";
-import taskHandlers from "../../../_helpers/taskHandlers";
+import actionSetter from "../../../_helpers/actionSetter";
 import Task from "./";
 import Title from "./Title";
 import Meta from "./Meta";
@@ -19,7 +19,7 @@ const Done: React.FC<iTask> = ({
 }) => {
    const user = useContext(User);
    const dispatch = useContext(TasksDispatch);
-   const payload = {
+   const compliancePayload = {
       taskId: title,
       taskCat: type,
       worker: worker,
@@ -28,31 +28,10 @@ const Done: React.FC<iTask> = ({
 
    function hUndoClick() {
       if (worker === reviewer) {
-         taskHandlers.resetTask(payload, dispatch);
+         dispatch(actionSetter.reset(compliancePayload));
       } else {
-         taskHandlers.markTaskForReview(payload, dispatch);
+         dispatch(actionSetter.forReview(compliancePayload));
       }
-   }
-
-   function hCommentSubmit(commentText) {
-      taskHandlers.addComment(
-         {
-            ...payload,
-            commentAuthor: user,
-            commentText: commentText,
-         },
-         dispatch
-      );
-   }
-
-   function hCommentDelete(commentId) {
-      taskHandlers.deleteComment(
-         {
-            ...payload,
-            commentId: commentId,
-         },
-         dispatch
-      );
    }
 
    function renderTitle() {
@@ -70,13 +49,17 @@ const Done: React.FC<iTask> = ({
    }
 
    function renderCommentsForm() {
-      return <CommentsForm hSubmit={hCommentSubmit} />;
+      return <CommentsForm taskId={title} taskCat={type} />;
    }
 
    function renderComments() {
       if (comments.length) {
          return (
-            <Comments comments={comments} hDelete={hCommentDelete} />
+            <Comments
+               comments={comments}
+               taskId={title}
+               taskCat={type}
+            />
          );
       }
    }

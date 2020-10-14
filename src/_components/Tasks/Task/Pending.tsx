@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import User from "../../../_contexts/user";
-import taskHandlers from "../../../_helpers/taskHandlers";
+import actionSetter from "../../../_helpers/actionSetter";
 import TasksDispatch from "../../../_contexts/tasksDispatch";
 import Task from "./";
 import Meta from "./Meta";
@@ -20,7 +20,7 @@ const Pending: React.FC<iTask> = ({
 
    const userCanReview = user === "manager";
    const isPending = status === "pending";
-   const payload = {
+   const compliancePayload = {
       taskId: title,
       taskCat: type,
       worker: user,
@@ -28,31 +28,30 @@ const Pending: React.FC<iTask> = ({
    };
 
    if (userCanReview) {
-      payload.reviewer = user;
+      compliancePayload.reviewer = user;
    }
 
    function hTitleClick() {
       if (!isPending) {
-         taskHandlers.resetTask(payload, dispatch);
+         dispatch(actionSetter.reset(compliancePayload));
       } else {
          if (userCanReview) {
-            taskHandlers.completeTask(payload, dispatch);
+            dispatch(actionSetter.complete(compliancePayload));
          } else {
-            taskHandlers.markTaskForReview(payload, dispatch);
+            dispatch(actionSetter.forReview(compliancePayload));
          }
       }
    }
 
    function hReportProblemClick() {
       if (userCanReview) {
-         taskHandlers.failTask(payload, dispatch);
+         dispatch(actionSetter.fail(compliancePayload));
       } else {
-         taskHandlers.markTaskForReview(
-            {
-               ...payload,
+         dispatch(
+            actionSetter.forReview({
+               ...compliancePayload,
                isBlocked: true,
-            },
-            dispatch
+            })
          );
       }
    }

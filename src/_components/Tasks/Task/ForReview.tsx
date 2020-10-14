@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import User from "../../../_contexts/user";
 import TasksDispatch from "../../../_contexts/tasksDispatch";
-import taskHandlers from "../../../_helpers/taskHandlers";
+import actionSetter from "../../../_helpers/actionSetter";
 import Task from "./";
 import Title from "./Title";
 import Meta from "./Meta";
@@ -21,7 +21,7 @@ const forReview: React.FC<Props> = ({
    const user = useContext(User);
    const dispatch = useContext(TasksDispatch);
 
-   const payload = {
+   const compliancePayload = {
       taskId: title,
       taskCat: type,
       worker: worker,
@@ -29,25 +29,24 @@ const forReview: React.FC<Props> = ({
    };
 
    function hCompleteClick() {
-      taskHandlers.completeTask(payload, dispatch);
+      dispatch(actionSetter.complete(compliancePayload));
    }
 
    function hFixedClick() {
-      taskHandlers.completeTask(
-         {
-            ...payload,
+      dispatch(
+         actionSetter.complete({
+            ...compliancePayload,
             workerFlag: true,
-         },
-         dispatch
+         })
       );
    }
 
    function hFailedClick() {
-      taskHandlers.failTask(payload, dispatch);
+      dispatch(actionSetter.fail(compliancePayload));
    }
 
    function hUndoClick() {
-      taskHandlers.resetTask(payload, dispatch);
+      dispatch(actionSetter.reset(compliancePayload));
    }
 
    function renderTitle() {

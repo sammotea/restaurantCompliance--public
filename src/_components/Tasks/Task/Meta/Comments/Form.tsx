@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import User from "../../../../../_contexts/user";
 import TasksDispatch from "../../../../../_contexts/tasksDispatch";
-import taskHandlers from "../../../../../_helpers/taskHandlers";
+import actionSetter from "../../../../../_helpers/actionSetter";
 
 interface Props {
    taskId: string;
@@ -15,18 +15,16 @@ const Form: React.FC<Props> = ({ taskId, taskCat }) => {
    const [comment, setComment] = useState("");
    const [hasSubmitted, setHasSubmitted] = useState(false);
 
+   const compliancePayload = {
+      taskId: taskId,
+      taskCat: taskCat,
+      commentAuthor: user,
+      commentText: comment,
+   };
+
    function hButtonClick() {
       if (comment) {
-         taskHandlers.addComment(
-            {
-               // TODO, delete line after reducer refactor
-               taskId: taskId,
-               taskCat: taskCat,
-               commentAuthor: user,
-               commentText: comment,
-            },
-            dispatch
-         );
+         dispatch(actionSetter.addComment(compliancePayload));
          setComment("");
          setHasSubmitted(true);
       }

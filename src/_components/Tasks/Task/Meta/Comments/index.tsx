@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import User from "../../../../../_contexts/user";
 import avatars from "../../../../../_misc/avatars";
 import TasksDispatch from "../../../../../_contexts/tasksDispatch";
-import taskHandlers from "../../../../../_helpers/taskHandlers";
+import actionSetter from "../../../../../_helpers/actionSetter";
 
 interface Props {
    comments: any;
@@ -18,15 +18,17 @@ const Comments: React.FC<Props> = ({
    const user = useContext(User);
    const dispatch = useContext(TasksDispatch);
 
+   const compliancePayload = {
+      taskId: taskId,
+      taskCat: taskCat,
+   };
+
    function hDelete(commentId) {
-      taskHandlers.deleteComment(
-         {
-            // TODO, delete line after reducer refactor
-            taskId: taskId,
-            taskCat: taskCat,
+      dispatch(
+         actionSetter.deleteComment({
+            ...compliancePayload,
             commentId: commentId,
-         },
-         dispatch
+         })
       );
    }
 
