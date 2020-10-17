@@ -8,8 +8,6 @@ import UserSwitch from "./_components/UserSwitch";
 import complianceReducer from "./_reducers/complianceReducer";
 import storifyTasks from "./_reducers/storifyTasks";
 import addComplianceDefaults from "./_reducers/addComplianceDefaults";
-import cat from "./_reducers/organiseByCategory";
-import old from "./_reducers/taskParser--old";
 
 const ComplianceList: React.FC = () => {
    const [user, setUser] = useState("notManager");

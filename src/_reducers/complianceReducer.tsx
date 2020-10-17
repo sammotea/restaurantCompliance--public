@@ -16,8 +16,6 @@ const complianceReducer = (state, action) => {
    const { taskId, taskCat } = p;
    const compliance = { ...state[taskCat][taskId]["compliance"] };
 
-   console.log(compliance);
-
    const defaults = {
       status: "incomplete",
       worker: "",
