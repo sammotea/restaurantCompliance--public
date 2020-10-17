@@ -1,5 +1,6 @@
 import React from "react";
 import Task from "./Task";
+import sorters from "../../../_helpers/sorters";
 
 interface Props {
    tasks: iTask[];
@@ -12,21 +13,10 @@ const Tasks: React.FC<Props> = ({ tasks }) => {
       });
    }
 
-   function sortTasks(tasksArr) {
-      return [...tasksArr].sort((a, b) => {
-         const nameA = a.key.toUpperCase(),
-            nameB = b.key.toUpperCase();
-
-         if (nameA < nameB) return -1;
-         if (nameA > nameB) return 1;
-         return 0;
-      });
-   }
-
    function renderTasks() {
       const taskList = getTasks();
 
-      return <ul>{sortTasks(taskList)}</ul>;
+      return <ul>{sorters.byKey(taskList)}</ul>;
    }
 
    return <>{renderTasks()}</>;

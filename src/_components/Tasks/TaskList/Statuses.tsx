@@ -1,25 +1,12 @@
 import React from "react";
 import Status from "./Status";
+import sorters from "../../../_helpers/sorters";
 
 interface Props {
    tasksByStatusObj: iTasksByStatus;
 }
 
 const Statuses: React.FC<Props> = ({ tasksByStatusObj }) => {
-   function sortStatuses(statusesArr) {
-      const statusOrder = {
-         incomplete: 0,
-         awaitingReview: 100,
-         blocked: 100,
-         complete: 1000,
-         failed: 1000,
-      };
-
-      return [...statusesArr].sort((a, b) => {
-         return statusOrder[a.key] - statusOrder[b.key];
-      });
-   }
-
    function renderStatuses() {
       const statuses = Object.keys(tasksByStatusObj).map((status) => {
          return (
@@ -31,7 +18,7 @@ const Statuses: React.FC<Props> = ({ tasksByStatusObj }) => {
          );
       });
 
-      return <ul>{sortStatuses(statuses)}</ul>;
+      return <ul>{sorters.byStatus(statuses)}</ul>;
    }
 
    return <>{renderStatuses()}</>;

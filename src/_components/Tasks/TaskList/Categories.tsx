@@ -1,6 +1,7 @@
 import React from "react";
 import organiseByCategory from "../../../_reducers/organiseByCategory";
 import Category from "./Category";
+import sorters from "../../../_helpers/sorters";
 
 interface Props {
    tasks: iTask[];
@@ -35,7 +36,7 @@ const Categories: React.FC<Props> = ({ tasks }) => {
             );
          }
       );
-      return <ul>{sortCategories(categories)}</ul>;
+      return <ul>{sorters.byKey(categories)}</ul>;
    }
 
    return <>{renderCategories()}</>;
