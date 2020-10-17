@@ -1,7 +1,7 @@
 const actionSetter = {
    forReview(payload) {
       return {
-         type: "FORREVIEW",
+         type: "AWAITINGREVIEW",
          payload: payload,
       };
    },

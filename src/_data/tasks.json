@@ -2,7 +2,7 @@
    "tasks": [
       // {
       //     "title"         :   "",
-      //     "type"          :   "",
+      //     "category"          :   "",
       //     "category"      :   "",
       //     "frequency"     :   1, // in days
       //     "restricted"    :   false, // e.g. Manager
@@ -13,19 +13,19 @@
 
       {
          "title": "Tables",
-         "type": "Floor",
+         "category": "Floor",
          "subtasks": ["Clean ’em (undersides too)"]
       },
 
       {
          "title": "Surfaces",
-         "type": "Kitchen",
+         "category": "Kitchen",
          "subtasks": ["Clean ’em (undersides too)"]
       },
 
       {
          "title": "Booths",
-         "type": "Floor",
+         "category": "Floor",
          "subtasks": [
             "Clean ’em with booth juice: top, bottom, back and sides"
          ]
@@ -33,7 +33,7 @@
 
       {
          "title": "High-chairs",
-         "type": "Floor",
+         "category": "Floor",
          "subtasks": [
             "Clean ’em with booth juice",
             "Stack ’em in AREA X"
@@ -42,37 +42,37 @@
 
       {
          "title": "Stools & Chairs",
-         "type": "Floor",
+         "category": "Floor",
          "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
       },
 
       {
          "title": "Furniture",
-         "type": "Floor",
+         "category": "Floor",
          "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
       },
 
       {
          "title": "Beer taps",
-         "type": "Bar",
+         "category": "Bar",
          "subtasks": ["Store inside, by entrance door"]
       },
 
       {
          "title": "Coffee Machine",
-         "type": "Bar",
+         "category": "Bar",
          "subtasks": ["Store inside, by entrance door"]
       },
 
       {
          "title": "Empty Fryer",
-         "type": "Kitchen",
+         "category": "Kitchen",
          "subtasks": ["Make the area spick and span"]
       },
 
       {
          "title": "Clean cellar",
-         "type": "Kitchen",
+         "category": "Kitchen",
          "subtasks": [
             "Polish with boiling water and a squeeze of lemon juice"
          ]
@@ -80,7 +80,7 @@
 
       {
          "title": "Sauces",
-         "type": "Floor",
+         "category": "Floor",
          "subtasks": [
             "Soak and rinse lids",
             "Marry-up sauces",
@@ -91,7 +91,7 @@
 
       {
          "title": "Bus Stand",
-         "type": "Floor",
+         "category": "Floor",
          "subtasks": [
             "Clean and tidy",
             "Replenish cutlery",

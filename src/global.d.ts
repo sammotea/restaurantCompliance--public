@@ -1,6 +1,12 @@
+interface iTasksByStatus {
+   incomplete?: iTask[];
+   awaitingReview?: iTask[];
+   complete?: iTask[];
+}
+
 interface iTaskAsJson {
    title: string;
-   type: string;
+   category: string;
    subtasks?: string[];
    frequency?: number;
    permission?: string;
@@ -16,7 +22,7 @@ interface iTaskList {
 
 interface iTaskRaw {
    title: string;
-   type: string;
+   category: string;
 }
 
 // interface iTask extends iTaskRaw {
@@ -51,22 +57,22 @@ interface TodoActions {
    setworkerFlag(todo: iTask, flag: boolean): iTask;
    forReview(
       title: string,
-      type: string,
+      category: string,
       worker: string,
       isBlocked?: boolean
    ): void;
    isComplete(
       title: string,
-      type: string,
+      category: string,
       worker: string,
       reviewer: string,
       workerFlag?: boolean
    ): void;
    isFailed(
       title: string,
-      type: string,
+      category: string,
       worker: string,
       reviewer: string
    ): void;
-   reset(title: string, type: string, key?: string): void;
+   reset(title: string, category: string, key?: string): void;
 }

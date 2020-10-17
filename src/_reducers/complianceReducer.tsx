@@ -15,20 +15,23 @@ const complianceReducer = (state, action) => {
    const p = action.payload;
    const { taskId, taskCat } = p;
    const compliance = { ...state[taskCat][taskId]["compliance"] };
+
+   console.log(compliance);
+
    const defaults = {
-      status: "pending",
+      status: "incomplete",
       worker: "",
       reviewer: "",
       workerFlag: false,
    };
 
    switch (action.type) {
-      case "FORREVIEW":
+      case "AWAITINGREVIEW":
          if (validatePayload("worker")) {
             reset("reviewer", "workerFlag");
 
             updateWorker();
-            updateStatus(p.isBlocked ? "blocked" : "forReview");
+            updateStatus(p.isBlocked ? "blocked" : "awaitingReview");
          }
 
          break;
@@ -161,9 +164,9 @@ const complianceReducer = (state, action) => {
    function validateStatus(status) {
       if (
          [
-            "pending",
+            "incomplete",
             "blocked",
-            "forReview",
+            "awaitingReview",
             "complete",
             "failed",
          ].includes(status)
