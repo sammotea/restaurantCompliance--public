@@ -5,11 +5,11 @@ interface Props {
 }
 
 const Reviewer: React.FC<Props> = ({ name }) => {
+   const cl = "c-toolbar__item c-toolbar__item--reviewer";
+
    return (
       <>
-         <li className="c-toolbar__item c-toolbar__item--reviewer">
-            {name}
-         </li>
+         <li className={cl}>{name}</li>
       </>
    );
 };

@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+
 import User from "../../../../../_contexts/user";
 import TasksDispatch from "../../../../../_contexts/tasksDispatch";
 import actionSetter from "../../../../../_helpers/actionSetter";
@@ -22,32 +23,22 @@ const Form: React.FC<Props> = ({ taskId, taskCat }) => {
       commentText: comment,
    };
 
-   function hButtonClick() {
-      if (comment) {
-         dispatch(actionSetter.addComment(compliancePayload));
-         setComment("");
-         setHasSubmitted(true);
-      }
-   }
+   return <>{renderCommentForm()}</>;
 
-   function renderButton() {
+   function renderCommentForm() {
+      const cl = "c-commentForm" + (comment ? " hasText" : "");
+
       return (
-         <div
-            className="c-commentForm__buttonWrap"
-            onClick={hButtonClick}
-         >
-            <span className="c-commentForm__button">Confirm!</span>
+         <div className={cl}>
+            {renderFormTitle()}
+            {renderTextArea()}
+            {renderButton()}
          </div>
       );
    }
 
    function renderFormTitle() {
       return <h1 className="c-commentForm__title">Leave a note…</h1>;
-   }
-
-   function hUserInput(e) {
-      setComment(e.target.value);
-      setHasSubmitted(false);
    }
 
    function renderTextArea() {
@@ -66,12 +57,13 @@ const Form: React.FC<Props> = ({ taskId, taskCat }) => {
                  Math.floor(Math.random() * placeholders.length)
               ];
 
+      const cl =
+         "c-commentForm__textarea" +
+         (hasSubmitted ? " hasSubmitted" : "");
+
       return (
          <textarea
-            className={
-               "c-commentForm__textarea" +
-               (hasSubmitted ? " hasSubmitted" : "")
-            }
+            className={cl}
             placeholder={!comment ? placeholder : ""}
             onChange={hUserInput}
             value={comment}
@@ -79,18 +71,29 @@ const Form: React.FC<Props> = ({ taskId, taskCat }) => {
       );
    }
 
-   function renderCommentForm() {
+   function renderButton() {
       return (
          <div
-            className={"c-commentForm" + (comment ? " hasText" : "")}
+            className="c-commentForm__buttonWrap"
+            onClick={hButtonClick}
          >
-            {renderFormTitle()}
-            {renderTextArea()}
-            {renderButton()}
+            <span className="c-commentForm__button">Confirm!</span>
          </div>
       );
    }
-   return <>{renderCommentForm()}</>;
+
+   function hButtonClick() {
+      if (comment) {
+         dispatch(actionSetter.addComment(compliancePayload));
+         setComment("");
+         setHasSubmitted(true);
+      }
+   }
+
+   function hUserInput(e) {
+      setComment(e.target.value);
+      setHasSubmitted(false);
+   }
 };
 
 export default Form;

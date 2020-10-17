@@ -1,13 +1,15 @@
 import React, { useState, useContext } from "react";
+
 import User from "../../../_contexts/user";
 import Permission from "../../../_contexts/permission";
-import actionSetter from "../../../_helpers/actionSetter";
 import TasksDispatch from "../../../_contexts/tasksDispatch";
-import Meta from "../Task/Meta";
-import Toolbar from "../Task/Meta/Toolbar";
-import ReportProblem from "../Task/Meta/Toolbar/ReportProblem";
-import Subtasks from "../Task/Meta/Subtasks";
-import Title from "../Task/Title";
+import actionSetter from "../../../_helpers/actionSetter";
+
+import Title from "./Title";
+import Meta from "./Meta";
+import Toolbar from "./Meta/Toolbar";
+import ReportProblem from "./Meta/Toolbar/ReportProblem";
+import Subtasks from "./Meta/Subtasks";
 
 const Incomplete: React.FC<iTask> = ({
    title,
@@ -21,6 +23,7 @@ const Incomplete: React.FC<iTask> = ({
 
    const userCanReview = hasPermission;
    const isFresh = status === "incomplete";
+
    const compliancePayload = {
       taskId: title,
       taskCat: category,
@@ -30,6 +33,40 @@ const Incomplete: React.FC<iTask> = ({
 
    if (userCanReview) {
       compliancePayload.reviewer = user;
+   }
+
+   return (
+      <>
+         {renderTitle()}
+         {renderMeta()}
+      </>
+   );
+
+   function renderTitle() {
+      return <Title title={title} handler={hTitleClick} />;
+   }
+
+   function renderMeta() {
+      return (
+         <Meta>
+            {renderToolbar()}
+            {renderSubtasks()}
+         </Meta>
+      );
+   }
+
+   function renderToolbar() {
+      return (
+         <Toolbar>
+            <ReportProblem handler={hReportProblemClick} />
+         </Toolbar>
+      );
+   }
+
+   function renderSubtasks() {
+      if (subtasks.length) {
+         return <Subtasks tasks={subtasks} />;
+      }
    }
 
    function hTitleClick() {
@@ -56,40 +93,6 @@ const Incomplete: React.FC<iTask> = ({
          );
       }
    }
-
-   function renderTitle() {
-      return <Title title={title} handler={hTitleClick} />;
-   }
-
-   function renderToolbar() {
-      return (
-         <Toolbar>
-            <ReportProblem handler={hReportProblemClick} />
-         </Toolbar>
-      );
-   }
-
-   function renderSubtasks() {
-      if (subtasks.length) {
-         return <Subtasks tasks={subtasks} />;
-      }
-   }
-
-   function renderMeta() {
-      return (
-         <Meta>
-            {renderToolbar()}
-            {renderSubtasks()}
-         </Meta>
-      );
-   }
-
-   return (
-      <>
-         {renderTitle()}
-         {renderMeta()}
-      </>
-   );
 };
 
 export default Incomplete;

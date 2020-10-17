@@ -1,22 +1,23 @@
 import React from "react";
-import Categories from "./Categories";
+
+import Categories from "../Categories";
 
 interface Props {
-   tasks: iTask[];
+   tasksArr: iTask[];
    title: string;
 }
 
-const Status: React.FC<Props> = ({ tasks, title }) => {
+const Status: React.FC<Props> = ({ tasksArr, title }) => {
+   return <>{renderStatus()}</>;
+
    function renderStatus() {
       return (
          <li>
             <h1>{title}</h1>
-            <Categories tasks={tasks} />
+            <Categories tasksArr={tasksArr} />
          </li>
       );
    }
-
-   return <>{renderStatus()}</>;
 };
 
 export default Status;

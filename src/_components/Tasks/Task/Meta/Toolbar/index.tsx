@@ -3,7 +3,9 @@ import React from "react";
 interface Props {}
 
 const Toolbar: React.FC<Props> = ({ children }) => {
-   return <ul className="c-toolbar">{children}</ul>;
+   const cl = "c-toolbar";
+
+   return <ul className={cl}>{children}</ul>;
 };
 
 export default Toolbar;

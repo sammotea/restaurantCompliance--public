@@ -1,6 +1,6 @@
 import pseudoUid from "../_utils/random";
 
-const complianceReducer = (state, action) => {
+const complianceStateReducer = (state, action) => {
    // Early exit
    if (
       !action.payload ||
@@ -8,7 +8,7 @@ const complianceReducer = (state, action) => {
       !action.payload.taskCat
    ) {
       throw new Error(
-         "complianceReducer() : No payload or missing details"
+         "complianceStateReducer() : No payload or missing details"
       );
    }
 
@@ -65,7 +65,7 @@ const complianceReducer = (state, action) => {
 
       default:
          throw new Error(
-            "complianceReducer() : Action not recognised"
+            "complianceStateReducer() : Action not recognised"
          );
    }
 
@@ -225,4 +225,4 @@ const complianceReducer = (state, action) => {
    }
 };
 
-export default complianceReducer;
+export default complianceStateReducer;

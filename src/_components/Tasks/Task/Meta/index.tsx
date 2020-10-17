@@ -5,9 +5,6 @@ interface Props {}
 const Meta: React.FC<Props> = ({ children }) => {
    const [showMeta, setShowMeta] = useState(false);
    const cl = showMeta ? " isVisible " : "";
-   function toggleMeta() {
-      setShowMeta(!showMeta);
-   }
 
    return (
       <>
@@ -21,6 +18,10 @@ const Meta: React.FC<Props> = ({ children }) => {
          </div>
       </>
    );
+
+   function toggleMeta() {
+      setShowMeta(!showMeta);
+   }
 };
 
 export default Meta;

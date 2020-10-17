@@ -4,7 +4,17 @@ interface Props {
    tasks: any;
 }
 
-const Subtasks: React.FC<Props> = ({ tasks, children }) => {
+const Subtasks: React.FC<Props> = ({ tasks }) => {
+   return <>{renderSubtasks()}</>;
+
+   function renderSubtasks() {
+      const subtasks = getSubtasks();
+
+      if (subtasks.length) {
+         return <ul className="c-subtasks">{subtasks}</ul>;
+      }
+   }
+
    function getSubtasks() {
       return tasks.map((task) => {
          if ("string" === typeof task) {
@@ -18,16 +28,6 @@ const Subtasks: React.FC<Props> = ({ tasks, children }) => {
          }
       });
    }
-
-   function renderSubtasks() {
-      const subtasks = getSubtasks();
-
-      if (subtasks.length) {
-         return <ul className="c-subtasks">{subtasks}</ul>;
-      }
-   }
-
-   return <>{renderSubtasks()}</>;
 };
 
 export default Subtasks;

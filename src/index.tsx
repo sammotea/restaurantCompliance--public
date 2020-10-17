@@ -1,18 +1,21 @@
 import React, { useState, useReducer } from "react";
 import { render } from "react-dom";
 import taskJson from "./_data/tasks.json";
+
 import User from "./_contexts/user";
 import TasksDispatch from "./_contexts/tasksDispatch";
-import PermissionController from "./_components/Tasks/PermissionController";
-import UserSwitch from "./_components/UserSwitch";
-import complianceReducer from "./_reducers/complianceReducer";
+
+import complianceStateReducer from "./_reducers/complianceStateReducer";
 import storifyTasks from "./_reducers/storifyTasks";
 import addComplianceDefaults from "./_reducers/addComplianceDefaults";
 
-const ComplianceList: React.FC = () => {
+import PermissionGate from "./_components/PermissionGate";
+import UserSwitch from "./_components/UserSwitch";
+
+const ComplianceTasks: React.FC = () => {
    const [user, setUser] = useState("notManager");
    const [store, dispatch] = useReducer(
-      complianceReducer,
+      complianceStateReducer,
       transformTasksForStore()
    );
    const tasksByStatus = organiseTasksByStatus(store);
@@ -23,24 +26,6 @@ const ComplianceList: React.FC = () => {
          {renderTasks()}
       </>
    );
-
-   function renderTasks() {
-      if (Object.keys(tasksByStatus).length !== 0) {
-         return (
-            <User.Provider value={user}>
-               <TasksDispatch.Provider value={dispatch}>
-                  <PermissionController
-                     tasksByStatusObj={tasksByStatus}
-                  />
-               </TasksDispatch.Provider>
-            </User.Provider>
-         );
-      }
-   }
-
-   function renderUser() {
-      return <UserSwitch user={user} hSwitch={setUser} />;
-   }
 
    function transformTasksForStore() {
       const tasksRaw = [...taskJson["tasks"]];
@@ -70,5 +55,21 @@ const ComplianceList: React.FC = () => {
 
       return tasksObj;
    }
+   function renderUser() {
+      return <UserSwitch user={user} hSwitch={setUser} />;
+   }
+
+   function renderTasks() {
+      if (Object.keys(tasksByStatus).length !== 0) {
+         return (
+            <User.Provider value={user}>
+               <TasksDispatch.Provider value={dispatch}>
+                  <PermissionGate tasksByStatusObj={tasksByStatus} />
+               </TasksDispatch.Provider>
+            </User.Provider>
+         );
+      }
+   }
 };
-render(<ComplianceList />, document.getElementById("root"));
+
+render(<ComplianceTasks />, document.getElementById("root"));

@@ -1,22 +1,22 @@
 import React from "react";
-import Tasks from "./Tasks";
+import Tasks from "../Tasks";
 
 interface Props {
-   tasks: iTask[];
+   tasksArr: iTask[];
    title: string;
 }
 
-const Category: React.FC<Props> = ({ tasks, title }) => {
+const Category: React.FC<Props> = ({ tasksArr, title }) => {
+   return <>{renderCategory()}</>;
+
    function renderCategory() {
       return (
          <li>
             <h1>{title}</h1>
-            <Tasks tasks={tasks} />
+            <Tasks tasksArr={tasksArr} />
          </li>
       );
    }
-
-   return <>{renderCategory()}</>;
 };
 
 export default Category;

@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
+
 import User from "../../../../../_contexts/user";
-import avatars from "../../../../../_misc/avatars";
 import TasksDispatch from "../../../../../_contexts/tasksDispatch";
 import actionSetter from "../../../../../_helpers/actionSetter";
+
+import avatars from "../../../../../_misc/avatars";
 
 interface Props {
    comments: any;
@@ -23,45 +25,16 @@ const Comments: React.FC<Props> = ({
       taskCat: taskCat,
    };
 
-   function hDelete(commentId) {
-      dispatch(
-         actionSetter.deleteComment({
-            ...compliancePayload,
-            commentId: commentId,
-         })
-      );
-   }
+   return <>{renderComments()}</>;
 
-   function hActionClick(actionType, commentId) {
-      switch (actionType) {
-         case "delete":
-            hDelete(commentId);
-            break;
-
-         default:
-            break;
+   function renderComments() {
+      if (commentsArr.length) {
+         return (
+            <ul className="c-comments">
+               {commentsArr.map(getComment)}
+            </ul>
+         );
       }
-   }
-
-   function renderActions(id) {
-      return (
-         <ul className="c-comment__actions">
-            <li
-               className="c-comment__action c-comment__action--delete"
-               onClick={() => hActionClick("delete", id)}
-            ></li>
-         </ul>
-      );
-   }
-
-   function renderAvatar(author) {
-      const avatar = avatars[author] ? avatars[author] : "robot";
-
-      return (
-         <div
-            className={`c-comment__avatar c-comment__avatar--${avatar}`}
-         ></div>
-      );
    }
 
    function getComment(commentObj, index) {
@@ -84,17 +57,43 @@ const Comments: React.FC<Props> = ({
       );
    }
 
-   function renderComments() {
-      if (commentsArr.length) {
-         return (
-            <ul className="c-comments">
-               {commentsArr.map(getComment)}
-            </ul>
-         );
-      }
+   function renderAvatar(author) {
+      const avatar = avatars[author] ? avatars[author] : "robot";
+      const cl = `c-comment__avatar c-comment__avatar--${avatar}`;
+
+      return <div className={cl}></div>;
    }
 
-   return <>{renderComments()}</>;
+   function renderActions(id) {
+      return (
+         <ul className="c-comment__actions">
+            <li
+               className="c-comment__action c-comment__action--delete"
+               onClick={() => hActionClick("delete", id)}
+            ></li>
+         </ul>
+      );
+   }
+
+   function hDelete(commentId) {
+      dispatch(
+         actionSetter.deleteComment({
+            ...compliancePayload,
+            commentId: commentId,
+         })
+      );
+   }
+
+   function hActionClick(actionType, commentId) {
+      switch (actionType) {
+         case "delete":
+            hDelete(commentId);
+            break;
+
+         default:
+            break;
+      }
+   }
 };
 
 export default Comments;

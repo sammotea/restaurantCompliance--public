@@ -5,11 +5,11 @@ interface Props {
 }
 
 const Worker: React.FC<Props> = ({ name }) => {
+   const cl = "c-toolbar__item c-toolbar__item--worker";
+
    return (
       <>
-         <li className="c-toolbar__item c-toolbar__item--worker">
-            {name}
-         </li>
+         <li className={cl}>{name}</li>
       </>
    );
 };
