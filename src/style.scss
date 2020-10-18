@@ -54,32 +54,74 @@ ul {
    color: $white;
 }
 
-.c-taskCategory__title {
-   font-family: $f1;
-   font-size: $charlie;
-   font-weight: 700;
-
-   > span {
-      font-style: italic;
-      font-weight: 400;
-   }
-}
-
-.c-taskSections {
-   list-style: none;
-}
-
-.c-taskSection {
+.c-status {
    & + & {
       margin-top: 2 * $space;
    }
 }
 
-.c-taskSection__title {
-   font-family: $f1;
+.c-status__title {
+   text-transform: uppercase;
+   font-family: $f2;
    font-size: $bralpha;
    position: relative;
-   font-weight: bold;
+   font-weight: 900;
+   margin-bottom: $pad;
+   //padding-bottom: $pad;
+   //margin-bottom: $pad + $border + (2 * $borderette);
+   //border-bottom: $border $black solid;
+
+   // &:after {
+   //    content: "";
+   //    position: absolute;
+   //    border-bottom: $borderette $black solid;
+   //    bottom: -$border - (2 * $borderette);
+   //    left: 0;
+   //    right: 0;
+   // }
+}
+
+.c-category {
+   position: relative;
+
+   & + & {
+      margin-top: $space;
+      padding-top: $space;
+   }
+}
+
+.c-category__title {
+   font-family: $f1;
+   font-size: $alpha;
+   text-transform: uppercase;
+   font-weight: 900;
+   padding: 0.5 * $pad $pad;
+   position: relative;
+   border-top: $border $black solid;
+   border-bottom: $border $black solid;
+   width: calc(100% + #{2 * $pad});
+   transform: translate(-$pad);
+   box-sizing: border-box;
+   margin-bottom: $space;
+   background: $t--1;
+
+   &:before {
+      content: "The ";
+      font-weight: 100;
+      font-style: italic;
+      text-transform: none;
+   }
+
+   &:after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      bottom: -$border - (2 * $borderette);
+      left: 0;
+      right: 0;
+      border-bottom: $borderette $black solid;
+   }
 }
 
 .c-tasks {
@@ -94,7 +136,7 @@ ul {
       border-right: 2px $black dotted;
    }
 
-   .c-taskSection__title + & {
+   .c-status__title + & {
       margin-top: $pad;
    }
 }
@@ -116,8 +158,8 @@ ul {
       }
    }
 
-   .c-forReviewTasks &,
-   .c-doneTasks & {
+   .c-status--awaitingReview &,
+   .c-status--complete & {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -252,9 +294,8 @@ $w--icon: 0.9 * $h--toolbar__item * $ratio;
    }
 }
 
-.c-pendingTasks {
+.c-categories--incomplete {
    .c-task__title {
-      font-size: $fs_title--big;
       cursor: pointer;
    }
 
@@ -262,12 +303,12 @@ $w--icon: 0.9 * $h--toolbar__item * $ratio;
       margin-top: 0;
    }
 
-   .c-task--forReview .c-task__title,
+   .c-task--awaitingReview .c-task__title,
    .c-task--blocked .c-task__title {
       text-decoration: line-through;
    }
 
-   .c-task--forReview .c-task__title {
+   .c-task--awaitingReview .c-task__title {
       color: $t--2;
    }
 
@@ -276,7 +317,7 @@ $w--icon: 0.9 * $h--toolbar__item * $ratio;
    }
 }
 
-.c-forReviewTasks {
+.c-categories--awaitingReview {
    .c-task__title {
       padding-right: 0;
       width: 50%;
@@ -295,7 +336,7 @@ $w--icon: 0.9 * $h--toolbar__item * $ratio;
    }
 }
 
-.c-doneTasks {
+.c-categories--complete {
    .c-task__title {
       text-decoration: line-through;
    }
@@ -318,6 +359,8 @@ $w--icon: 0.9 * $h--toolbar__item * $ratio;
 .c-task__action {
    position: relative;
    text-align: center;
+   width: $bralpha;
+   height: $bralpha;
 
    &:before {
       content: "" !important;
@@ -337,18 +380,8 @@ $w--icon: 0.9 * $h--toolbar__item * $ratio;
    & + & {
       margin-left: $pad;
    }
-}
 
-.c-forReviewTask__actions {
-   .c-task__action {
-      width: $bralpha;
-      height: $bralpha;
-   }
-}
-
-.c-blockedTask__actions {
-   .c-task__action {
-      height: $bralpha;
+   .c-task--blocked & {
       width: (1.5 * $bralpha) + (0.5 * $pad);
    }
 }
