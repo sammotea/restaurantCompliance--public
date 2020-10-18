@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import User from "../../../_contexts/user";
 import TasksDispatch from "../../../_contexts/tasksDispatch";
 import actionSetter from "../../../_helpers/actionSetter";
+import camelcaseify from "../../../_helpers/transforms";
 
 import Title from "./Title";
 import Meta from "./Meta";
@@ -49,7 +50,7 @@ const forReview: React.FC<Props> = ({
          actions = actions.filter((item) => item !== "fixed");
 
       return (
-         <ul className={`c-task__actions c-${status}Task__actions`}>
+         <ul className={`c-task__actions`}>
             {getTaskActions(actions)}
          </ul>
       );
@@ -60,7 +61,9 @@ const forReview: React.FC<Props> = ({
 
       actions.forEach((action) => {
          let handler;
-         const cl = `c-task__action  c-task__action--${action}`;
+         const cl = `c-task__action  c-task__action--${camelcaseify(
+            action
+         )}`;
 
          switch (action) {
             case "reviewed":

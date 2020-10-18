@@ -33,6 +33,7 @@ const PermissionGate: React.FC<Props> = ({ tasksByStatusObj }) => {
       } else {
          let tasksArr = [];
 
+         // Limited view has these merged in to the only visible section
          ["incomplete", "awaitingReview", "blocked"].forEach(
             (status) => {
                if (tasksByStatusObj.hasOwnProperty(status)) {
@@ -42,7 +43,9 @@ const PermissionGate: React.FC<Props> = ({ tasksByStatusObj }) => {
                }
             }
          );
-         return <Categories tasksArr={tasksArr} />;
+         return (
+            <Categories tasksArr={tasksArr} status="incomplete" />
+         );
       }
    }
 };

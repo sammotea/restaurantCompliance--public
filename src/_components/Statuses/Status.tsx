@@ -16,10 +16,31 @@ const Status: React.FC<Props> = ({ tasksArr, title }) => {
       const cl = `c-status c-status--${camelcaseify(title)}`;
       return (
          <li className={cl}>
-            <h1 className="c-status__title">{title}</h1>
-            <Categories tasksArr={tasksArr} />
+            {renderTitle()}
+            <Categories tasksArr={tasksArr} status={title} />
          </li>
       );
+   }
+
+   function renderTitle() {
+      const cl = `c-status__title`;
+      let titleText = "";
+
+      switch (title) {
+         case "incomplete":
+            titleText = "Needs doing";
+            break;
+
+         case "awaitingReview":
+            titleText = "Needs sign-off";
+            break;
+
+         case "complete":
+            titleText = "Complete";
+            break;
+      }
+
+      return <h1 className={cl}>{titleText}</h1>;
    }
 };
 
