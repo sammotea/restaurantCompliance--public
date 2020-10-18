@@ -13,6 +13,7 @@ const Categories: React.FC<Props> = ({ tasksArr }) => {
    return <>{renderCategories()}</>;
 
    function renderCategories() {
+      const cl = `c-categories`;
       const tasksByCategory = getTasksByCategory();
       const categories = Object.keys(tasksByCategory).map(
          (category) => {
@@ -25,7 +26,7 @@ const Categories: React.FC<Props> = ({ tasksArr }) => {
             );
          }
       );
-      return <ul>{sorters.byKey(categories)}</ul>;
+      return <ul className={cl}>{sorters.byKey(categories)}</ul>;
    }
 
    function getTasksByCategory() {

@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import User from "../../../../../_contexts/user";
 import TasksDispatch from "../../../../../_contexts/tasksDispatch";
 import actionSetter from "../../../../../_helpers/actionSetter";
+import camelcaseify from "../../../../../_helpers/transforms";
 
 import avatars from "../../../../../_misc/avatars";
 
@@ -59,7 +60,9 @@ const Comments: React.FC<Props> = ({
 
    function renderAvatar(author) {
       const avatar = avatars[author] ? avatars[author] : "robot";
-      const cl = `c-comment__avatar c-comment__avatar--${avatar}`;
+      const cl = `c-comment__avatar c-comment__avatar--${camelcaseify(
+         avatar
+      )}`;
 
       return <div className={cl}></div>;
    }

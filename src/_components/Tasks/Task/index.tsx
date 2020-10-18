@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 
 import Permission from "../../../_contexts/permission";
 
+import camelcaseify from "../../../_helpers/transforms";
+
 import Incomplete from "./Incomplete";
 import AwaitingReview from "./AwaitingReview";
 import Complete from "./Complete";
@@ -17,7 +19,7 @@ const Task: React.FC<Props> = ({ task }) => {
    return <>{renderTask()}</>;
 
    function renderTask() {
-      const cl = `c-task c-task--${status}`;
+      const cl = `c-task c-task--${camelcaseify(status)}`;
       let el;
 
       if (hasPermission) {

@@ -12,6 +12,7 @@ const Statuses: React.FC<Props> = ({ tasksByStatusObj }) => {
    return <>{renderStatuses()}</>;
 
    function renderStatuses() {
+      const cl = `c-statuses`;
       const statuses = Object.keys(tasksByStatusObj).map((status) => {
          return (
             <Status
@@ -22,7 +23,7 @@ const Statuses: React.FC<Props> = ({ tasksByStatusObj }) => {
          );
       });
 
-      return <ul>{sorters.byStatus(statuses)}</ul>;
+      return <ul className={cl}>{sorters.byStatus(statuses)}</ul>;
    }
 };
 

@@ -1,6 +1,8 @@
 import React from "react";
-import Task from "./Task";
+
 import sorters from "../../_helpers/sorters";
+
+import Task from "./Task";
 
 interface Props {
    tasksArr: iTask[];
@@ -10,9 +12,10 @@ const Tasks: React.FC<Props> = ({ tasksArr }) => {
    return <>{renderTasks()}</>;
 
    function renderTasks() {
+      const cl = `c-tasks`;
       const taskList = getTasks();
 
-      return <ul>{sorters.byKey(taskList)}</ul>;
+      return <ul className={cl}>{sorters.byKey(taskList)}</ul>;
    }
 
    function getTasks() {
