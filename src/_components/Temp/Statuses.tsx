@@ -11,18 +11,17 @@ const Statuses: React.FC<Props> = ({ status, hUpdateStatus }) => {
    
    const canReview = useContext(Permission);
    const statuses = ['incomplete'];
-   const [ view, setView ] = useState( 1 );
-   const cl = `t-statusesWrap js-isVisible--${ view }`;
+   const cl = `c-statusesWrap`;
 
    if (canReview) {
       statuses.push("awaitingReview", "complete");
    }
 
-   return <div className={cl}><ul className="t-statuses">{renderStatuses()}</ul></div>;
+   return <div className={cl}><ul className="c-statuses">{renderStatuses()}</ul></div>;
 
    function renderStatuses() {
       return statuses.map((status) => {
-         const clListItem = `t-status t-status--${status}`;
+         const clListItem = `c-status c-status--${status}`;
 
          return (
             <li className={clListItem} key={status} id={ status } onClick={ hStatusClick }>
@@ -37,7 +36,7 @@ const Statuses: React.FC<Props> = ({ status, hUpdateStatus }) => {
       switch( status ) {
 
          case 'incomplete':
-            return 'Get it done.';
+            return 'Get it done';
             break;
 
             case 'awaitingReview':
@@ -59,7 +58,6 @@ const Statuses: React.FC<Props> = ({ status, hUpdateStatus }) => {
          const curPos = statuses.indexOf( e.target.id );
          const nextPos = statuses[ curPos + 1 ] ? curPos + 1 : 0;
 
-         setView( nextPos + 1 );
          hUpdateStatus( statuses[ nextPos ] );
       }
 

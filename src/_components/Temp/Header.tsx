@@ -5,7 +5,7 @@ interface Props {}
 const Header: React.FC<Props> = ({ children }) => {
    const cl = "c-header";
 
-   return <div className={cl}>{children}</div>;
+   return <header className={cl}>{children}</header>;
 };
 
 export default Header;

@@ -5,6 +5,7 @@ import taskJson from "./_data/tasks.json";
 import User from "./_contexts/user";
 import Permission from "./_contexts/permission";
 import TasksDispatch from "./_contexts/tasksDispatch";
+import CurStatus from "./_contexts/curStatus";
 
 import complianceStateReducer from "./_reducers/complianceStateReducer";
 import storifyTasks from "./_reducers/storifyTasks";
@@ -15,6 +16,7 @@ import Statuses from "./_components/Temp/Statuses";
 
 import PermissionGate from "./_components/PermissionGate";
 import UserSwitch from "./_components/UserSwitch";
+//import Status from "./_components/Statuses/Status";
 
 const ComplianceTasks: React.FC = () => {
    const [user, setUser] = useState("manager");
@@ -24,14 +26,19 @@ const ComplianceTasks: React.FC = () => {
       transformTasksForStore()
    );
    const tasksByStatus = organiseTasksByStatus(store);
-   const canReview = user === "manager" ? true : false;
-
+   console.log(curStatus);
    return (
       <User.Provider value={user}>
          <TasksDispatch.Provider value={dispatch}>
-            <Permission.Provider value={canReview}>
-               {renderHeader()}
-               {renderTasks()}
+            <Permission.Provider value={canReview(user)}>
+               <CurStatus.Provider value={curStatus}>
+                  <div
+                     className={`c-compliance c-compliance--${curStatus}`}
+                  >
+                     {renderHeader()}
+                     {renderTasks()}
+                  </div>
+               </CurStatus.Provider>
             </Permission.Provider>
          </TasksDispatch.Provider>
       </User.Provider>
@@ -69,13 +76,27 @@ const ComplianceTasks: React.FC = () => {
    function renderHeader() {
       return (
          <Header>
-            <UserSwitch user={user} hSwitch={setUser} />
+            <nav className="c-nav">
+               <UserSwitch user={user} hSwitch={hUserSwitch} />
+            </nav>
             <Statuses
                status={curStatus}
                hUpdateStatus={setCurStatus}
             />
          </Header>
       );
+   }
+
+   function hUserSwitch(u) {
+      setUser(u);
+
+      if (!canReview(u)) {
+         setCurStatus("incomplete");
+      }
+   }
+
+   function canReview(u) {
+      return u === "manager" ? true : false;
    }
 
    function renderTasks() {
