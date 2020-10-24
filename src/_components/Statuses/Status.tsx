@@ -13,7 +13,7 @@ const Status: React.FC<Props> = ({ tasksArr, title }) => {
    return <>{renderStatus()}</>;
 
    function renderStatus() {
-      const cl = `c-status c-status--${camelcaseify(title)}`;
+      const cl = `c-view c-view--${camelcaseify(title)}`;
       return (
          <li className={cl}>
             {renderTitle()}
@@ -23,7 +23,7 @@ const Status: React.FC<Props> = ({ tasksArr, title }) => {
    }
 
    function renderTitle() {
-      const cl = `c-status__title`;
+      const cl = `c-view__title`;
       let titleText = "";
 
       switch (title) {

@@ -18,10 +18,10 @@ $c--2l: lighten($c--2d, 10%);
 $c--3d: #516beb;
 $c--3l: lighten($c--3d, 10%);
 
-$g--1: linear-gradient($c--1d, $c--1l);
-$g--2: linear-gradient($c--2d, $c--2l);
-$g--3: linear-gradient($c--3d, $c--3l);
-
+$g--1: linear-gradient(to right, $c--1d, $c--1l);
+$g--2: linear-gradient(to right, $c--2d, $c--2l);
+$g--3: linear-gradient(to right, $c--3d, $c--3l);
+$g--bl: linear-gradient(to right, $t--3, $black);
 $f--1: freight-sans-pro;
 
 $omega: 0.8rem;
@@ -32,9 +32,9 @@ $chavo: 2rem;
 $charlie: 2.56rem;
 $delta: 4.1rem;
 
-$fw--light: 300;
-$fw--std: 400; // 500?
-$fw--bold: 600; // 700?
+$fw--light: 400;
+$fw--std: 500; // 500?
+$fw--bold: 700; // 700?
 $fw--black: 900;
 
 $space: 1rem;
@@ -46,6 +46,16 @@ $borderette: 0.5 * $border;
 $period--fast: 0.125s;
 $period--std: 0.25s;
 $period--slow: 0.5s;
+
+$h--task: 2.5 * $space;
+$h--taskOption: $h--task - 0.5rem;
+
+$p--taskOptionEnd: $pad;
+$w--taskOptionDec: $space;
+$w--statusOptions1: 4 * ($h--taskOption) + $p--taskOptionEnd +
+   $w--taskOptionDec;
+$w--metaOptions1: 2 * ($h--taskOption) + $p--taskOptionEnd +
+   $w--taskOptionDec;
 
 @mixin bg--sm() {
    top: -0.125 * $pad;
@@ -64,6 +74,20 @@ $period--slow: 0.5s;
 
 @mixin _avatar($name) {
    background-image: url("./_img/avatar--#{ $name }");
+}
+
+@mixin taskOption--final($dir: "left") {
+   margin-#{ $dir }: $p--taskOptionEnd;
+
+   &:before {
+      content: "";
+      position: absolute;
+      top: 0.5 * $pad;
+      bottom: 0.5 * $pad;
+      #{ $dir }: -0.5 * $pad;
+      border-#{ $dir }: $border $white solid;
+      margin-#{ $dir }: -0.5 * $border;
+   }
 }
 
 html {
@@ -159,11 +183,11 @@ ul {
    }
 }
 
-.c-statusesWrap {
+.c-viewsWrap {
    overflow: hidden;
 }
 
-.c-statuses {
+.c-views {
    position: relative;
    height: 6 * $space;
    transition: $period--slow;
@@ -182,7 +206,7 @@ ul {
    }
 }
 
-.c-status {
+.c-view {
    display: flex;
    align-items: center;
    justify-content: space-around;
@@ -225,7 +249,7 @@ ul {
    text-transform: uppercase;
    color: $t--2;
    font-weight: 900;
-   transition: 0.5s;
+   transition: $period--fast;
 
    &:before {
       content: "";
@@ -235,7 +259,7 @@ ul {
       right: 0;
       top: 100%;
       background: $g--1;
-      transition: 0.5s;
+      transition: $period--fast;
       filter: grayscale(100%);
    }
 
@@ -248,13 +272,242 @@ ul {
    }
 }
 
-// .c-status {
+.c-tasks {
+   margin-right: $pad;
+   overflow: hidden;
+   &:not(:first-child) {
+      margin-top: 1.5 * $space;
+   }
+}
+
+.c-task {
+   position: relative;
+
+   & + & {
+      margin-top: $pad;
+   }
+}
+
+.c-task__header {
+   background: $t--1;
+   transition: $period--std;
+
+   > * {
+      height: $h--task;
+   }
+
+   .c-compliance--incomplete .js-showStatusOptions & {
+      transform: translate3d(#{$w--statusOptions1}, 0, 0);
+   }
+
+   .c-compliance--incomplete .js-showMetaOptions & {
+      transform: translate3d(-#{$w--metaOptions1}, 0, 0);
+   }
+}
+
+.c-task__face {
+   display: flex;
+}
+
+.c-task__currentStatusWrap {
+   width: $h--task;
+   position: relative;
+   transition: width $period--std;
+   overflow: hidden;
+
+   .js-showStatusOptions & {
+      width: 0;
+      opacity: 0;
+   }
+}
+
+.c-task__currentStatus {
+   position: absolute;
+   left: 50%;
+   top: 50%;
+   transform: translate(-50%, -50%);
+   height: 0.75 * $space;
+   width: 0.75 * $space;
+}
+
+.c-task__currentStatus--incomplete {
+   border: $border $black solid;
+   border-radius: 100%;
+}
+
+.c-task__title {
+   font-size: $bralpha;
+   font-weight: $fw--light;
+   line-height: $h--task;
+   flex-grow: 100;
+   margin-left: $pad;
+   position: relative;
+
+   &:before {
+      content: "";
+      position: absolute;
+      top: 0.75 * $pad;
+      bottom: 0.75 * $pad;
+      left: -$pad;
+      margin-left: -0.5 * $border;
+      border-left: $border $black solid;
+      opacity: 1;
+      transition: $period--fast;
+   }
+
+   .js-showStatusOptions & {
+      &:before {
+         opacity: 0;
+      }
+   }
+}
+
+.c-task__statusOptions,
+.c-task__metaOptions {
+   position: absolute;
+   top: 0;
+   display: flex;
+   align-items: center;
+   transition: $period--std;
+
+   &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border-width: 0.5 * $h--task 0.5 * $w--taskOptionDec;
+      border-style: solid;
+      border-color: $t--1;
+   }
+}
+
+.c-task__statusOption,
+.c-task__metaOption {
+   position: relative;
+   width: $h--taskOption;
+   height: $h--taskOption;
+
+   &:after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 0.5 * $h--task;
+      height: 0.5 * $h--task;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+   }
+
+   span {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+   }
+
+   &:nth-child(2) {
+      background: rgba($white, 0.25);
+   }
+}
+
+$statusOptions: (
+   "incomplete",
+   "awaitingReview",
+   "blocked",
+   "failed",
+   "fixed",
+   "complete",
+   "undo"
+);
+
+@each $option in $statusOptions {
+   .c-task__statusOption--#{ $option }:after {
+      @if $option == "blocked" {
+         background-image: url(./_img/status__failed.svg);
+      } @else if $option == "awaitingReview" {
+         background-image: url(./_img/status__complete.svg);
+      } @else {
+         background-image: url(./_img/status__#{ $option }.svg);
+      }
+   }
+}
+
+.c-task__statusOptions {
+   right: 100%;
+   margin-right: $w--taskOptionDec;
+   background: $g--1;
+
+   &:after {
+      border-bottom-color: $c--1l;
+      border-left-color: $c--1l;
+      left: 100%;
+   }
+
+   .c-compliance--incomplete & {
+      background: $g--1;
+
+      &:after {
+         border-bottom-color: $c--1l;
+         border-left-color: $c--1l;
+      }
+   }
+
+   .c-compliance--awaitingReview & {
+      background: $g--2;
+
+      &:after {
+         border-bottom-color: $c--2l;
+         border-left-color: $c--2l;
+      }
+   }
+
+   .c-compliance--complete & {
+      background: $g--3;
+
+      &:after {
+         border-bottom-color: $c--3l;
+         border-left-color: $c--3l;
+      }
+   }
+}
+
+.c-task__statusOption--undo {
+   @include taskOption--final(left);
+}
+
+.c-task__metaOptions {
+   left: 100%;
+   margin-left: $w--taskOptionDec;
+   background: $g--bl;
+
+   &:after {
+      border-top-color: $t--3;
+      border-right-color: $t--3;
+      right: 100%;
+   }
+}
+
+$metaOptions: ("info", "comments");
+
+@each $option in $metaOptions {
+   .c-task__metaOption--#{ $option }:after {
+      background-image: url(./_img/meta__#{ $option }.svg);
+   }
+}
+.c-task__metaOption--info {
+   @include taskOption--final(left);
+}
+
+// .c-view {
 //    & + & {
 //       margin-top: 2 * $space;
 //    }
 // }
 
-// .c-status__title {
+// .c-view__title {
 //    text-transform: uppercase;
 //    font-family: $f2;
 //    font-size: $bralpha;
@@ -275,7 +528,7 @@ ul {
 //       border-right: 2px $black dotted;
 //    }
 
-//    .c-status__title + & {
+//    .c-view__title + & {
 //       margin-top: $pad;
 //    }
 // }
@@ -297,8 +550,8 @@ ul {
 //       }
 //    }
 
-//    .c-status--awaitingReview &,
-//    .c-status--complete & {
+//    .c-view--awaitingReview &,
+//    .c-view--complete & {
 //       display: flex;
 //       flex-wrap: wrap;
 //       align-items: center;

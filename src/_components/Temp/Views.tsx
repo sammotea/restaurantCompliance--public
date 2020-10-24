@@ -3,25 +3,24 @@ import React, { useState, useContext } from "react";
 import Permission from "../../_contexts/permission";
 
 interface Props {
-   status: string;
-   hUpdateStatus: any;
+   hUpdateView: any;
 }
 
-const Statuses: React.FC<Props> = ({ status, hUpdateStatus }) => {
+const Views: React.FC<Props> = ({ hUpdateView }) => {
    
    const canReview = useContext(Permission);
    const statuses = ['incomplete'];
-   const cl = `c-statusesWrap`;
+   const cl = `c-viewsWrap`;
 
    if (canReview) {
       statuses.push("awaitingReview", "complete");
    }
 
-   return <div className={cl}><ul className="c-statuses">{renderStatuses()}</ul></div>;
+   return <div className={cl}><ul className="c-views">{renderViews()}</ul></div>;
 
-   function renderStatuses() {
+   function renderViews() {
       return statuses.map((status) => {
-         const clListItem = `c-status c-status--${status}`;
+         const clListItem = `c-view c-view--${status}`;
 
          return (
             <li className={clListItem} key={status} id={ status } onClick={ hStatusClick }>
@@ -58,7 +57,7 @@ const Statuses: React.FC<Props> = ({ status, hUpdateStatus }) => {
          const curPos = statuses.indexOf( e.target.id );
          const nextPos = statuses[ curPos + 1 ] ? curPos + 1 : 0;
 
-         hUpdateStatus( statuses[ nextPos ] );
+         hUpdateView( statuses[ nextPos ] );
       }
 
    }
@@ -66,4 +65,4 @@ const Statuses: React.FC<Props> = ({ status, hUpdateStatus }) => {
    }
 };
 
-export default Statuses;
+export default Views;

@@ -8,11 +8,11 @@ interface Props {
    tasksByStatusObj: iTasksByStatus;
 }
 
-const Statuses: React.FC<Props> = ({ tasksByStatusObj }) => {
-   return <>{renderStatuses()}</>;
+const Views: React.FC<Props> = ({ tasksByStatusObj }) => {
+   return <>{renderViews()}</>;
 
-   function renderStatuses() {
-      const cl = `c-statuses`;
+   function renderViews() {
+      const cl = `c-views`;
       const statuses = [];
 
       ["incomplete", "awaitingReview", "complete"].forEach(
@@ -55,4 +55,4 @@ const Statuses: React.FC<Props> = ({ tasksByStatusObj }) => {
    }
 };
 
-export default Statuses;
+export default Views;

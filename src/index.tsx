@@ -5,40 +5,39 @@ import taskJson from "./_data/tasks.json";
 import User from "./_contexts/user";
 import Permission from "./_contexts/permission";
 import TasksDispatch from "./_contexts/tasksDispatch";
-import CurStatus from "./_contexts/curStatus";
+import CurrentView from "./_contexts/currentVIew";
 
 import complianceStateReducer from "./_reducers/complianceStateReducer";
 import storifyTasks from "./_reducers/storifyTasks";
 import addComplianceDefaults from "./_reducers/addComplianceDefaults";
 
 import Header from "./_components/Temp/Header";
-import Statuses from "./_components/Temp/Statuses";
+import Views from "./_components/Temp/Views";
 
 import PermissionGate from "./_components/PermissionGate";
 import UserSwitch from "./_components/UserSwitch";
-//import Status from "./_components/Statuses/Status";
 
 const ComplianceTasks: React.FC = () => {
    const [user, setUser] = useState("manager");
-   const [curStatus, setCurStatus] = useState("incomplete");
+   const [currentView, setCurrentView] = useState("incomplete");
    const [store, dispatch] = useReducer(
       complianceStateReducer,
       transformTasksForStore()
    );
    const tasksByStatus = organiseTasksByStatus(store);
-   console.log(curStatus);
+
    return (
       <User.Provider value={user}>
          <TasksDispatch.Provider value={dispatch}>
             <Permission.Provider value={canReview(user)}>
-               <CurStatus.Provider value={curStatus}>
+               <CurrentView.Provider value={currentView}>
                   <div
-                     className={`c-compliance c-compliance--${curStatus}`}
+                     className={`c-compliance c-compliance--${currentView}`}
                   >
                      {renderHeader()}
                      {renderTasks()}
                   </div>
-               </CurStatus.Provider>
+               </CurrentView.Provider>
             </Permission.Provider>
          </TasksDispatch.Provider>
       </User.Provider>
@@ -79,10 +78,7 @@ const ComplianceTasks: React.FC = () => {
             <nav className="c-nav">
                <UserSwitch user={user} hSwitch={hUserSwitch} />
             </nav>
-            <Statuses
-               status={curStatus}
-               hUpdateStatus={setCurStatus}
-            />
+            <Views hUpdateView={setCurrentView} />
          </Header>
       );
    }
@@ -91,7 +87,7 @@ const ComplianceTasks: React.FC = () => {
       setUser(u);
 
       if (!canReview(u)) {
-         setCurStatus("incomplete");
+         setCurrentView("incomplete");
       }
    }
 
@@ -104,7 +100,7 @@ const ComplianceTasks: React.FC = () => {
          return (
             <PermissionGate
                tasksByStatusObj={tasksByStatus}
-               status={curStatus}
+               view={currentView}
             />
          );
       }

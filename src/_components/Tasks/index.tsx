@@ -2,7 +2,7 @@ import React from "react";
 
 import sorters from "../../_helpers/sorters";
 
-import Task from "./Task";
+import Task from "../Temp/Task";
 
 interface Props {
    tasksArr: iTask[];

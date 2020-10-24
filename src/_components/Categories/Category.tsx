@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 
 import camelcaseify from "../../_helpers/transforms";
-import CurStatus from "../../_contexts/curStatus";
+import CurrentView from "../../_contexts/currentVIew";
 import Tasks from "../Tasks";
 
 interface Props {
@@ -11,8 +11,8 @@ interface Props {
 
 const Category: React.FC<Props> = ({ tasksArr, title }) => {
    const [isVisible, setIsVisible] = useState(true);
-   const curStatus = useContext(CurStatus);
-   console.log(curStatus);
+   const currentView = useContext(CurrentView);
+
    return <>{renderCategory()}</>;
 
    function renderCategory() {
@@ -47,9 +47,8 @@ const Category: React.FC<Props> = ({ tasksArr, title }) => {
 
    function getNumberOutstandingTasks() {
       let tasks = 0;
-      console.log(curStatus);
       tasksArr.forEach((task) => {
-         if (task.compliance.status === curStatus) tasks++;
+         if (task.compliance.status === currentView) tasks++;
       });
 
       return tasks ? tasks : "All done!";

@@ -3,22 +3,22 @@ import React, { useContext } from "react";
 import User from "../_contexts/user";
 import Permission from "../_contexts/permission";
 
-import Statuses from "./Statuses";
+import Views from "./Views";
 import Categories from "./Categories";
 
 interface Props {
    tasksByStatusObj: iTasksByStatus;
-   status: string;
+   view: string;
 }
 
 const PermissionGate: React.FC<Props> = ({
    tasksByStatusObj,
-   status,
+   view,
 }) => {
    const canReview = useContext(Permission);
 
    // Limited view is only for incomplete tasks
-   if (!canReview && status !== "incomplete") return <></>;
+   if (!canReview && view !== "incomplete") return <></>;
 
    return <>{renderView()}</>;
 
@@ -26,7 +26,7 @@ const PermissionGate: React.FC<Props> = ({
       const tasksArr = getTasks();
 
       if (tasksArr.length) {
-         return <Categories tasksArr={tasksArr} status={status} />;
+         return <Categories tasksArr={tasksArr} view={view} />;
       } else {
          return <>Nothing Here!</>;
       }
@@ -34,16 +34,16 @@ const PermissionGate: React.FC<Props> = ({
 
    function getTasks() {
       if (canReview) {
-         return tasksByStatusObj.hasOwnProperty(status)
-            ? tasksByStatusObj[status]
+         return tasksByStatusObj.hasOwnProperty(view)
+            ? tasksByStatusObj[view]
             : [];
       } else {
          let tArr = [];
 
          // Limited view has these merged in to the only visible section
-         ["incomplete", "awaitingReview"].forEach((status) => {
-            if (tasksByStatusObj.hasOwnProperty(status)) {
-               tArr = tArr.concat(tasksByStatusObj[status]);
+         ["incomplete", "awaitingReview"].forEach((view) => {
+            if (tasksByStatusObj.hasOwnProperty(view)) {
+               tArr = tArr.concat(tasksByStatusObj[view]);
             }
          });
 

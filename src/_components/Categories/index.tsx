@@ -8,14 +8,14 @@ import Category from "./Category";
 
 interface Props {
    tasksArr: iTask[];
-   status: string;
+   view: string;
 }
 
-const Categories: React.FC<Props> = ({ tasksArr, status }) => {
+const Categories: React.FC<Props> = ({ tasksArr, view }) => {
    return <>{renderCategories()}</>;
 
    function renderCategories() {
-      const cl = `c-categories c-categories--${camelcaseify(status)}`;
+      const cl = `c-categories c-categories--${camelcaseify(view)}`;
       const tasksByCategory = getTasksByCategory();
       const categories = Object.keys(tasksByCategory).map(
          (category) => {
