@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import iconify from "../../_helpers/iconify";
 
 interface Props {
    title: string;
@@ -30,9 +31,13 @@ const Face: React.FC<Props> = ({
    function renderCurrentStatus() {
       // Do blocked etc.
       const currentStatus = status;
-      const cl = `c-task__currentStatus c-task__currentStatus--${currentStatus}`;
+      const cl = `c-task__currentStatus c-task__currentStatus--${currentStatus} js-isActive`;
 
-      return <div className={cl}></div>;
+      return (
+         <div className={cl}>
+            <span className={iconify.getClass(currentStatus)}></span>
+         </div>
+      );
    }
 
    function getTitle() {

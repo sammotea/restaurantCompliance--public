@@ -1,10 +1,12 @@
 import React, { useState, useContext } from "react";
 import Permission from "../../_contexts/permission";
-import CurrentView from "../../_contexts/currentVIew";
+import iconify from "../../_helpers/iconify";
 
-interface Props {}
+interface Props {
+   taskStatus: string;
+}
 
-const MetaOptions: React.FC<Props> = ({}) => {
+const MetaOptions: React.FC<Props> = ({ taskStatus }) => {
    const canReview = useContext(Permission);
 
    return <>{renderMetaOptions()}</>;
@@ -18,9 +20,13 @@ const MetaOptions: React.FC<Props> = ({}) => {
                return (
                   <li
                      key={status}
-                     className={`c-task__metaOption c-task__metaOption--${status}`}
+                     className={`c-task__metaOption c-task__metaOption--${status} ${
+                        taskStatus === status ? "js-isActive" : ""
+                     }`}
                   >
-                     <span></span>
+                     <span
+                        className={iconify.getClass(status)}
+                     ></span>
                   </li>
                );
             })}

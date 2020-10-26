@@ -35,8 +35,8 @@ const Task: React.FC<Props> = ({ task }) => {
                   hShowStatusOptions={hToggleShowStatusOptions}
                   hShowMetaOptions={hToggleShowMetaOptions}
                />
-               <StatusOptions />
-               <MetaOptions />
+               <StatusOptions taskStatus={status} />
+               <MetaOptions taskStatus={status} />
             </div>
             <div className={`c-task__body`}>
                <Meta />

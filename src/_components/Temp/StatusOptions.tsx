@@ -1,10 +1,13 @@
 import React, { useState, useContext } from "react";
 import Permission from "../../_contexts/permission";
 import CurrentView from "../../_contexts/currentVIew";
+import iconify from "../../_helpers/iconify";
 
-interface Props {}
+interface Props {
+   taskStatus: string;
+}
 
-const StatusOptions: React.FC<Props> = ({}) => {
+const StatusOptions: React.FC<Props> = ({ taskStatus }) => {
    const canReview = useContext(Permission);
    const currentView = useContext(CurrentView);
 
@@ -16,12 +19,15 @@ const StatusOptions: React.FC<Props> = ({}) => {
       return (
          <ul className={`c-task__statusOptions`}>
             {statusOptions.map((status) => {
+               const cl = `c-task__statusOption c-task__statusOption--${status} ${
+                  taskStatus === status ? "js-isActive" : ""
+               }`;
+
                return (
-                  <li
-                     key={status}
-                     className={`c-task__statusOption c-task__statusOption--${status}`}
-                  >
-                     <span></span>
+                  <li key={status} className={cl}>
+                     <span
+                        className={iconify.getClass(status)}
+                     ></span>
                   </li>
                );
             })}
@@ -33,24 +39,34 @@ const StatusOptions: React.FC<Props> = ({}) => {
       const statusOptions = ["incomplete"];
 
       if (!canReview) {
+         // Limited permissions
          statusOptions.push("awaitingReview", "blocked");
       } else {
          switch (currentView) {
             case "incomplete":
-               statusOptions.push(
-                  "complete",
-                  "failed",
-                  "undo" // temp
-               );
+               statusOptions.push("complete", "failed");
                break;
 
-            default:
+            case "awaitingReview":
                statusOptions.push(
                   "complete",
                   "failed",
                   "fixed",
                   "undo"
                );
+               break;
+
+            case "complete":
+               statusOptions.push(
+                  "complete",
+                  "failed",
+                  "fixed",
+                  "undo"
+               );
+               break;
+
+            default:
+               throw new Error("getStatusOptions: unrecognised view");
          }
       }
 
