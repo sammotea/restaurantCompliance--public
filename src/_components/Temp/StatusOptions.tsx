@@ -5,9 +5,13 @@ import iconify from "../../_helpers/iconify";
 
 interface Props {
    taskStatus: string;
+   hStatusChange: any;
 }
 
-const StatusOptions: React.FC<Props> = ({ taskStatus }) => {
+const StatusOptions: React.FC<Props> = ({
+   taskStatus,
+   hStatusChange,
+}) => {
    const canReview = useContext(Permission);
    const currentView = useContext(CurrentView);
 
@@ -19,14 +23,33 @@ const StatusOptions: React.FC<Props> = ({ taskStatus }) => {
       return (
          <ul className={`c-task__statusOptions`}>
             {statusOptions.map((status) => {
-               const cl = `c-task__statusOption c-task__statusOption--${status} ${
+               // PENDING REFACTOR
+               let visibleStatus = status;
+
+               if (!canReview) {
+                  switch (status) {
+                     case "blocked":
+                        visibleStatus = "failed";
+                        break;
+
+                     case "awaitingReview":
+                        visibleStatus = "complete";
+                        break;
+                  }
+               }
+
+               const cl = `c-task__statusOption c-task__statusOption--${visibleStatus} ${
                   taskStatus === status ? "js-isActive" : ""
                }`;
 
                return (
-                  <li key={status} className={cl}>
+                  <li
+                     key={visibleStatus}
+                     className={cl}
+                     onClick={(e) => hStatusClick(visibleStatus)}
+                  >
                      <span
-                        className={iconify.getClass(status)}
+                        className={iconify.getClass(visibleStatus)}
                      ></span>
                   </li>
                );
@@ -76,8 +99,8 @@ const StatusOptions: React.FC<Props> = ({ taskStatus }) => {
    function orderOptions(options) {
       const statusOrder = {
          incomplete: 1,
-         blocked: 101,
-         awaitingReview: 102,
+         awaitingReview: 101,
+         blocked: 102,
          fixed: 1001,
          complete: 1002,
          failed: 1003,
@@ -87,6 +110,10 @@ const StatusOptions: React.FC<Props> = ({ taskStatus }) => {
       return options.sort((a, b) => {
          return statusOrder[a] - statusOrder[b];
       });
+   }
+
+   function hStatusClick(status) {
+      hStatusChange(status);
    }
 };
 

@@ -41,11 +41,13 @@ const PermissionGate: React.FC<Props> = ({
          let tArr = [];
 
          // Limited view has these merged in to the only visible section
-         ["incomplete", "awaitingReview"].forEach((view) => {
-            if (tasksByStatusObj.hasOwnProperty(view)) {
-               tArr = tArr.concat(tasksByStatusObj[view]);
+         ["incomplete", "awaitingReview", "blocked"].forEach(
+            (view) => {
+               if (tasksByStatusObj.hasOwnProperty(view)) {
+                  tArr = tArr.concat(tasksByStatusObj[view]);
+               }
             }
-         });
+         );
 
          return tArr;
       }
