@@ -6,6 +6,8 @@ import camelcaseify from "../../_helpers/transforms";
 
 interface Props {
    currentStatus: string;
+   worker: string;
+   reviewer: string;
    isBlocked: boolean;
    isFixed: boolean;
    isFailed: boolean;
@@ -14,6 +16,8 @@ interface Props {
 
 const StatusOptions: React.FC<Props> = ({
    currentStatus,
+   worker,
+   reviewer,
    hStatusChange,
    isBlocked,
    isFixed,
@@ -148,6 +152,23 @@ const StatusOptions: React.FC<Props> = ({
          case "failed":
             if (!canReview) {
                action = "blocked";
+            }
+            break;
+
+         case "undo":
+            console.log("HERE");
+            if (currentStatus === "forReview") {
+               action = "incomplete";
+            } else if (currentStatus === "complete") {
+               if (worker !== reviewer) {
+                  if (isBlocked) {
+                     action = "blocked";
+                  } else {
+                     action = "forReview";
+                  }
+               } else {
+                  action = "incomplete";
+               }
             }
             break;
       }

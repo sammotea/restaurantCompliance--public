@@ -60,6 +60,8 @@ const Task: React.FC<Props> = ({ task }) => {
                   isBlocked={isBlocked}
                   isFailed={isFailed}
                   isFixed={isFixed}
+                  worker={worker}
+                  reviewer={reviewer}
                   hStatusChange={hStatusChange}
                />
                <MetaOptions taskStatus={currentStatus} />
@@ -82,6 +84,7 @@ const Task: React.FC<Props> = ({ task }) => {
        ***   or regressive (complete -> forReview).
        **/
 
+      console.log(action);
       switch (action) {
          case "markIncomplete":
             break;
