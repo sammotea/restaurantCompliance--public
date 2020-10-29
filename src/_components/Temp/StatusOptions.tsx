@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import Permission from "../../_contexts/permission";
 import CurrentView from "../../_contexts/currentVIew";
-import iconify from "../../_helpers/iconify";
 import camelcaseify from "../../_helpers/transforms";
 
 interface Props {

@@ -254,6 +254,18 @@ ul {
    }
 }
 
+.c-noTasks {
+   padding: $space $pad;
+}
+
+.c-noTasks__title {
+   font-weight: $fw--light;
+   font-size: $bralpha;
+   text-align: center;
+   padding: $space;
+   background: $t--1;
+}
+
 .c-categories {
    padding: $space 0;
 }

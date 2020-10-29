@@ -17,15 +17,7 @@ const Task: React.FC<Props> = ({ task }) => {
    const {
       title,
       category,
-      compliance: {
-         worker,
-         reviewer,
-         status: currentStatus,
-         isBlocked,
-         isFailed,
-         isFixed,
-         comments = [],
-      },
+      compliance: { worker, status: currentStatus },
    } = task;
 
    const [showStatusOptions, setShowStatusOptions] = useState(false);
@@ -55,7 +47,7 @@ const Task: React.FC<Props> = ({ task }) => {
                   task={task}
                   hStatusChange={hStatusChange}
                />
-               <MetaOptions taskStatus={currentStatus} />
+               <MetaOptions currentStatus={currentStatus} />
             </div>
             <div className={`c-task__body`}>
                <Meta />

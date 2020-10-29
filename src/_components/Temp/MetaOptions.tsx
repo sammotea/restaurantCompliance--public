@@ -1,12 +1,11 @@
 import React, { useState, useContext } from "react";
 import Permission from "../../_contexts/permission";
-import iconify from "../../_helpers/iconify";
 
 interface Props {
-   taskStatus: string;
+   currentStatus: string;
 }
 
-const MetaOptions: React.FC<Props> = ({ taskStatus }) => {
+const MetaOptions: React.FC<Props> = ({ currentStatus }) => {
    const canReview = useContext(Permission);
 
    return <>{renderMetaOptions()}</>;
@@ -16,16 +15,18 @@ const MetaOptions: React.FC<Props> = ({ taskStatus }) => {
 
       return (
          <ul className={`c-task__metaOptions`}>
-            {metaOptions.map((status) => {
+            {metaOptions.map((statusOption) => {
                return (
                   <li
-                     key={status}
-                     className={`c-task__metaOption c-task__metaOption--${status} ${
-                        taskStatus === status ? "js-isSelected" : ""
+                     key={statusOption}
+                     className={`c-task__metaOption c-task__metaOption--${statusOption} ${
+                        currentStatus === statusOption
+                           ? "js-isSelected"
+                           : ""
                      }`}
                   >
                      <span
-                        className={iconify.getClass(status)}
+                        className={`c-icon c-icon--${statusOption}`}
                      ></span>
                   </li>
                );

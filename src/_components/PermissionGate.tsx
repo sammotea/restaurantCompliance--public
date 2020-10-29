@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
 
-import User from "../_contexts/user";
 import Permission from "../_contexts/permission";
 
-import Views from "./Views";
 import Categories from "./Categories";
+import NoTasks from "./Temp/NoTasks";
 
 interface Props {
    tasksByStatusObj: iTasksByStatus;
@@ -28,7 +27,7 @@ const PermissionGate: React.FC<Props> = ({
       if (tasksArr.length) {
          return <Categories tasksArr={tasksArr} view={view} />;
       } else {
-         return <>Nothing Here!</>;
+         return <NoTasks view={view} />;
       }
    }
 
