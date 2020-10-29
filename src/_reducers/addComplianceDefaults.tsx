@@ -9,7 +9,7 @@ const addComplianceDefaults = function (acc, cur) {
       status: "incomplete",
       isBlocked: false,
       isFailed: false,
-      workerFlag: false,
+      isFixed: false,
       comments: [],
    };
 

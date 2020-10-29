@@ -37,7 +37,7 @@ const actionSetter = {
    markFixed(payload) {
       return {
          type: "COMPLETE",
-         payload: { workerFlag: true, ...payload },
+         payload: { isFixed: true, ...payload },
       };
    },
 

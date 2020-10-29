@@ -21,7 +21,7 @@ const MetaOptions: React.FC<Props> = ({ taskStatus }) => {
                   <li
                      key={status}
                      className={`c-task__metaOption c-task__metaOption--${status} ${
-                        taskStatus === status ? "js-isActive" : ""
+                        taskStatus === status ? "js-isSelected" : ""
                      }`}
                   >
                      <span

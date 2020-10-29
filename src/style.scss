@@ -428,7 +428,7 @@ ul {
    width: $h--taskOption;
    height: $h--taskOption;
 
-   &.js-isActive {
+   &.js-isSelected {
       background: rgba($white, 0.25);
    }
 }
@@ -491,7 +491,7 @@ ul {
 }
 
 .c-task__metaOption {
-   .c-compliance--incomplete &.js-isActive {
+   .c-compliance--incomplete &.js-isSelected {
       .c-icon:before {
          background-color: $c--1;
       }
@@ -545,7 +545,7 @@ $icons: (
          background-image: url(./_img/i-#{ $icon }.svg);
       }
 
-      .js-isActive &,
+      .js-isSelected &,
       .c-task__currentStatus & {
          &:after {
             background-image: url(./_img/i-#{ $icon }--active.svg);
@@ -562,7 +562,8 @@ $icons: (
  *    on the half-arsed belief that the relative units
  *    avoid magic-number fragility in a future refactor.
  */
-.c-icon--fixed:before {
+.c-task__currentStatus .c-icon--fixed:before,
+.js-isSelected .c-icon--fixed:before {
    border: 0.25 * $h--task transparent solid;
    border-width: 0.25 * $h--task 1.65 * (0.25 * $h--task);
    border-left-color: $c--success;
@@ -579,20 +580,20 @@ $icons: (
    background-color: $t--2;
 }
 
-.js-isActive .c-icon--incomplete:before,
+.js-isSelected .c-icon--incomplete:before,
 .c-task__currentStatus .c-icon--incomplete:before {
    background-color: $t--1;
 }
 
-.js-isActive .c-icon--complete:before,
+.js-isSelected .c-icon--complete:before,
 .c-task__currentStatus .c-icon--complete:before {
    background-color: $c--success;
 }
-.js-isActive .c-icon--failed:before,
+.js-isSelected .c-icon--failed:before,
 .c-task__currentStatus .c-icon--failed:before {
    background-color: $c--fail;
 }
-// .js-isActive .c-icon--fixed:before,
+// .js-isSelected .c-icon--fixed:before,
 // .c-task__currentStatus .c-icon--fixed:before {
 //    background-color: $c--fail;
 // }

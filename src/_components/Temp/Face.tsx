@@ -7,7 +7,7 @@ interface Props {
    currentStatus: string;
    isBlocked: boolean;
    isFailed: boolean;
-   workerFlag: boolean;
+   isFixed: boolean;
    hShowStatusOptions: any;
    hShowMetaOptions: any;
 }
@@ -17,7 +17,7 @@ const Face: React.FC<Props> = ({
    currentStatus,
    isBlocked,
    isFailed,
-   workerFlag,
+   isFixed,
    hShowStatusOptions,
    hShowMetaOptions,
 }) => {
@@ -59,13 +59,13 @@ const Face: React.FC<Props> = ({
             case "complete":
                if (isFailed) {
                   pseudoStatus = "failed";
-               } else if (workerFlag) {
+               } else if (isFixed) {
                   pseudoStatus = "fixed";
                }
          }
       }
 
-      const cl = `c-task__currentStatus c-task__currentStatus--${pseudoStatus} js-isActive`;
+      const cl = `c-task__currentStatus c-task__currentStatus--${pseudoStatus} js-isSelected`;
 
       return (
          <div className={cl}>

@@ -7,6 +7,8 @@ import camelcaseify from "../../_helpers/transforms";
 interface Props {
    currentStatus: string;
    isBlocked: boolean;
+   isFixed: boolean;
+   isFailed: boolean;
    hStatusChange: any;
 }
 
@@ -14,6 +16,8 @@ const StatusOptions: React.FC<Props> = ({
    currentStatus,
    hStatusChange,
    isBlocked,
+   isFixed,
+   isFailed,
 }) => {
    const canReview = useContext(Permission);
    const currentView = useContext(CurrentView);
@@ -34,28 +38,11 @@ const StatusOptions: React.FC<Props> = ({
                 *    as 'statusOption' for everyone else.
                 */
 
-               let pseudoStatus = getPseudoStatus(statusOption);
-               let isActive = false;
-
-               if (!canReview && currentStatus === "forReview") {
-                  if (
-                     (pseudoStatus === "forReview" && !isBlocked) ||
-                     (pseudoStatus === "blocked" && isBlocked)
-                  ) {
-                     isActive = true;
-                  }
-               } else {
-                  if (currentStatus === pseudoStatus) {
-                     isActive = true;
-                  }
-               }
-
+               const isSelected = checkIsCurrentStatus(statusOption);
+               const action = getActionFromStatus(statusOption);
                const cl = `c-task__statusOption c-task__statusOption--${statusOption} ${
-                  isActive ? "js-isActive" : ""
+                  isSelected ? "js-isSelected" : ""
                }`;
-
-               // NB Uses pseudoStatus *not* statusOption
-               const action = getActionFromStatus(pseudoStatus);
 
                return (
                   <li
@@ -93,27 +80,65 @@ const StatusOptions: React.FC<Props> = ({
       return orderOptions(statusOptions);
    }
 
-   function getPseudoStatus(s) {
-      let pseudoStatus = s;
+   function checkIsCurrentStatus(statusOption) {
+      let isSelected = false;
 
-      if (!canReview) {
-         switch (s) {
-            case "complete":
-               pseudoStatus = "forReview";
-               break;
-            case "failed":
-               pseudoStatus = "blocked";
-               break;
-         }
+      /**
+       *    Being explicit: if there is a simpler, more robust
+       *    way of writing this logic I have failed to find it.
+       */
+      switch (currentStatus) {
+         case "incomplete":
+            isSelected = currentStatus === statusOption;
+            break;
+
+         case "forReview":
+            if (!canReview) {
+               // "Complete" and awaiting review
+               if (statusOption === "complete" && !isBlocked) {
+                  isSelected = true;
+               }
+
+               // "Failed" and awaiting review
+               if (statusOption === "failed" && isBlocked) {
+                  isSelected = true;
+               }
+            } else {
+               isSelected = currentStatus === statusOption;
+            }
+
+            break;
+
+         case "complete":
+            // Done
+            if (
+               statusOption === "complete" &&
+               !isFailed &&
+               !isFixed
+            ) {
+               isSelected = true;
+            }
+
+            // Failed
+            if (statusOption === "failed" && isFailed) {
+               isSelected = true;
+            }
+
+            // Fixed
+            if (statusOption === "fixed" && isFixed) {
+               isSelected = true;
+            }
+
+            break;
       }
 
-      return pseudoStatus;
+      return isSelected;
    }
 
-   function getActionFromStatus(pseudoStatus) {
-      let action = pseudoStatus;
+   function getActionFromStatus(statusOption) {
+      let action = statusOption;
 
-      switch (pseudoStatus) {
+      switch (statusOption) {
          case "complete":
             if (!canReview) {
                action = "forReview";

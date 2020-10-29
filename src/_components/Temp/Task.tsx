@@ -23,7 +23,7 @@ const Task: React.FC<Props> = ({ task }) => {
          status: currentStatus,
          isBlocked,
          isFailed,
-         workerFlag,
+         isFixed,
          comments = [],
       },
    } = task;
@@ -51,13 +51,15 @@ const Task: React.FC<Props> = ({ task }) => {
                   currentStatus={currentStatus}
                   isBlocked={isBlocked}
                   isFailed={isFailed}
-                  workerFlag={workerFlag}
+                  isFixed={isFixed}
                   hShowStatusOptions={hToggleShowStatusOptions}
                   hShowMetaOptions={hToggleShowMetaOptions}
                />
                <StatusOptions
                   currentStatus={currentStatus}
                   isBlocked={isBlocked}
+                  isFailed={isFailed}
+                  isFixed={isFixed}
                   hStatusChange={hStatusChange}
                />
                <MetaOptions taskStatus={currentStatus} />

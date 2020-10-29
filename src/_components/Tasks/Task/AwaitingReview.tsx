@@ -131,7 +131,7 @@ const forReview: React.FC<Props> = ({
       dispatch(
          actionSetter.complete({
             ...compliancePayload,
-            workerFlag: true,
+            isFixed: true,
          })
       );
    }

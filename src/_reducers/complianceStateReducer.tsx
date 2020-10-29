@@ -20,7 +20,7 @@ const complianceStateReducer = (state, action) => {
       status: "incomplete",
       worker: "",
       reviewer: "",
-      workerFlag: false,
+      isFixed: false,
       isBlocked: false,
       isFailed: false,
    };
@@ -29,7 +29,7 @@ const complianceStateReducer = (state, action) => {
       case "FORREVIEW":
          if (compliance["reviewer"]) {
             // Resetting from 'complete'
-            reset("reviewer", "workerFlag", "isFailed");
+            reset("reviewer", "isFixed", "isFailed");
          } else {
             if (validatePayload("worker")) {
                // Advancing from 'incomplete'
@@ -129,7 +129,7 @@ const complianceStateReducer = (state, action) => {
    }
 
    function updateWorkerFlag() {
-      compliance["workerFlag"] = getValidatedBool("workerFlag");
+      compliance["isFixed"] = getValidatedBool("isFixed");
    }
 
    function updateIsBlocked() {

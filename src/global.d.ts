@@ -31,7 +31,7 @@ interface iTaskRaw {
 //   isComplete: boolean;
 //   hasProblem: boolean;
 //   isFailed: boolean;
-//   workerFlag?: boolean;
+//   isFixed?: boolean;
 //   subtasks?: string[];
 // }
 
@@ -46,7 +46,7 @@ interface iComplianceObj {
    isFailed?: boolean;
    worker: string;
    reviewer: string;
-   workerFlag: boolean; // Quality assurance
+   isFixed: boolean; // Quality assurance
    comments?: any;
 }
 
@@ -56,7 +56,7 @@ interface TodoActions {
    setStatus(todo: iTask, status: string);
    setworker(todo: iTask, worker: string): iTask;
    setReviewer(todo: iTask, reviewer: string): iTask;
-   setworkerFlag(todo: iTask, flag: boolean): iTask;
+   setisFixed(todo: iTask, flag: boolean): iTask;
    forReview(
       title: string,
       category: string,
@@ -68,7 +68,7 @@ interface TodoActions {
       category: string,
       worker: string,
       reviewer: string,
-      workerFlag?: boolean
+      isFixed?: boolean
    ): void;
    isFailed(
       title: string,
