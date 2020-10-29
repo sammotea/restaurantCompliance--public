@@ -5,24 +5,22 @@ import iconify from "../../_helpers/iconify";
 import camelcaseify from "../../_helpers/transforms";
 
 interface Props {
-   currentStatus: string;
-   worker: string;
-   reviewer: string;
-   isBlocked: boolean;
-   isFixed: boolean;
-   isFailed: boolean;
+   task: iTask;
    hStatusChange: any;
 }
 
-const StatusOptions: React.FC<Props> = ({
-   currentStatus,
-   worker,
-   reviewer,
-   hStatusChange,
-   isBlocked,
-   isFixed,
-   isFailed,
-}) => {
+const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
+   const {
+      compliance: {
+         worker,
+         reviewer,
+         status: currentStatus,
+         isBlocked,
+         isFailed,
+         isFixed,
+      },
+   } = task;
+
    const canReview = useContext(Permission);
    const currentView = useContext(CurrentView);
 
@@ -156,7 +154,6 @@ const StatusOptions: React.FC<Props> = ({
             break;
 
          case "undo":
-            console.log("HERE");
             if (currentStatus === "forReview") {
                action = "incomplete";
             } else if (currentStatus === "complete") {

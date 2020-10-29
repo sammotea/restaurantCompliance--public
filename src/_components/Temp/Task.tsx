@@ -47,21 +47,12 @@ const Task: React.FC<Props> = ({ task }) => {
          >
             <div className={`c-task__header`}>
                <Face
-                  title={title}
-                  currentStatus={currentStatus}
-                  isBlocked={isBlocked}
-                  isFailed={isFailed}
-                  isFixed={isFixed}
+                  task={task}
                   hShowStatusOptions={hToggleShowStatusOptions}
                   hShowMetaOptions={hToggleShowMetaOptions}
                />
                <StatusOptions
-                  currentStatus={currentStatus}
-                  isBlocked={isBlocked}
-                  isFailed={isFailed}
-                  isFixed={isFixed}
-                  worker={worker}
-                  reviewer={reviewer}
+                  task={task}
                   hStatusChange={hStatusChange}
                />
                <MetaOptions taskStatus={currentStatus} />
@@ -84,7 +75,6 @@ const Task: React.FC<Props> = ({ task }) => {
        ***   or regressive (complete -> forReview).
        **/
 
-      console.log(action);
       switch (action) {
          case "markIncomplete":
             break;

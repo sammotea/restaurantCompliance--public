@@ -1,26 +1,26 @@
 import React, { useState, useContext } from "react";
-import iconify from "../../_helpers/iconify";
 import Permission from "../../_contexts/permission";
 
 interface Props {
-   title: string;
-   currentStatus: string;
-   isBlocked: boolean;
-   isFailed: boolean;
-   isFixed: boolean;
+   task: iTask;
    hShowStatusOptions: any;
    hShowMetaOptions: any;
 }
 
 const Face: React.FC<Props> = ({
-   title,
-   currentStatus,
-   isBlocked,
-   isFailed,
-   isFixed,
+   task,
    hShowStatusOptions,
    hShowMetaOptions,
 }) => {
+   const {
+      title,
+      compliance: {
+         status: currentStatus,
+         isBlocked,
+         isFailed,
+         isFixed,
+      },
+   } = task;
    const canReview = useContext(Permission);
 
    return (
