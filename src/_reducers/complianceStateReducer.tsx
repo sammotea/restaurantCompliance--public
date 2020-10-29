@@ -21,26 +21,34 @@ const complianceStateReducer = (state, action) => {
       worker: "",
       reviewer: "",
       workerFlag: false,
+      isBlocked: false,
+      isFailed: false,
    };
 
    switch (action.type) {
-      case "AWAITINGREVIEW":
-         if (validatePayload("worker")) {
-            reset("reviewer", "workerFlag");
-
-            updateWorker();
-            updateStatus(p.isBlocked ? "blocked" : "awaitingReview");
+      case "FORREVIEW":
+         if (compliance["reviewer"]) {
+            // Resetting from 'complete'
+            reset("reviewer", "workerFlag", "isFailed");
+         } else {
+            if (validatePayload("worker")) {
+               // Advancing from 'incomplete'
+               updateWorker();
+               updateIsBlocked();
+            }
          }
+
+         updateStatus("forReview");
 
          break;
 
       case "COMPLETE":
-      case "FAILED":
          if (validatePayload("worker", "reviewer")) {
             updateWorker();
             updateReviewer();
             updateWorkerFlag();
-            updateStatus(action.type.toLowerCase());
+            updateIsFailed();
+            updateStatus("complete");
          }
 
          break;
@@ -121,7 +129,15 @@ const complianceStateReducer = (state, action) => {
    }
 
    function updateWorkerFlag() {
-      compliance["workerFlag"] = getValidatedWorkerFlag();
+      compliance["workerFlag"] = getValidatedBool("workerFlag");
+   }
+
+   function updateIsBlocked() {
+      compliance["isBlocked"] = getValidatedBool("isBlocked");
+   }
+
+   function updateIsFailed() {
+      compliance["isFailed"] = getValidatedBool("isFailed");
    }
 
    function validatePayload(...keys) {
@@ -160,25 +176,17 @@ const complianceStateReducer = (state, action) => {
    }
 
    function validateStatus(status) {
-      if (
-         [
-            "incomplete",
-            "blocked",
-            "awaitingReview",
-            "complete",
-            "failed",
-         ].includes(status)
-      ) {
+      if (["incomplete", "forReview", "complete"].includes(status)) {
          return status;
       } else {
          throw new Error("validateStatus() : status not recognised");
       }
    }
 
-   function getValidatedWorkerFlag() {
-      return p.workerFlag && "boolean" === typeof p.workerFlag
-         ? p.workerFlag
-         : getDefault("workerFlag");
+   function getValidatedBool(key) {
+      return p[key] && "boolean" === typeof p[key]
+         ? p[key]
+         : getDefault(key);
    }
 
    function getValidatedUser(role) {

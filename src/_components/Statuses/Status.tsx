@@ -31,7 +31,7 @@ const Status: React.FC<Props> = ({ tasksArr, title }) => {
             titleText = "Needs doing";
             break;
 
-         case "awaitingReview":
+         case "forReview":
             titleText = "Needs sign-off";
             break;
 

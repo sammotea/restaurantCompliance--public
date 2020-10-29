@@ -3,7 +3,7 @@ const iconify = {
       let id = status;
 
       switch (status) {
-         case "awaitingReview":
+         case "forReview":
             id = "complete";
             break;
       }

@@ -1,6 +1,6 @@
 interface iTasksByStatus {
    incomplete?: iTask[];
-   awaitingReview?: iTask[];
+   forReview?: iTask[];
    complete?: iTask[];
 }
 
@@ -42,6 +42,8 @@ interface iTask extends iTaskRaw {
 
 interface iComplianceObj {
    status: string;
+   isBlocked?: boolean;
+   isFailed?: boolean;
    worker: string;
    reviewer: string;
    workerFlag: boolean; // Quality assurance

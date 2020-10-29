@@ -28,7 +28,7 @@ const Task: React.FC<Props> = ({ task }) => {
                el = <Incomplete {...task} />;
                break;
 
-            case "awaitingReview":
+            case "forReview":
             case "blocked":
                el = <AwaitingReview {...task} />;
                break;

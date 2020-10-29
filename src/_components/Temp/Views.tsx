@@ -13,7 +13,7 @@ const Views: React.FC<Props> = ({ hUpdateView }) => {
    const cl = `c-viewsWrap`;
 
    if (canReview) {
-      statuses.push("awaitingReview", "complete");
+      statuses.push("forReview", "complete");
    }
 
    return <div className={cl}><ul className="c-views">{renderViews()}</ul></div>;
@@ -38,7 +38,7 @@ const Views: React.FC<Props> = ({ hUpdateView }) => {
             return 'Get it done';
             break;
 
-            case 'awaitingReview':
+            case 'forReview':
                return 'Needs sign-off';
                break;
 

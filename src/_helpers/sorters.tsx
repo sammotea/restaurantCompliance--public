@@ -2,7 +2,7 @@ const sorters = {
    byStatus: function (statusesArr) {
       const statusOrder = {
          incomplete: 0,
-         awaitingReview: 100,
+         forReview: 100,
          blocked: 100,
          complete: 1000,
          failed: 1000,

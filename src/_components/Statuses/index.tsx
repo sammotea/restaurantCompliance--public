@@ -15,41 +15,39 @@ const Views: React.FC<Props> = ({ tasksByStatusObj }) => {
       const cl = `c-views`;
       const statuses = [];
 
-      ["incomplete", "awaitingReview", "complete"].forEach(
-         (status) => {
-            if (tasksByStatusObj.hasOwnProperty(status)) {
-               let tasksArr = [];
+      ["incomplete", "forReview", "complete"].forEach((status) => {
+         if (tasksByStatusObj.hasOwnProperty(status)) {
+            let tasksArr = [];
 
-               switch (status) {
-                  case "awaitingReview":
-                     if (tasksByStatusObj.hasOwnProperty("blocked")) {
-                        tasksArr = tasksArr.concat(
-                           tasksByStatusObj["blocked"]
-                        );
-                     }
-                     break;
+            switch (status) {
+               case "forReview":
+                  if (tasksByStatusObj.hasOwnProperty("blocked")) {
+                     tasksArr = tasksArr.concat(
+                        tasksByStatusObj["blocked"]
+                     );
+                  }
+                  break;
 
-                  case "complete":
-                     if (tasksByStatusObj.hasOwnProperty("failed")) {
-                        tasksArr = tasksArr.concat(
-                           tasksByStatusObj["failed"]
-                        );
-                     }
-                     break;
-               }
-
-               tasksArr = tasksArr.concat(tasksByStatusObj[status]);
-
-               statuses.push(
-                  <Status
-                     key={status}
-                     title={status}
-                     tasksArr={tasksArr}
-                  />
-               );
+               case "complete":
+                  if (tasksByStatusObj.hasOwnProperty("failed")) {
+                     tasksArr = tasksArr.concat(
+                        tasksByStatusObj["failed"]
+                     );
+                  }
+                  break;
             }
+
+            tasksArr = tasksArr.concat(tasksByStatusObj[status]);
+
+            statuses.push(
+               <Status
+                  key={status}
+                  title={status}
+                  tasksArr={tasksArr}
+               />
+            );
          }
-      );
+      });
 
       return <ul className={cl}>{sorters.byStatus(statuses)}</ul>;
    }

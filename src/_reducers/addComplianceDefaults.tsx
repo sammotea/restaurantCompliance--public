@@ -7,6 +7,8 @@ const addComplianceDefaults = function (acc, cur) {
       worker: "",
       reviewer: "",
       status: "incomplete",
+      isBlocked: false,
+      isFailed: false,
       workerFlag: false,
       comments: [],
    };

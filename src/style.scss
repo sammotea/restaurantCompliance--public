@@ -67,10 +67,23 @@ $w--metaOptions1: $w--taskOptionDec + (2 * $h--taskOption) +
    $p--taskOptionEnd + $p--taskOptionPad;
 
 $d--skew: 2deg, 1deg;
+
+@function calcOptionsWidth($numOptions: 1, $hasStandAlone: false) {
+   $width: 0;
+
+   @if $hasStandAlone {
+      $width: $width + $p--taskOptionEnd;
+   } // stand-alone icon
+   $width: $width + $w--taskOptionDec; // decoration;
+   $width: $width + $p--taskOptionPad; // general padding;
+   $width: $width + ($numOptions * $h--taskOption);
+
+   @return $width;
+}
+
 @mixin bg--sm() {
    margin-left: -3px;
    margin-top: -3px;
-   //transform: skew($d--skew);
 }
 
 @mixin avatar($name) {
@@ -116,7 +129,7 @@ ul {
       background: $g--1;
    }
 
-   .c-compliance--awaitingReview & {
+   .c-compliance--forReview & {
       background: $g--2;
    }
 
@@ -168,7 +181,7 @@ ul {
       @include _avatar("plain1.svg");
    }
 
-   .c-compliance--awaitingReview &:after {
+   .c-compliance--forReview &:after {
       @include _avatar("plain2.svg");
    }
 
@@ -184,7 +197,7 @@ ul {
       @include _avatar("visor1.svg");
    }
 
-   .c-compliance--awaitingReview & {
+   .c-compliance--forReview & {
       @include _avatar("visor2.svg");
    }
 
@@ -207,7 +220,7 @@ ul {
       transform: translate3d(0, 0, 0);
    }
 
-   .c-compliance--awaitingReview & {
+   .c-compliance--forReview & {
       transform: translate3d(-100%, 0, 0);
    }
 
@@ -307,11 +320,27 @@ ul {
    }
 
    .c-compliance--incomplete .js-showStatusOptions & {
-      transform: translate3d(#{$w--statusOptions1}, 0, 0);
+      transform: translate3d(#{calcOptionsWidth(3)}, 0, 0);
    }
 
    .c-compliance--incomplete .js-showMetaOptions & {
-      transform: translate3d(-#{$w--metaOptions1}, 0, 0);
+      transform: translate3d(-#{calcOptionsWidth(2, true)}, 0, 0);
+   }
+
+   .c-compliance--forReview .js-showStatusOptions & {
+      transform: translate3d(#{calcOptionsWidth(4, true)}, 0, 0);
+   }
+
+   .c-compliance--forReview .js-showMetaOptions & {
+      transform: translate3d(-#{calcOptionsWidth(2, true)}, 0, 0);
+   }
+
+   .c-compliance--complete .js-showStatusOptions & {
+      transform: translate3d(#{calcOptionsWidth(4, true)}, 0, 0);
+   }
+
+   .c-compliance--complete .js-showMetaOptions & {
+      transform: translate3d(-#{calcOptionsWidth(2, true)}, 0, 0);
    }
 }
 
@@ -425,7 +454,7 @@ ul {
       }
    }
 
-   .c-compliance--awaitingReview & {
+   .c-compliance--forReview & {
       background: $g--2;
 
       &:after {
@@ -478,6 +507,8 @@ $icons: (
    "failed",
    "fixed",
    "complete",
+   "forReview",
+   "blocked",
    "undo",
    "info",
    "comments"
@@ -514,7 +545,8 @@ $icons: (
          background-image: url(./_img/i-#{ $icon }.svg);
       }
 
-      .js-isActive & {
+      .js-isActive &,
+      .c-task__currentStatus & {
          &:after {
             background-image: url(./_img/i-#{ $icon }--active.svg);
          }
@@ -522,18 +554,48 @@ $icons: (
    }
 }
 
-.js-isActive .c-icon--incomplete:before {
+/*
+ *    We’re going from a circular background to an equilateral
+ *    triangle as a one-off…
+ *
+ *    Obviously requires Pythagorous. I’ve eyeballed it instead
+ *    on the half-arsed belief that the relative units
+ *    avoid magic-number fragility in a future refactor.
+ */
+.c-icon--fixed:before {
+   border: 0.25 * $h--task transparent solid;
+   border-width: 0.25 * $h--task 1.65 * (0.25 * $h--task);
+   border-left-color: $c--success;
+   width: 0;
+   height: 0;
+   border-radius: 0;
+   background: transparent;
+   transform: rotate(30deg) translate3d(-20%, 15%, 0);
+}
+
+// ForReview view icons
+.c-task__currentStatus .c-icon--forReview:before,
+.c-task__currentStatus .c-icon--blocked:before {
+   background-color: $t--2;
+}
+
+.js-isActive .c-icon--incomplete:before,
+.c-task__currentStatus .c-icon--incomplete:before {
    background-color: $t--1;
 }
-.js-isActive .c-icon--complete:before {
+
+.js-isActive .c-icon--complete:before,
+.c-task__currentStatus .c-icon--complete:before {
    background-color: $c--success;
 }
-.js-isActive .c-icon--failed:before {
+.js-isActive .c-icon--failed:before,
+.c-task__currentStatus .c-icon--failed:before {
    background-color: $c--fail;
 }
-.js-isActive .c-icon--fixed:before {
-   background-color: $c--fail;
-}
+// .js-isActive .c-icon--fixed:before,
+// .c-task__currentStatus .c-icon--fixed:before {
+//    background-color: $c--fail;
+// }
 
 // .c-view {
 //    & + & {
@@ -584,7 +646,7 @@ $icons: (
 //       }
 //    }
 
-//    .c-view--awaitingReview &,
+//    .c-view--forReview &,
 //    .c-view--complete & {
 //       display: flex;
 //       flex-wrap: wrap;
@@ -729,12 +791,12 @@ $icons: (
 //       margin-top: 0;
 //    }
 
-//    .c-task--awaitingReview .c-task__title,
+//    .c-task--forReview .c-task__title,
 //    .c-task--blocked .c-task__title {
 //       text-decoration: line-through;
 //    }
 
-//    .c-task--awaitingReview .c-task__title {
+//    .c-task--forReview .c-task__title {
 //       color: $t--2;
 //    }
 
@@ -743,7 +805,7 @@ $icons: (
 //    }
 // }
 
-// .c-categories--awaitingReview {
+// .c-categories--forReview {
 //    .c-task__title {
 //       padding-right: 0;
 //       width: 50%;

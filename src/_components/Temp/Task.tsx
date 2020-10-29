@@ -17,7 +17,15 @@ const Task: React.FC<Props> = ({ task }) => {
    const {
       title,
       category,
-      compliance: { worker, reviewer, status, comments = [] },
+      compliance: {
+         worker,
+         reviewer,
+         status: currentStatus,
+         isBlocked,
+         isFailed,
+         workerFlag,
+         comments = [],
+      },
    } = task;
 
    const [showStatusOptions, setShowStatusOptions] = useState(false);
@@ -33,22 +41,26 @@ const Task: React.FC<Props> = ({ task }) => {
    function renderTask() {
       return (
          <li
-            className={`c-task c-task--${status} ${
+            className={`c-task c-task--${currentStatus} ${
                showStatusOptions ? "js-showStatusOptions" : ""
             } ${showMetaOptions ? "js-showMetaOptions" : ""}`}
          >
             <div className={`c-task__header`}>
                <Face
                   title={title}
-                  status={status}
+                  currentStatus={currentStatus}
+                  isBlocked={isBlocked}
+                  isFailed={isFailed}
+                  workerFlag={workerFlag}
                   hShowStatusOptions={hToggleShowStatusOptions}
                   hShowMetaOptions={hToggleShowMetaOptions}
                />
                <StatusOptions
-                  taskStatus={status}
+                  currentStatus={currentStatus}
+                  isBlocked={isBlocked}
                   hStatusChange={hStatusChange}
                />
-               <MetaOptions taskStatus={status} />
+               <MetaOptions taskStatus={currentStatus} />
             </div>
             <div className={`c-task__body`}>
                <Meta />
@@ -57,39 +69,36 @@ const Task: React.FC<Props> = ({ task }) => {
       );
    }
 
-   function hStatusChange(newStatus) {
-      let action;
+   function hStatusChange(action) {
       const payload = {
          taskId: title,
          taskCat: category,
       };
-      const s = getStatusBasedOnPermissionLevel(newStatus);
 
-      console.log(s);
+      /**
+       ***   NB: Actions can be progressive (incomplete -> complete)
+       ***   or regressive (complete -> forReview).
+       **/
 
-      switch (s) {
-         case "incomplete":
-            action = "reset";
+      switch (action) {
+         case "markIncomplete":
             break;
 
-         case "blocked":
-            payload["isBlocked"] = true;
-         // NB no break: uses awaitingReview case settings
+         case "markBlocked":
+         case "markForReview":
+            /**
+             ***   For progress we mark as user, otherwise
+             ***   we keep it unchanged (i.e. don’t change
+             ***   the worker if the reviewer is undoing a
+             ***   mismarked-completed task.)
+             **/
 
-         case "awaitingReview":
-            action = "forReview";
             payload["worker"] = worker ? worker : user;
-
             break;
 
-         case "complete":
-            action = "complete";
-            payload["worker"] = worker ? worker : user;
-            payload["reviewer"] = user;
-            break;
-
-         case "failed":
-            action = "fail";
+         case "markFixed":
+         case "markFailed":
+         case "markComplete":
             payload["worker"] = worker ? worker : user;
             payload["reviewer"] = user;
             break;
@@ -112,7 +121,7 @@ const Task: React.FC<Props> = ({ task }) => {
                break;
 
             case "complete":
-               s = "awaitingReview";
+               s = "forReview";
                break;
          }
       }

@@ -4,14 +4,20 @@ import Permission from "../../_contexts/permission";
 
 interface Props {
    title: string;
-   status: string;
+   currentStatus: string;
+   isBlocked: boolean;
+   isFailed: boolean;
+   workerFlag: boolean;
    hShowStatusOptions: any;
    hShowMetaOptions: any;
 }
 
 const Face: React.FC<Props> = ({
    title,
-   status,
+   currentStatus,
+   isBlocked,
+   isFailed,
+   workerFlag,
    hShowStatusOptions,
    hShowMetaOptions,
 }) => {
@@ -32,26 +38,38 @@ const Face: React.FC<Props> = ({
    );
 
    function renderCurrentStatus() {
-      // Do blocked etc.
-      let currentStatus = status;
+      let pseudoStatus = currentStatus;
 
       if (!canReview) {
-         switch (status) {
-            case "blocked":
-               currentStatus = "failed";
+         if (currentStatus === "forReview") {
+            if (isBlocked) {
+               pseudoStatus = "failed";
+            } else {
+               pseudoStatus = "complete";
+            }
+         }
+      } else {
+         switch (currentStatus) {
+            case "forReview":
+               if (isBlocked) {
+                  pseudoStatus = "blocked";
+               }
                break;
 
-            case "awaitingReview":
-               currentStatus = "complete";
-               break;
+            case "complete":
+               if (isFailed) {
+                  pseudoStatus = "failed";
+               } else if (workerFlag) {
+                  pseudoStatus = "fixed";
+               }
          }
       }
 
-      const cl = `c-task__currentStatus c-task__currentStatus--${currentStatus} js-isActive`;
+      const cl = `c-task__currentStatus c-task__currentStatus--${pseudoStatus} js-isActive`;
 
       return (
          <div className={cl}>
-            <span className={iconify.getClass(currentStatus)}></span>
+            <span className={`c-icon c-icon--${pseudoStatus}`}></span>
          </div>
       );
    }

@@ -2,15 +2,18 @@ import React, { useState, useContext } from "react";
 import Permission from "../../_contexts/permission";
 import CurrentView from "../../_contexts/currentVIew";
 import iconify from "../../_helpers/iconify";
+import camelcaseify from "../../_helpers/transforms";
 
 interface Props {
-   taskStatus: string;
+   currentStatus: string;
+   isBlocked: boolean;
    hStatusChange: any;
 }
 
 const StatusOptions: React.FC<Props> = ({
-   taskStatus,
+   currentStatus,
    hStatusChange,
+   isBlocked,
 }) => {
    const canReview = useContext(Permission);
    const currentView = useContext(CurrentView);
@@ -22,34 +25,46 @@ const StatusOptions: React.FC<Props> = ({
 
       return (
          <ul className={`c-task__statusOptions`}>
-            {statusOptions.map((status) => {
-               // PENDING REFACTOR
-               let visibleStatus = status;
+            {statusOptions.map((statusOption) => {
+               /**
+                *    Tasks marked forReview show as if they have been
+                *    completed to !canReview-ers.
+                *
+                *    We use 'pseudoStatus' to account for that: it’s the sam
+                *    as 'statusOption' for everyone else.
+                */
 
-               if (!canReview) {
-                  switch (status) {
-                     case "blocked":
-                        visibleStatus = "failed";
-                        break;
+               let pseudoStatus = getPseudoStatus(statusOption);
+               let isActive = false;
 
-                     case "awaitingReview":
-                        visibleStatus = "complete";
-                        break;
+               if (!canReview && currentStatus === "forReview") {
+                  if (
+                     (pseudoStatus === "forReview" && !isBlocked) ||
+                     (pseudoStatus === "blocked" && isBlocked)
+                  ) {
+                     isActive = true;
+                  }
+               } else {
+                  if (currentStatus === pseudoStatus) {
+                     isActive = true;
                   }
                }
 
-               const cl = `c-task__statusOption c-task__statusOption--${visibleStatus} ${
-                  taskStatus === status ? "js-isActive" : ""
+               const cl = `c-task__statusOption c-task__statusOption--${statusOption} ${
+                  isActive ? "js-isActive" : ""
                }`;
+
+               // NB Uses pseudoStatus *not* statusOption
+               const action = getActionFromStatus(pseudoStatus);
 
                return (
                   <li
-                     key={visibleStatus}
+                     key={statusOption}
                      className={cl}
-                     onClick={(e) => hStatusClick(visibleStatus)}
+                     onClick={(e) => hStatusClick(action)}
                   >
                      <span
-                        className={iconify.getClass(visibleStatus)}
+                        className={`c-icon c-icon--${statusOption}`}
                      ></span>
                   </li>
                );
@@ -59,51 +74,68 @@ const StatusOptions: React.FC<Props> = ({
    }
 
    function getStatusOptions() {
-      const statusOptions = ["incomplete"];
+      const statusOptions = [];
 
-      if (!canReview) {
-         // Limited permissions
-         statusOptions.push("awaitingReview", "blocked");
-      } else {
-         switch (currentView) {
-            case "incomplete":
-               statusOptions.push("complete", "failed");
-               break;
+      switch (currentView) {
+         case "incomplete":
+            statusOptions.push("incomplete", "complete", "failed");
+            break;
 
-            case "awaitingReview":
-               statusOptions.push(
-                  "complete",
-                  "failed",
-                  "fixed",
-                  "undo"
-               );
-               break;
+         case "forReview":
+         case "complete":
+            statusOptions.push("complete", "failed", "fixed", "undo");
+            break;
 
-            case "complete":
-               statusOptions.push(
-                  "complete",
-                  "failed",
-                  "fixed",
-                  "undo"
-               );
-               break;
-
-            default:
-               throw new Error("getStatusOptions: unrecognised view");
-         }
+         default:
+            throw new Error("getStatusOptions: unrecognised view");
       }
 
       return orderOptions(statusOptions);
    }
 
+   function getPseudoStatus(s) {
+      let pseudoStatus = s;
+
+      if (!canReview) {
+         switch (s) {
+            case "complete":
+               pseudoStatus = "forReview";
+               break;
+            case "failed":
+               pseudoStatus = "blocked";
+               break;
+         }
+      }
+
+      return pseudoStatus;
+   }
+
+   function getActionFromStatus(pseudoStatus) {
+      let action = pseudoStatus;
+
+      switch (pseudoStatus) {
+         case "complete":
+            if (!canReview) {
+               action = "forReview";
+            }
+            break;
+
+         case "failed":
+            if (!canReview) {
+               action = "blocked";
+            }
+            break;
+      }
+
+      return camelcaseify("mark " + action);
+   }
+
    function orderOptions(options) {
       const statusOrder = {
          incomplete: 1,
-         awaitingReview: 101,
-         blocked: 102,
+         complete: 101,
          fixed: 1001,
-         complete: 1002,
-         failed: 1003,
+         failed: 1002,
          undo: 10001,
       };
 
@@ -112,8 +144,8 @@ const StatusOptions: React.FC<Props> = ({
       });
    }
 
-   function hStatusClick(status) {
-      hStatusChange(status);
+   function hStatusClick(pseudoStatus) {
+      hStatusChange(pseudoStatus);
    }
 };
 
