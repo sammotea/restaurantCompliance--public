@@ -51,7 +51,7 @@ const Category: React.FC<Props> = ({ tasksArr, title }) => {
          if (task.compliance.status === currentView) tasks++;
       });
 
-      return tasks ? tasks : "All done!";
+      return tasks ? tasks : "-";
    }
 
    function hTitleClick() {

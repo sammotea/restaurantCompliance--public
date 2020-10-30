@@ -29,6 +29,7 @@ $g--1: linear-gradient(to right, $c--1, $c--1x);
 $g--2: linear-gradient(to right, $c--2, $c--2x);
 $g--3: linear-gradient(to right, $c--3, $c--3x);
 $g--bl: linear-gradient(to right, $t--4, $black);
+$g--t: linear-gradient(to right, $t--2, $t--3);
 
 $f--1: freight-sans-pro;
 $f--lh: 1.3;
@@ -282,28 +283,23 @@ ul {
       left: 0;
       right: 0;
       top: 100%;
-      background: $black;
+      background: $g--t;
       transition: $period--fast;
-      filter: grayscale(100%);
-   }
-
-   .c-compliance--incomplete &:before {
-      background: $g--1;
-   }
-
-   .c-compliance--forReview &:before {
-      background: $g--2;
-   }
-
-   .c-compliance--complete &:before {
-      background: $g--3;
    }
 
    .js-isVisible & {
       color: $c--text;
 
-      &:before {
-         filter: grayscale(0);
+      .c-compliance--incomplete &:before {
+         background: $g--1;
+      }
+
+      .c-compliance--forReview &:before {
+         background: $g--2;
+      }
+
+      .c-compliance--complete &:before {
+         background: $g--3;
       }
    }
 }
@@ -311,13 +307,29 @@ ul {
 .c-tasks {
    margin-right: $pad;
    overflow: hidden;
+   max-height: 0;
+
+   .js-isVisible & {
+      max-height: 10000px; // unnecessarily large
+   }
+
    &:not(:first-child) {
-      margin-top: 1.5 * $space;
+      margin-top: 0;
+
+      .js-isVisible & {
+         margin-top: 1.5 * $space;
+      }
    }
 }
 
 .c-task {
    position: relative;
+   transition: $period--fast;
+   transform: translate3d(0, 50%, 0);
+
+   .js-isVisible & {
+      transform: translate3d(0, 0, 0);
+   }
 
    & + & {
       margin-top: $pad;
@@ -406,9 +418,34 @@ ul {
       transition: $period--fast;
    }
 
+   span {
+      display: inline-block;
+      position: relative;
+
+      &:after {
+         content: "";
+         position: absolute;
+         left: -0.25 * $pad;
+         right: -0.25 * $pad;
+         top: 50%;
+         max-width: 0;
+         transition: $period--fast;
+         border-bottom: $borderette $t--3 solid;
+         transform: translate3d(0, -50%, 0);
+      }
+   }
+
    .js-showStatusOptions & {
       &:before {
          opacity: 0;
+      }
+   }
+
+   .c-compliance--incomplete .c-task--forReview & {
+      color: $t--3;
+
+      span:after {
+         max-width: 100vw;
       }
    }
 }

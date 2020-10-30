@@ -32,7 +32,7 @@ const Face: React.FC<Props> = ({
             {renderCurrentStatus()}
          </div>
          <h1 className={`c-task__title`} onClick={hTitleClick}>
-            {getTitle()}
+            <span>{getTitle()}</span>
          </h1>
       </div>
    );
