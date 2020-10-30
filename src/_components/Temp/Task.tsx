@@ -19,7 +19,13 @@ const Task: React.FC<Props> = ({ task }) => {
    const {
       title,
       category,
-      compliance: { worker, status: currentStatus, comments },
+      compliance: {
+         worker,
+         reviewer,
+         status: currentStatus,
+         comments,
+      },
+      subtasks,
    } = task;
 
    const [showStatusOptions, setShowStatusOptions] = useState(false);
@@ -87,10 +93,19 @@ const Task: React.FC<Props> = ({ task }) => {
 
             case "info":
                if (currentStatus === "incomplete") {
-                  components.push(<Subtasks />);
+                  console.log(subtasks);
+                  components.push(
+                     <Subtasks key={"subtasks"} subtasks={subtasks} />
+                  );
                } else {
                   if (canReview) {
-                     components.push(<History />);
+                     components.push(
+                        <History
+                           key={"history "}
+                           worker={worker}
+                           reviewer={reviewer}
+                        />
+                     );
                   }
                }
          }

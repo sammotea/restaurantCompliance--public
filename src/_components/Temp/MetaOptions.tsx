@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import Permission from "../../_contexts/permission";
+import CurrentView from "../../_contexts/currentVIew";
 
 interface Props {
    currentMeta: string;
@@ -11,6 +12,7 @@ const MetaOptions: React.FC<Props> = ({
    hMetaChange,
 }) => {
    const canReview = useContext(Permission);
+   const currentView = useContext(CurrentView);
 
    return <>{renderMetaOptions()}</>;
 
@@ -43,7 +45,7 @@ const MetaOptions: React.FC<Props> = ({
    function getMetaOptions() {
       const metaOptions = ["info"];
 
-      if (canReview) {
+      if (canReview && currentView !== "incomplete") {
          metaOptions.push("comments");
       }
 
