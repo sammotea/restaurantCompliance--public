@@ -1,7 +1,10 @@
 import React, { useState, useContext } from "react";
 import Permission from "../../_contexts/permission";
 import CurrentView from "../../_contexts/currentVIew";
+import User from "../../_contexts/user";
+import TasksDispatch from "../../_contexts/tasksDispatch";
 import camelcaseify from "../../_helpers/transforms";
+import actionSetter from "../../_helpers/actionSetter";
 
 interface Props {
    task: iTask;
@@ -10,6 +13,8 @@ interface Props {
 
 const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
    const {
+      title,
+      category,
       compliance: {
          worker,
          reviewer,
@@ -19,9 +24,10 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
          isFixed,
       },
    } = task;
-
+   const user = useContext(User);
    const canReview = useContext(Permission);
    const currentView = useContext(CurrentView);
+   const dispatch = useContext(TasksDispatch);
 
    return <>{renderStatusOptions()}</>;
 
@@ -186,8 +192,47 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
       });
    }
 
-   function hStatusClick(pseudoStatus) {
-      hStatusChange(pseudoStatus);
+   function hStatusClick(action) {
+      const payload = {
+         taskId: title,
+         taskCat: category,
+      };
+
+      /**
+       ***   NB: Actions can be progressive (incomplete -> complete)
+       ***   or regressive (complete -> forReview).
+       **/
+
+      switch (action) {
+         case "markIncomplete":
+            break;
+
+         case "markBlocked":
+         case "markForReview":
+            /**
+             ***   For progress we mark as user, otherwise
+             ***   we keep it unchanged (i.e. don’t change
+             ***   the worker if the reviewer is undoing a
+             ***   mismarked-completed task.)
+             **/
+
+            payload["worker"] = worker ? worker : user;
+            break;
+
+         case "markFixed":
+         case "markFailed":
+         case "markComplete":
+            payload["worker"] = worker ? worker : user;
+            payload["reviewer"] = user;
+            break;
+
+         default:
+            throw new Error("hStatusChange: status not recognised");
+      }
+
+      dispatch(actionSetter[action](payload));
+
+      hStatusChange();
    }
 };
 

@@ -41,9 +41,16 @@ const actionSetter = {
       };
    },
 
-   forReview(payload) {
+   addComment(payload) {
       return {
-         type: "AWAITINGREVIEW",
+         type: "ADDCOMMENT",
+         payload: payload,
+      };
+   },
+
+   deleteComment(payload) {
+      return {
+         type: "DELETECOMMENT",
          payload: payload,
       };
    },

@@ -1,13 +1,15 @@
 import React, { useState, useContext } from "react";
-import User from "../../_contexts/user";
-import TasksDispatch from "../../_contexts/tasksDispatch";
 import Permission from "../../_contexts/permission";
-import actionSetter from "../../_helpers/actionSetter";
 
 import StatusOptions from "./StatusOptions";
 import MetaOptions from "./MetaOptions";
 import Meta from "./Meta";
 import Face from "./Face";
+
+import History from "./History";
+import Comments from "./Comments";
+import CommentsForm from "./CommentsForm";
+import Subtasks from "./Subtasks";
 
 interface Props {
    task: iTask;
@@ -17,22 +19,22 @@ const Task: React.FC<Props> = ({ task }) => {
    const {
       title,
       category,
-      compliance: { worker, status: currentStatus },
+      compliance: { worker, status: currentStatus, comments },
    } = task;
 
    const [showStatusOptions, setShowStatusOptions] = useState(false);
    const [showMetaOptions, setShowMetaOptions] = useState(false);
+   const [showMeta, setShowMeta] = useState(false);
+   const [currentMeta, setCurrentMeta] = useState("");
 
-   const user = useContext(User);
-   const dispatch = useContext(TasksDispatch);
    const canReview = useContext(Permission);
-   //const [showMeta, setShowMeta] = useState(false);
 
    return <>{renderTask()}</>;
 
    function renderTask() {
       return (
          <li
+            key={title}
             className={`c-task c-task--${currentStatus} ${
                showStatusOptions ? "js-showStatusOptions" : ""
             } ${showMetaOptions ? "js-showMetaOptions" : ""}`}
@@ -47,73 +49,63 @@ const Task: React.FC<Props> = ({ task }) => {
                   task={task}
                   hStatusChange={hStatusChange}
                />
-               <MetaOptions currentStatus={currentStatus} />
+               <MetaOptions
+                  currentMeta={currentMeta}
+                  hMetaChange={hMetaChange}
+               />
             </div>
-            <div className={`c-task__body`}>
-               <Meta />
-            </div>
+            <div className={`c-task__body`}>{renderMeta()}</div>
          </li>
       );
    }
 
-   function hStatusChange(action) {
-      const payload = {
-         taskId: title,
-         taskCat: category,
-      };
+   function renderMeta() {
+      if (showMeta && currentMeta) {
+         const components = [];
 
-      /**
-       ***   NB: Actions can be progressive (incomplete -> complete)
-       ***   or regressive (complete -> forReview).
-       **/
+         switch (currentMeta) {
+            case "comments":
+               if (/*canReview*/ true) {
+                  components.push(
+                     <CommentsForm
+                        key={"commentsForm"}
+                        taskId={title}
+                        taskCat={category}
+                     />
+                  );
+                  components.push(
+                     <Comments
+                        key={"comments"}
+                        taskId={title}
+                        taskCat={category}
+                        comments={comments}
+                     />
+                  );
+               }
 
-      switch (action) {
-         case "markIncomplete":
-            break;
+               break;
 
-         case "markBlocked":
-         case "markForReview":
-            /**
-             ***   For progress we mark as user, otherwise
-             ***   we keep it unchanged (i.e. don’t change
-             ***   the worker if the reviewer is undoing a
-             ***   mismarked-completed task.)
-             **/
+            case "info":
+               if (currentStatus === "incomplete") {
+                  components.push(<Subtasks />);
+               } else {
+                  if (canReview) {
+                     components.push(<History />);
+                  }
+               }
+         }
 
-            payload["worker"] = worker ? worker : user;
-            break;
-
-         case "markFixed":
-         case "markFailed":
-         case "markComplete":
-            payload["worker"] = worker ? worker : user;
-            payload["reviewer"] = user;
-            break;
-
-         default:
-            throw new Error("hStatusChange: status not recognised");
+         return <Meta>{components}</Meta>;
       }
+   }
 
-      dispatch(actionSetter[action](payload));
+   function hStatusChange() {
       hToggleShowStatusOptions();
    }
 
-   function getStatusBasedOnPermissionLevel(status) {
-      let s = status;
-
-      if (!canReview) {
-         switch (status) {
-            case "failed":
-               s = "blocked";
-               break;
-
-            case "complete":
-               s = "forReview";
-               break;
-         }
-      }
-
-      return s;
+   function hMetaChange(metaOption) {
+      setCurrentMeta(metaOption);
+      setShowMeta(metaOption ? true : false);
    }
 
    function hToggleShowStatusOptions() {

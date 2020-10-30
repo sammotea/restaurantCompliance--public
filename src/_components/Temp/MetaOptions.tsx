@@ -2,10 +2,14 @@ import React, { useState, useContext } from "react";
 import Permission from "../../_contexts/permission";
 
 interface Props {
-   currentStatus: string;
+   currentMeta: string;
+   hMetaChange: any;
 }
 
-const MetaOptions: React.FC<Props> = ({ currentStatus }) => {
+const MetaOptions: React.FC<Props> = ({
+   currentMeta,
+   hMetaChange,
+}) => {
    const canReview = useContext(Permission);
 
    return <>{renderMetaOptions()}</>;
@@ -15,18 +19,19 @@ const MetaOptions: React.FC<Props> = ({ currentStatus }) => {
 
       return (
          <ul className={`c-task__metaOptions`}>
-            {metaOptions.map((statusOption) => {
+            {metaOptions.map((metaOption) => {
                return (
                   <li
-                     key={statusOption}
-                     className={`c-task__metaOption c-task__metaOption--${statusOption} ${
-                        currentStatus === statusOption
+                     key={metaOption}
+                     onClick={() => hMetaClick(metaOption)}
+                     className={`c-task__metaOption c-task__metaOption--${metaOption} ${
+                        currentMeta === metaOption
                            ? "js-isSelected"
                            : ""
                      }`}
                   >
                      <span
-                        className={`c-icon c-icon--${statusOption}`}
+                        className={`c-icon c-icon--${metaOption}`}
                      ></span>
                   </li>
                );
@@ -54,6 +59,10 @@ const MetaOptions: React.FC<Props> = ({ currentStatus }) => {
       return options.sort((a, b) => {
          return metaOrder[a] - metaOrder[b];
       });
+   }
+
+   function hMetaClick(metaOption) {
+      hMetaChange(currentMeta === metaOption ? "" : metaOption);
    }
 };
 

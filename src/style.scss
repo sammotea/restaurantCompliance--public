@@ -32,6 +32,7 @@ $g--bl: linear-gradient(to right, $t--4, $black);
 
 $f--1: freight-sans-pro;
 
+$omegissima: 0.65rem;
 $omega: 0.8rem;
 $alpha: 1rem;
 $bralpha: 1.3rem;
@@ -48,8 +49,8 @@ $fw--black: 900;
 $space: 1rem;
 $pad: 0.75 * $space;
 
-$border: 0.125rem;
-$borderette: 0.5 * $border;
+$border: 0.25 * $space;
+$borderette: 0.125rem;
 
 $period--fast: 0.125s;
 $period--std: 0.25s;
@@ -57,7 +58,8 @@ $period--slow: 0.5s;
 
 $h--task: 2.5 * $space;
 $h--taskOption: $h--task - 0.5rem;
-
+$h--commentForm: 6 * (1.5 * $omega);
+$h--commentButton: 2 * $omega + $border;
 $p--taskOptionPad: 0.25 * $pad;
 $p--taskOptionEnd: $pad;
 $w--taskOptionDec: $space;
@@ -65,8 +67,6 @@ $w--statusOptions1: $w--taskOptionDec + (3 * $h--taskOption) +
    $p--taskOptionPad;
 $w--metaOptions1: $w--taskOptionDec + (2 * $h--taskOption) +
    $p--taskOptionEnd + $p--taskOptionPad;
-
-$d--skew: 2deg, 1deg;
 
 @function calcOptionsWidth($numOptions: 1, $hasStandAlone: false) {
    $width: 0;
@@ -86,13 +86,31 @@ $d--skew: 2deg, 1deg;
    margin-top: -3px;
 }
 
-@mixin avatar($name) {
-   background: url("./_img/avatar--#{ $name }") contain center center
+@mixin avatarImg($name) {
+   background: url("./_img/avatar--#{ $name }.svg") center center
       no-repeat;
 }
 
-@mixin _avatar($name) {
-   background-image: url("./_img/avatar--#{ $name }");
+@mixin avatar($name) {
+   &:before,
+   &:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+   }
+
+   &:before {
+      background: $t--3;
+      @include bg--sm();
+   }
+
+   &:after {
+      @include avatarImg($name);
+      background-size: contain;
+   }
 }
 
 @mixin taskOption--final($dir: "left") {
@@ -104,8 +122,8 @@ $d--skew: 2deg, 1deg;
       top: 0.5 * $pad;
       bottom: 0.5 * $pad;
       #{ $dir }: -0.5 * $pad;
-      border-#{ $dir }: $border $white solid;
-      margin-#{ $dir }: -0.5 * $border;
+      border-#{ $dir }: $borderette $white solid;
+      margin-#{ $dir }: -0.5 * $borderette;
    }
 }
 
@@ -142,7 +160,7 @@ ul {
    display: flex;
    justify-content: flex-end;
    padding: $pad 0;
-   border-bottom: $border $white solid;
+   border-bottom: $borderette $white solid;
 }
 
 .c-user {
@@ -150,61 +168,28 @@ ul {
    width: 0.875 * 2 * $space;
    position: relative;
 
-   &:before,
-   &:after {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-   }
-
-   &:before {
-      content: "";
-      position: absolute;
-      z-index: 0;
-      background-color: rgba($black, 0.75);
-      top: -0.125 * $pad;
-      right: 0;
-      bottom: 0;
-      left: -0.125 * $pad;
-      @include bg--sm();
-   }
-
-   &:after {
-      width: 100%;
-      height: 100%;
-      @include avatar("plain1.svg");
-      background-size: contain;
-   }
-
-   .c-compliance--incomplete &:after {
-      @include _avatar("plain1.svg");
-   }
-
-   .c-compliance--forReview &:after {
-      @include _avatar("plain2.svg");
-   }
-
-   .c-compliance--complete &:after {
-      @include _avatar("plain3.svg");
-   }
+   @include avatar("spy");
 }
 
 .c-user--manager:after {
-   @include _avatar("visor1.svg");
-
-   .c-compliance--incomplete & {
-      @include _avatar("visor1.svg");
-   }
-
-   .c-compliance--forReview & {
-      @include _avatar("visor2.svg");
-   }
-
-   .c-compliance--complete & {
-      @include _avatar("visor3.svg");
-   }
+   @include avatarImg("visor");
 }
+
+// .c-user--manager:after {
+//    @include _avatar("visor1.svg");
+
+//    .c-compliance--incomplete & {
+//       @include _avatar("visor1.svg");
+//    }
+
+//    .c-compliance--forReview & {
+//       @include _avatar("visor2.svg");
+//    }
+
+//    .c-compliance--complete & {
+//       @include _avatar("visor3.svg");
+//    }
+// }
 
 .c-viewsWrap {
    overflow: hidden;
@@ -272,6 +257,7 @@ ul {
 
 .c-category {
    padding: 0 $pad;
+   padding-left: 0;
 
    & + & {
       margin-top: 2 * $space;
@@ -285,17 +271,30 @@ ul {
    color: $t--3;
    font-weight: 900;
    transition: $period--fast;
+   margin-left: $pad;
 
    &:before {
       content: "";
       position: absolute;
-      height: 0.75 * $pad;
+      height: 2 * $border;
       left: 0;
       right: 0;
       top: 100%;
-      background: $g--1;
+      background: $black;
       transition: $period--fast;
       filter: grayscale(100%);
+   }
+
+   .c-compliance--incomplete &:before {
+      background: $g--1;
+   }
+
+   .c-compliance--forReview &:before {
+      background: $g--2;
+   }
+
+   .c-compliance--complete &:before {
+      background: $g--3;
    }
 
    .js-isVisible & {
@@ -402,8 +401,8 @@ ul {
       top: 0.75 * $pad;
       bottom: 0.75 * $pad;
       left: -$pad;
-      margin-left: -0.5 * $border;
-      border-left: $border $black solid;
+      margin-left: -0.5 * $borderette;
+      border-left: $borderette $black solid;
       opacity: 1;
       transition: $period--fast;
    }
@@ -505,7 +504,19 @@ ul {
 .c-task__metaOption {
    .c-compliance--incomplete &.js-isSelected {
       .c-icon:before {
-         background-color: $c--1;
+         background: $g--1;
+      }
+   }
+
+   .c-compliance--forReview &.js-isSelected {
+      .c-icon:before {
+         background: $g--2;
+      }
+   }
+
+   .c-compliance--complete &.js-isSelected {
+      .c-icon:before {
+         background: $g--3;
       }
    }
 }
@@ -541,7 +552,7 @@ $icons: (
    &:before {
       @include bg--sm();
       border-radius: 100%;
-      transform: translate(-50%, -50%) skey($d--skew);
+      transform: translate(-50%, -50%);
    }
 
    &:after {
@@ -604,6 +615,206 @@ $icons: (
 .js-isSelected .c-icon--failed:before,
 .c-task__currentStatus .c-icon--failed:before {
    background-color: $c--fail;
+}
+
+.c-meta {
+   padding: $pad;
+   padding-right: 0;
+}
+.c-commentForm {
+   position: relative;
+   overflow: hidden;
+   background: $t--1;
+
+   &.js-hasText {
+      padding-bottom: $h--commentButton + 0.5 * $pad;
+   }
+}
+
+.c-commentForm__textarea {
+   display: block;
+   border: none;
+   box-sizing: border-box;
+   border-top: $border $black solid;
+   width: 100%;
+   background: transparent;
+   height: 1.5 * $omega + (1.5 * $pad);
+   font-size: $omega;
+   font-family: $f--1;
+   font-weight: $fw--light;
+   line-height: 1.5;
+   color: $t--3;
+   padding: 0.5 * $pad $pad;
+   transition: $period--fast;
+   margin: 0;
+   resize: none;
+   &.js-active {
+      height: $h--commentForm;
+   }
+
+   &:active,
+   &:focus {
+      outline: none;
+
+      .c-compliance--incomplete & {
+         border-top-color: $c--1;
+      }
+
+      .c-compliance--forReview & {
+         border-top-color: $c--2;
+      }
+
+      .c-compliance--complete & {
+         border-top-color: $c--3;
+      }
+   }
+}
+
+.c-commentForm__buttonWrap {
+   position: absolute;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background: $c--1;
+   text-transform: uppercase;
+   font-weight: $fw--std;
+   font-size: $omega;
+   line-height: $h--commentButton;
+   text-align: center;
+   transform: translate3d(0, 100%, 0);
+   transition: 0.5 * $period--fast;
+   transition-delay: 0;
+
+   .js-hasText & {
+      transform: translate3d(0, 0, 0);
+      transition-delay: $period--fast;
+      transition: $period--std;
+   }
+
+   .c-compliance--incomplete & {
+      background: $g--1;
+
+      &:hover,
+      &:focus,
+      &:active {
+         background: $c--1x;
+      }
+   }
+
+   .c-compliance--forReview & {
+      background: $g--2;
+   }
+
+   .c-compliance--complete & {
+      background: $g--3;
+   }
+}
+
+.c-comments {
+   margin-top: $space;
+
+   &:first-child {
+      margin-top: 0;
+   }
+}
+
+.c-comment {
+   position: relative;
+   padding-left: 1.75 * $space + 0.5 * $pad;
+   & + & {
+      margin-top: $pad;
+   }
+}
+
+.c-comment__author {
+   font-weight: $fw--bold;
+   line-height: 1.75;
+}
+
+.c-comment__avatar {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 1.75 * $alpha;
+   height: 1.75 * $alpha;
+   @include avatar("robot");
+
+   .c-compliance--incomplete &:before {
+      background: $g--1;
+   }
+
+   .c-compliance--forReview &:before {
+      background: $g--2;
+   }
+
+   .c-compliance--complete &:before {
+      background: $g--3;
+   }
+}
+
+.c-comment__text {
+   font-size: $omega;
+   font-weight: $fw--light;
+}
+
+.c-comment__actions {
+   display: flex;
+   font-size: $omega;
+   line-height: 2 * $alpha;
+
+   &:before,
+   &:after {
+      content: "";
+      font-weight: $fw--light;
+      white-space: pre;
+   }
+
+   &:before {
+      content: "( ";
+   }
+
+   &:after {
+      content: " )";
+   }
+}
+
+.c-comment__action {
+   position: relative;
+   font-weight: $fw--bold;
+
+   text-transform: uppercase;
+   transition: $period--std;
+
+   &:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 60%; // magic
+      background: $t--2;
+      height: $border;
+      z-index: -1;
+   }
+
+   &:focus,
+   &:hover,
+   &:active {
+      &:before {
+         top: 80%;
+      }
+   }
+
+   .c-compliance--incomplete &:before {
+      background: $g--1;
+   }
+
+   .c-compliance--forReview &:before {
+      background: $g--2;
+   }
+
+   .c-compliance--complete &:before {
+      background: $g--3;
+   }
 }
 // .js-isSelected .c-icon--fixed:before,
 // .c-task__currentStatus .c-icon--fixed:before {
