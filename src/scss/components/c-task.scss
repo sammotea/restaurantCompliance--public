@@ -1,0 +1,150 @@
+.c-tasks {
+   margin-right: $pad;
+   overflow: hidden;
+   max-height: 0;
+
+   .s--isVisible & {
+      max-height: 10000px; // unnecessarily large
+   }
+
+   &:not(:first-child) {
+      margin-top: 0;
+
+      .s--isVisible & {
+         margin-top: 1.5 * $space;
+      }
+   }
+}
+
+.c-task {
+   position: relative;
+   transition: $period--fast;
+   transform: translate3d(0, 50%, 0);
+
+   .s--isVisible & {
+      transform: translate3d(0, 0, 0);
+   }
+
+   & + & {
+      margin-top: $pad;
+   }
+}
+
+.c-task__header {
+   background: $t--1;
+   transition: $period--std;
+
+   > * {
+      height: $h--task;
+   }
+
+   .s--incomplete .s--showStatusOptions & {
+      transform: translate3d(#{calcOptionsWidth(3)}, 0, 0);
+   }
+
+   .s--incomplete .s--showMetaOptions & {
+      transform: translate3d(-#{calcOptionsWidth(1)}, 0, 0);
+   }
+
+   // Reviewers see comments too
+   .s--incomplete.s--canReview .s--showMetaOptions & {
+      transform: translate3d(-#{calcOptionsWidth(2, true)}, 0, 0);
+   }
+
+   .s--forReview .s--showStatusOptions & {
+      transform: translate3d(#{calcOptionsWidth(4, true)}, 0, 0);
+   }
+
+   .s--forReview .s--showMetaOptions & {
+      transform: translate3d(-#{calcOptionsWidth(2, true)}, 0, 0);
+   }
+
+   .s--complete .s--showStatusOptions & {
+      transform: translate3d(#{calcOptionsWidth(4, true)}, 0, 0);
+   }
+
+   .s--complete .s--showMetaOptions & {
+      transform: translate3d(-#{calcOptionsWidth(2, true)}, 0, 0);
+   }
+}
+
+.c-task__face {
+   display: flex;
+}
+
+.c-task__statusWrap {
+   width: $h--task;
+   position: relative;
+   transition: width $period--std;
+   overflow: hidden;
+
+   .s--showStatusOptions & {
+      width: 0;
+      opacity: 0;
+   }
+}
+
+.c-task__status {
+   position: absolute;
+   left: 50%;
+   top: 50%;
+   transform: translate(-50%, -50%);
+   height: 0.75 * $space;
+   width: 0.75 * $space;
+
+   .c-icon--incomplete:before {
+      background-color: $t--2;
+   }
+}
+
+.c-task__title {
+   font-size: $bralpha;
+   font-weight: $fw--light;
+   line-height: $h--task;
+   flex-grow: 100;
+   margin-left: $pad;
+   position: relative;
+
+   &:before {
+      content: "";
+      position: absolute;
+      top: 0.75 * $pad;
+      bottom: 0.75 * $pad;
+      left: -$pad;
+      margin-left: -0.5 * $borderette;
+      border-left: $borderette $black solid;
+      opacity: 1;
+      transition: $period--fast;
+   }
+
+   span {
+      display: inline-block;
+      position: relative;
+
+      &:after {
+         content: "";
+         position: absolute;
+         left: -0.25 * $pad;
+         right: -0.25 * $pad;
+         top: 50%;
+         max-width: 0;
+         transition: $period--fast;
+         border-bottom: $borderette $t--3 solid;
+         transform: translate3d(0, -50%, 0);
+      }
+   }
+
+   .s--showStatusOptions & {
+      &:before {
+         opacity: 0;
+      }
+   }
+
+   .s--incomplete .c-task--forReview & {
+      color: $t--3;
+
+      span:after {
+         max-width: 100vw;
+      }
+   }
+}

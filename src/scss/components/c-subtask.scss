@@ -1,0 +1,37 @@
+.c-subtask {
+   position: relative;
+   line-height: 1.4;
+   padding-left: $space;
+
+   &:before,
+   &:after {
+      content: "";
+      position: absolute;
+      top: 0.25em * $f--lh;
+      height: 0.5em * $f--lh;
+      width: 0.5em * $f--lh;
+      left: 0;
+   }
+
+   &:before {
+      @include bgOffset();
+      background: $t--2;
+   }
+
+   &:after {
+      border: $borderette $black solid;
+      box-sizing: border-box;
+   }
+
+   .s--incomplete &:before {
+      background: $g--1;
+   }
+
+   .s--forReview &:before {
+      background: $g--2;
+   }
+
+   .s--complete &:before {
+      background: $g--3;
+   }
+}

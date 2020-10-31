@@ -1,0 +1,10 @@
+.c-user {
+   height: 2 * $space;
+   width: 0.875 * 2 * $space;
+   position: relative;
+   @include avatar("spy");
+}
+
+.c-user--manager:after {
+   @include avatarImg("visor");
+}

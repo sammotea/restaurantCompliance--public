@@ -1,0 +1,88 @@
+.c-commentForm {
+   position: relative;
+   overflow: hidden;
+   background: $t--1;
+
+   &.s--hasText {
+      padding-bottom: $h--commentButton + 0.5 * $pad;
+   }
+}
+
+.c-commentForm__textarea {
+   display: block;
+   border: none;
+   box-sizing: border-box;
+   border-top: $border $black solid;
+   width: 100%;
+   background: transparent;
+   height: 1.5 * $omega + (1.5 * $pad);
+   font-size: $omega;
+   font-family: $f--1;
+   font-weight: $fw--light;
+   line-height: 1.5;
+   color: $t--3;
+   padding: 0.5 * $pad $pad;
+   transition: $period--fast;
+   margin: 0;
+   resize: none;
+   &.s--active {
+      height: $h--commentForm;
+   }
+
+   &:active,
+   &:focus {
+      outline: none;
+
+      .s--incomplete & {
+         border-top-color: $c--1;
+      }
+
+      .s--forReview & {
+         border-top-color: $c--2;
+      }
+
+      .s--complete & {
+         border-top-color: $c--3;
+      }
+   }
+}
+
+.c-commentForm__buttonWrap {
+   position: absolute;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background: $c--1;
+   text-transform: uppercase;
+   font-weight: $fw--std;
+   font-size: $omega;
+   line-height: $h--commentButton;
+   text-align: center;
+   transform: translate3d(0, 100%, 0);
+   transition: 0.5 * $period--fast;
+   transition-delay: 0;
+
+   .s--hasText & {
+      transform: translate3d(0, 0, 0);
+      transition-delay: $period--fast;
+      transition: $period--std;
+   }
+
+   .s--incomplete & {
+      background: $g--1;
+
+      &:hover,
+      &:focus,
+      &:active {
+         background: $c--1x;
+      }
+   }
+
+   .s--forReview & {
+      background: $g--2;
+   }
+
+   .s--complete & {
+      background: $g--3;
+   }
+}

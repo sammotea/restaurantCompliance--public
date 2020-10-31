@@ -1,0 +1,23 @@
+.c-history__item {
+   & + & {
+      margin-top: 0.25 * $pad;
+   }
+
+   &:before {
+      text-transform: uppercase;
+      font-weight: $fw--bold;
+      white-space: pre;
+   }
+}
+
+.c-history__item--worker {
+   &:before {
+      content: "Done by: ";
+   }
+}
+
+.c-history__item--reviewer {
+   &:before {
+      content: "Reviewed by: ";
+   }
+}

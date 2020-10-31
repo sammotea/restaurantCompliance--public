@@ -1,0 +1,49 @@
+.c-categories {
+   padding: $space 0;
+}
+
+.c-category {
+   padding: 0 $pad;
+   padding-left: 0;
+
+   & + & {
+      margin-top: 2 * $space;
+   }
+}
+
+.c-category__title {
+   position: relative;
+   display: inline-block;
+   text-transform: uppercase;
+   color: $t--3;
+   font-weight: 900;
+   transition: $period--fast;
+   margin-left: $pad;
+
+   &:before {
+      content: "";
+      position: absolute;
+      height: 2 * $border;
+      left: 0;
+      right: 0;
+      top: 100%;
+      background: $g--t;
+      transition: $period--fast;
+   }
+
+   .s--isVisible & {
+      color: $c--text;
+
+      .s--incomplete &:before {
+         background: $g--1;
+      }
+
+      .s--forReview &:before {
+         background: $g--2;
+      }
+
+      .s--complete &:before {
+         background: $g--3;
+      }
+   }
+}

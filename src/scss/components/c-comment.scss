@@ -1,0 +1,106 @@
+.c-comments {
+   margin-top: $space;
+
+   &:first-child {
+      margin-top: 0;
+   }
+}
+
+.c-comment {
+   position: relative;
+   padding-left: 1.75 * $space + 0.5 * $pad;
+   & + & {
+      margin-top: $pad;
+   }
+}
+
+.c-comment__author {
+   font-weight: $fw--bold;
+   line-height: 1.75;
+}
+
+.c-comment__avatar {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 1.75 * $alpha;
+   height: 1.75 * $alpha;
+   @include avatar("robot");
+
+   .s--incomplete &:before {
+      background: $g--1;
+   }
+
+   .s--forReview &:before {
+      background: $g--2;
+   }
+
+   .s--complete &:before {
+      background: $g--3;
+   }
+}
+
+.c-comment__text {
+   font-size: $omega;
+   font-weight: $fw--light;
+}
+
+.c-comment__actions {
+   display: flex;
+   font-size: $omega;
+   line-height: 2 * $alpha;
+
+   &:before,
+   &:after {
+      content: "";
+      font-weight: $fw--light;
+      white-space: pre;
+   }
+
+   &:before {
+      content: "( ";
+   }
+
+   &:after {
+      content: " )";
+   }
+}
+
+.c-comment__action {
+   position: relative;
+   font-weight: $fw--bold;
+
+   text-transform: uppercase;
+   transition: $period--std;
+
+   &:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 60%; // magic
+      background: $t--2;
+      height: $border;
+      z-index: -1;
+   }
+
+   &:focus,
+   &:hover,
+   &:active {
+      &:before {
+         top: 80%;
+      }
+   }
+
+   .s--incomplete &:before {
+      background: $g--1;
+   }
+
+   .s--forReview &:before {
+      background: $g--2;
+   }
+
+   .s--complete &:before {
+      background: $g--3;
+   }
+}

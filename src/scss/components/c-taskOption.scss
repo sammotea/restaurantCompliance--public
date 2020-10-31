@@ -1,0 +1,110 @@
+.c-taskOptions--status,
+.c-taskOptions--meta {
+   position: absolute;
+   top: 0;
+   display: flex;
+   align-items: center;
+   transition: $period--std;
+
+   &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border-width: 0.5 * $h--task 0.5 * $w--taskOptionDec;
+      border-style: solid;
+      border-color: $t--1;
+   }
+}
+
+.c-taskOption--status,
+.c-taskOption--meta {
+   position: relative;
+   width: $h--taskOption;
+   height: $h--taskOption;
+
+   &.s--isSelected {
+      background: rgba($white, 0.25);
+   }
+}
+
+.c-taskOptions--status {
+   right: 100%;
+   margin-right: $w--taskOptionDec;
+   background: $g--1;
+   padding-left: $p--taskOptionPad;
+
+   &:after {
+      border-bottom-color: $c--1x;
+      border-left-color: $c--1x;
+      left: 100%;
+   }
+
+   .s--incomplete & {
+      background: $g--1;
+
+      &:after {
+         border-bottom-color: $c--1x;
+         border-left-color: $c--1x;
+      }
+   }
+
+   .s--forReview & {
+      background: $g--2;
+
+      &:after {
+         border-bottom-color: $c--2x;
+         border-left-color: $c--2x;
+      }
+   }
+
+   .s--complete & {
+      background: $g--3;
+
+      &:after {
+         border-bottom-color: $c--3x;
+         border-left-color: $c--3x;
+      }
+   }
+}
+
+.c-taskOption--undo {
+   @include taskOption--final(left);
+}
+
+.c-taskOptions--meta {
+   left: 100%;
+   margin-left: $w--taskOptionDec;
+   background: $g--bl;
+   padding-right: $p--taskOptionPad;
+
+   &:after {
+      border-top-color: $t--4;
+      border-right-color: $t--4;
+      right: 100%;
+   }
+}
+
+.c-taskOption--meta {
+   .s--incomplete &.s--isSelected {
+      .c-icon:before {
+         background: $g--1;
+      }
+   }
+
+   .s--forReview &.s--isSelected {
+      .c-icon:before {
+         background: $g--2;
+      }
+   }
+
+   .s--complete &.s--isSelected {
+      .c-icon:before {
+         background: $g--3;
+      }
+   }
+}
+
+.c-taskOption--info:not(:first-child) {
+   @include taskOption--final(left);
+}

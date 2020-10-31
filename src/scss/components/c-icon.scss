@@ -1,0 +1,91 @@
+$icons: (
+   "incomplete",
+   "failed",
+   "fixed",
+   "complete",
+   "forReview",
+   "blocked",
+   "undo",
+   "info",
+   "comments"
+);
+
+.c-icon {
+   &:before,
+   &:after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 0.5 * $h--task;
+      height: 0.5 * $h--task;
+   }
+
+   &:before {
+      @include bgOffset();
+      border-radius: 100%;
+      transform: translate(-50%, -50%);
+   }
+
+   &:after {
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+   }
+}
+
+@each $icon in $icons {
+   .c-icon--#{ $icon } {
+      &:after {
+         background-image: url("./img/i-#{ $icon }.svg");
+      }
+
+      .s--isSelected &,
+      .c-task__status & {
+         &:after {
+            background-image: url("./img/i-#{ $icon }--active.svg");
+         }
+      }
+   }
+}
+
+/*
+ *    We’re going from a circular background to an equilateral
+ *    triangle as a one-off…
+ *
+ *    Obviously requires Pythagorous. I’ve eyeballed it instead
+ *    on the half-arsed belief that the relative units
+ *    avoid magic-number fragility in a future refactor.
+ */
+.c-task__status .c-icon--fixed:before,
+.s--isSelected .c-icon--fixed:before {
+   border: 0.25 * $h--task transparent solid;
+   border-width: 0.25 * $h--task 1.65 * (0.25 * $h--task);
+   border-left-color: $c--success;
+   width: 0;
+   height: 0;
+   border-radius: 0;
+   background: transparent;
+   transform: rotate(30deg) translate3d(-20%, 15%, 0);
+}
+
+// ForReview view icons
+.c-task__status .c-icon--forReview:before,
+.c-task__status .c-icon--blocked:before {
+   background-color: $t--2;
+}
+
+.s--isSelected .c-icon--incomplete:before,
+.c-task__status .c-icon--incomplete:before {
+   background-color: $t--1;
+}
+
+.s--isSelected .c-icon--complete:before,
+.c-task__status .c-icon--complete:before {
+   background-color: $c--success;
+}
+.s--isSelected .c-icon--failed:before,
+.c-task__status .c-icon--failed:before {
+   background-color: $c--fail;
+}
