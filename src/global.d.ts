@@ -1,80 +1,56 @@
+interface _iTask {
+   title: string;
+   category: string;
+   subtasks?: string[];
+}
+
+interface _iComplianceVariables {
+   isBlocked?: boolean;
+   isFailed?: boolean;
+   isFixed?: boolean;
+   worker: string;
+   reviewer: string;
+}
+
+interface iComplianceObj extends _iComplianceVariables {
+   status: string;
+   comments?: iCommentsObj[];
+}
+
+interface iTask extends _iTask {
+   compliance: iComplianceObj;
+}
+
+interface iCommentsObj {
+   uid: number;
+   author: string;
+   comment: string;
+}
+
 interface iTasksByStatus {
    incomplete?: iTask[];
    forReview?: iTask[];
    complete?: iTask[];
 }
 
-interface iTaskAsJson {
-   title: string;
-   category: string;
-   subtasks?: string[];
-   frequency?: number;
-   permission?: string;
+interface iTasksByCategory {
+   [k: string]: iTask[];
 }
 
-interface iTasksByX {
-   [k: string]: Object;
+interface _iCompliancePayload {
+   taskId: string;
+   taskCat: string;
 }
 
-interface iTaskList {
-   [k: string]: iTask;
+interface iCompliancePayload
+   extends _iCompliancePayload,
+      Partial<_iComplianceVariables> {}
+
+interface iCommentRemovalPayload extends _iCompliancePayload {
+   commentId: number;
 }
 
-interface iTaskRaw {
-   title: string;
-   category: string;
-}
-
-// interface iTask extends iTaskRaw {
-//   worker: string;
-//   reviewer: string;
-//   isComplete: boolean;
-//   hasProblem: boolean;
-//   isFailed: boolean;
-//   isFixed?: boolean;
-//   subtasks?: string[];
-// }
-
-interface iTask extends iTaskRaw {
-   subtasks?: string[];
-   compliance: iComplianceObj;
-}
-
-interface iComplianceObj {
-   status: string;
-   isBlocked?: boolean;
-   isFailed?: boolean;
-   worker: string;
-   reviewer: string;
-   isFixed: boolean; // Quality assurance
-   comments?: any;
-}
-
-interface TodoActions {
-   stateSetter: any;
-   init(stateSetter: any);
-   setStatus(todo: iTask, status: string);
-   setworker(todo: iTask, worker: string): iTask;
-   setReviewer(todo: iTask, reviewer: string): iTask;
-   setisFixed(todo: iTask, flag: boolean): iTask;
-   forReview(
-      title: string,
-      category: string,
-      worker: string,
-      isBlocked?: boolean
-   ): void;
-   isComplete(
-      title: string,
-      category: string,
-      worker: string,
-      reviewer: string,
-      isFixed?: boolean
-   ): void;
-   isFailed(
-      title: string,
-      category: string,
-      worker: string,
-      reviewer: string
-   ): void;
-   reset(title: string, category: string, key?: string): void;
+interface iCommentPayload extends _iCompliancePayload {
+   commentAuthor: string;
+   commentText: string;
 }

@@ -1,0 +1,26 @@
+$black: black;
+$white: white;
+$t--1: #f4f6f6;
+$t--2: #ddd;
+$t--3: #aaa;
+$t--4: #333333;
+
+$colorTinter: 5%;
+
+$c--1: rgb(245, 215, 97);
+$c--2: #fcac3d;
+$c--3: #6177e7;
+$c--text: $t--4;
+
+$c--1x: lighten($c--1, $colorTinter);
+$c--2x: lighten($c--2, $colorTinter);
+$c--3x: lighten($c--3, $colorTinter);
+
+$c--success: $c--3;
+$c--fail: $c--2;
+
+$g--1: linear-gradient(to right, $c--1, $c--1x);
+$g--2: linear-gradient(to right, $c--2, $c--2x);
+$g--3: linear-gradient(to right, $c--3, $c--3x);
+$g--bl: linear-gradient(to right, $t--4, $black);
+$g--t: linear-gradient(to right, $t--2, $t--3);

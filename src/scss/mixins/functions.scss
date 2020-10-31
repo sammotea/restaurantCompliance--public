@@ -1,0 +1,12 @@
+@function calcOptionsWidth($numOptions: 1, $hasStandAlone: false) {
+   $width: 0;
+
+   @if $hasStandAlone {
+      $width: $width + $p--taskOptionEnd;
+   } // stand-alone icon
+   $width: $width + $w--taskOptionDec; // decoration;
+   $width: $width + $p--taskOptionPad; // general padding;
+   $width: $width + ($numOptions * $h--taskOption);
+
+   @return $width;
+}

@@ -1,0 +1,13 @@
+$space: 1rem;
+$pad: 0.75 * $space;
+
+$border: 0.25 * $space;
+$borderette: 0.125rem;
+
+$h--task: 2.5 * $space;
+$h--taskOption: $h--task - 0.5rem;
+$h--commentForm: 6 * (1.5 * $omega);
+$h--commentButton: 2 * $omega + $border;
+$p--taskOptionPad: 0.25 * $pad;
+$p--taskOptionEnd: $pad;
+$w--taskOptionDec: $space;

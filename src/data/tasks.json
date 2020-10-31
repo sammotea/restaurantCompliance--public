@@ -1,0 +1,93 @@
+{
+   "tasks": [
+      {
+         "title": "Tables",
+         "category": "Floor",
+         "subtasks": ["Clean ’em (undersides too)"]
+      },
+
+      {
+         "title": "Surfaces",
+         "category": "Kitchen",
+         "subtasks": ["Clean ’em (undersides too)"]
+      },
+
+      {
+         "title": "Booths",
+         "category": "Floor",
+         "subtasks": [
+            "Clean ’em with booth juice: top, bottom, back and sides"
+         ]
+      },
+
+      {
+         "title": "High-chairs",
+         "category": "Floor",
+         "subtasks": [
+            "Clean ’em with booth juice",
+            "Stack ’em in AREA X"
+         ]
+      },
+
+      {
+         "title": "Stools & Chairs",
+         "category": "Floor",
+         "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
+      },
+
+      {
+         "title": "Furniture",
+         "category": "Floor",
+         "subtasks": ["Clean ’em", "Stack ’em in AREA X"]
+      },
+
+      {
+         "title": "Beer taps",
+         "category": "Bar",
+         "subtasks": ["Store inside, by entrance door"]
+      },
+
+      {
+         "title": "Coffee Machine",
+         "category": "Bar",
+         "subtasks": ["Store inside, by entrance door"]
+      },
+
+      {
+         "title": "Empty Fryer",
+         "category": "Kitchen",
+         "subtasks": ["Make the area spick and span"]
+      },
+
+      {
+         "title": "Clean cellar",
+         "category": "Kitchen",
+         "subtasks": [
+            "Polish with boiling water and a squeeze of lemon juice"
+         ]
+      },
+
+      {
+         "title": "Sauces",
+         "category": "Floor",
+         "subtasks": [
+            "Soak and rinse lids",
+            "Marry-up sauces",
+            "Clean bottles",
+            "Store in cellar"
+         ]
+      },
+
+      {
+         "title": "Bus Stand",
+         "category": "Floor",
+         "subtasks": [
+            "Clean and tidy",
+            "Replenish cutlery",
+            "Replenish kitchen roll",
+            "Replenish crayons",
+            "Replenish lego"
+         ]
+      }
+   ]
+}

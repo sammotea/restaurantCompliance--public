@@ -1,0 +1,18 @@
+.l-header {
+   padding: 0 $pad;
+   background: $g--1;
+
+   transition: $period--fast;
+
+   .s--incomplete & {
+      background: $g--1;
+   }
+
+   .s--forReview & {
+      background: $g--2;
+   }
+
+   .s--complete & {
+      background: $g--3;
+   }
+}

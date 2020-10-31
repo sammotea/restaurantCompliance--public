@@ -1,0 +1,45 @@
+@mixin bgOffset() {
+   margin-left: -3px;
+   margin-top: -3px;
+}
+
+@mixin avatarImg($name) {
+   background: url("./img/avatar--#{ $name }.svg") center center
+      no-repeat;
+}
+
+@mixin avatar($name) {
+   &:before,
+   &:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+   }
+
+   &:before {
+      //background: $t--3;
+      @include bgOffset();
+   }
+
+   &:after {
+      @include avatarImg($name);
+      background-size: contain;
+   }
+}
+
+@mixin taskOption--final($dir: "left") {
+   margin-#{ $dir }: $p--taskOptionEnd;
+
+   &:before {
+      content: "";
+      position: absolute;
+      top: 0.5 * $pad;
+      bottom: 0.5 * $pad;
+      #{ $dir }: -0.5 * $pad;
+      border-#{ $dir }: $borderette $white solid;
+      margin-#{ $dir }: -0.5 * $borderette;
+   }
+}
