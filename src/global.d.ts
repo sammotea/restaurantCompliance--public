@@ -22,7 +22,7 @@ interface iTask extends _iTask {
 }
 
 interface iCommentsObj {
-   uid: number;
+   id: number;
    author: string;
    comment: string;
 }

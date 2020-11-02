@@ -32,12 +32,13 @@ const Comments: React.FC<Props> = ({
    }
 
    function getComment(commentObj: iCommentsObj, index: number) {
-      const { author, comment, uid } = commentObj;
+      const { author, comment, id } = commentObj;
+      console.log(id);
       const theirComment = user === author ? true : false;
       const canEdit = theirComment;
 
       return (
-         <li key={uid} className="c-comment">
+         <li key={id} className="c-comment">
             {renderAvatar(author)}
             <div className="c-comment__author">
                {theirComment ? "You" : author} wrote:
@@ -45,7 +46,7 @@ const Comments: React.FC<Props> = ({
 
             <div className="c-comment__text">{comment}</div>
 
-            {canEdit && renderActions(uid)}
+            {canEdit && renderActions(id)}
          </li>
       );
    }
@@ -78,7 +79,7 @@ const Comments: React.FC<Props> = ({
          taskCat: taskCat,
          commentId: commentId,
       } as iCommentRemovalPayload;
-
+      console.log(payload);
       dispatch(compliance.setAction.deleteComment(payload));
    }
 

@@ -92,6 +92,7 @@ const compliance = {
       },
 
       deleteComment(payload: iCommentRemovalPayload) {
+         console.log("say delete");
          return {
             type: "DELETECOMMENT",
             payload: payload,
@@ -160,7 +161,9 @@ const compliance = {
             break;
 
          case "DELETECOMMENT":
+            console.log("all good");
             if (validatePayload("commentId")) {
+               console.log("delete bitchez");
                deleteComment();
             }
 
