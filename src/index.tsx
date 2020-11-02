@@ -6,7 +6,7 @@ import taskJson from "./data/tasks.json";
 import User from "./contexts/user";
 import Permission from "./contexts/permission";
 import Dispatch from "./contexts/dispatch";
-import CurrentView from "./contexts/currentVIew";
+import CurrentView from "./contexts/currentView";
 
 import compliance from "./utils/compliance";
 

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import Permission from "../../../contexts/permission";
-import CurrentView from "../../../contexts/currentVIew";
+import CurrentView from "../../../contexts/currentView";
 
 interface Props {
    currentMeta: string;

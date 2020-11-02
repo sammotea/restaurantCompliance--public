@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 
 import transformers from "../../../utils/transformers";
-import CurrentView from "../../../contexts/currentVIew";
+import CurrentView from "../../../contexts/currentView";
 import Tasks from "../index";
 
 interface Props {
@@ -24,16 +24,23 @@ const Category: React.FC<Props> = ({ tasksArr, title }) => {
          <li className={cl}>
             <h1 className="c-category__title" onClick={hTitleClick}>
                {getTitle()}
-               <span className="c-category__count">
-                  {" "}
-                  ({getNumberOutstandingTasks()})
-               </span>
+               {renderCategoryCount()}
             </h1>
             <Tasks tasksArr={tasksArr} />
          </li>
       );
    }
 
+   function renderCategoryCount() {
+      if (currentView !== "complete") {
+         return (
+            <span className="c-category__count">
+               {" "}
+               ({getNumberOutstandingTasks()})
+            </span>
+         );
+      }
+   }
    function getTitle(): string {
       let t = title;
 

@@ -1,5 +1,7 @@
 import React, { useState, useContext } from "react";
+
 import Permission from "../../../contexts/permission";
+import CurrentView from "../../../contexts/currentView";
 
 import Face from "./Face";
 import StatusOptions from "./StatusOptions";
@@ -34,6 +36,7 @@ const Task: React.FC<Props> = ({ task, title }) => {
    const [currentMeta, setCurrentMeta] = useState("");
 
    const canReview = useContext(Permission);
+   const currentView = useContext(CurrentView);
 
    return <>{renderTask()}</>;
 
@@ -90,8 +93,12 @@ const Task: React.FC<Props> = ({ task, title }) => {
                break;
 
             case "info":
-               if (currentStatus === "incomplete") {
-                  console.log(subtasks);
+               console.log(currentView);
+               if (
+                  currentStatus === "incomplete" ||
+                  (currentView === "incomplete" && !canReview)
+               ) {
+                  console.log("working");
                   components.push(
                      <Subtasks
                         key={"subtasks"}

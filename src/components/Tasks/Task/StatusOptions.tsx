@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Permission from "../../../contexts/permission";
-import CurrentView from "../../../contexts/currentVIew";
+import CurrentView from "../../../contexts/currentView";
 import User from "../../../contexts/user";
 import Dispatch from "../../../contexts/dispatch";
 import transformers from "../../../utils/transformers";

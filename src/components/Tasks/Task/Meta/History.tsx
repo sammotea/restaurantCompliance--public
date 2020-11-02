@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import CurrentView from "../../../../contexts/currentVIew";
+import CurrentView from "../../../../contexts/currentView";
 
 interface Props {
    worker: string;
