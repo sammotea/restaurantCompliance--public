@@ -19,8 +19,14 @@ const History: React.FC<Props> = ({ worker, reviewer }) => {
          return <ul className={cl}>{historyItems}</ul>;
    }
 
-   function getHistoryItems(): string[] {
-      const historyItems = [];
+   /**
+   ***   The implementation of the history items is
+   ***   CSS-pseudo-class’d to say either 'Done by' [DOER] or
+   ***   'Reviewed by' [REVIEWER].
+   **/
+
+   function getHistoryItems(): JSX.Element[] {
+      const historyItems = [] as JSX.Element[];
 
       ["worker", "reviewer"].forEach((title) => {
          let doer = "";

@@ -5,6 +5,11 @@ interface Props {
    hUserSwitch(user: string): void;
 }
 
+/**
+***   This is dummy functionality for
+***   demonstration purposes. 
+**/
+
 const UserSwitch: React.FC<Props> = ({ user, hUserSwitch }) => {
    function renderUserSwitch() {
       return (

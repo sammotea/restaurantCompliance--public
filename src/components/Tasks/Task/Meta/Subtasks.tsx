@@ -17,6 +17,7 @@ const Subtasks: React.FC<Props> = ({ subtasksArr }) => {
    function getSubtasks() {
       return subtasksArr.map((task) => {
          if ("string" === typeof task) {
+            // Generate uniqueish key
             const k = task.replace(" ", "_").substring(0, 50);
 
             return (

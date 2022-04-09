@@ -1,6 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import Permission from "../../../contexts/permission";
-import CurrentView from "../../../contexts/currentView";
 
 interface Props {
    currentMeta: string;
@@ -12,7 +11,6 @@ const MetaOptions: React.FC<Props> = ({
    hMetaChange,
 }) => {
    const canReview = useContext(Permission);
-   const currentView = useContext(CurrentView);
 
    return <>{renderMetaOptions()}</>;
 

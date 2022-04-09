@@ -12,7 +12,7 @@ import compliance from "./utils/compliance";
 
 import Header from "./components/Header";
 import Views from "./components/Header/Views";
-import PermissionGate from "./components/Tasks/Controller";
+import Controller from "./components/Tasks/Controller";
 import UserSwitch from "./components/Header/UserSwitch";
 
 const ComplianceTasks: React.FC = () => {
@@ -100,7 +100,7 @@ const ComplianceTasks: React.FC = () => {
    function renderTasks() {
       if (Object.keys(tasksByStatus).length !== 0) {
          return (
-            <PermissionGate
+            <Controller
                tasksByStatusObj={tasksByStatus}
                view={currentView}
             />

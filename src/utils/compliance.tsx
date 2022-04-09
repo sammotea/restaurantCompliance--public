@@ -28,11 +28,10 @@ const compliance = {
    },
 
    prepForStore: function (acc, cur: iTask): iTasksByCategory {
-      const _cur = cur;
+      const _cur = { ...cur };
       const {
          title,
-         category,
-         compliance: { status },
+         category
       } = _cur;
 
       acc[category] = acc[category] || {};
@@ -92,7 +91,6 @@ const compliance = {
       },
 
       deleteComment(payload: iCommentRemovalPayload) {
-         console.log("say delete");
          return {
             type: "DELETECOMMENT",
             payload: payload,
@@ -161,9 +159,7 @@ const compliance = {
             break;
 
          case "DELETECOMMENT":
-            console.log("all good");
             if (validatePayload("commentId")) {
-               console.log("delete bitchez");
                deleteComment();
             }
 

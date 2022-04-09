@@ -53,12 +53,12 @@ const Category: React.FC<Props> = ({ tasksArr, title }) => {
    }
 
    function getNumberOutstandingTasks(): string {
-      let tasks = 0;
+      let numTasks = 0;
       tasksArr.forEach((task) => {
-         if (task.compliance.status === currentView) tasks++;
+         if (task.compliance.status === currentView) numTasks++;
       });
 
-      return tasks ? tasks.toString() : "-";
+      return numTasks ? numTasks.toString() : "-";
    }
 
    function hTitleClick() {

@@ -9,8 +9,8 @@ import MetaOptions from "./MetaOptions";
 import Meta from "./Meta/";
 
 import History from "./Meta//History";
-import Comments from "./Meta//Comments";
-import CommentsForm from "./Meta//CommentsForm";
+import Comments from "./Meta/Comments";
+import CommentsForm from "./Meta/CommentsForm";
 import Subtasks from "./Meta/Subtasks";
 
 interface Props {
@@ -93,12 +93,10 @@ const Task: React.FC<Props> = ({ task, title }) => {
                break;
 
             case "info":
-               console.log(currentView);
                if (
                   currentStatus === "incomplete" ||
                   (currentView === "incomplete" && !canReview)
                ) {
-                  console.log("working");
                   components.push(
                      <Subtasks
                         key={"subtasks"}

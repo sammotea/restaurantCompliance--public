@@ -33,15 +33,14 @@ const Comments: React.FC<Props> = ({
 
    function getComment(commentObj: iCommentsObj, index: number) {
       const { author, comment, id } = commentObj;
-      console.log(id);
-      const theirComment = user === author ? true : false;
-      const canEdit = theirComment;
+      const isUsersOwnComment = user === author ? true : false;
+      const canEdit = isUsersOwnComment;
 
       return (
          <li key={id} className="c-comment">
             {renderAvatar(author)}
             <div className="c-comment__author">
-               {theirComment ? "You" : author} wrote:
+               {isUsersOwnComment ? "You" : author} wrote:
             </div>
 
             <div className="c-comment__text">{comment}</div>
@@ -79,7 +78,6 @@ const Comments: React.FC<Props> = ({
          taskCat: taskCat,
          commentId: commentId,
       } as iCommentRemovalPayload;
-      console.log(payload);
       dispatch(compliance.setAction.deleteComment(payload));
    }
 
