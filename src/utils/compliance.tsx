@@ -1,12 +1,8 @@
 import pseudoUid from "./random";
 
 const compliance = {
-   addDefaults: function (acc, cur): iTask {
-      const _cur = { ...cur };
-
-      _cur["compliance"] = _cur["compliance"] || {};
-
-      const fieldDefaults = {
+   addDefaults: function (acc: iTask[], cur: _iTask): iTask[] {
+      const taskDefaults = {
          worker: "",
          reviewer: "",
          status: "incomplete",
@@ -14,20 +10,15 @@ const compliance = {
          isFailed: false,
          isFixed: false,
          comments: [],
-      };
+      } as ComplianceVariables;
+      
+      const task = { ...cur, ...{ 'compliance' : taskDefaults } };
 
-      Object.keys(fieldDefaults).forEach((k) => {
-         if (!_cur["compliance"].hasOwnProperty(k)) {
-            _cur["compliance"][k] = fieldDefaults[k];
-         }
-      });
-
-      acc.push(_cur);
-
+      acc.push( task );
       return acc;
    },
 
-   prepForStore: function (acc, cur: iTask): iTasksByCategory {
+   prepForStore: function (acc: iTasksByCategory, cur: iTask): iTasksByCategory {
       const _cur = { ...cur };
       const {
          title,
@@ -41,56 +32,56 @@ const compliance = {
    },
 
    setAction: {
-      markIncomplete(payload: iCompliancePayload) {
+      markIncomplete(payload: iCompliancePayload) : TaskAction {
          return {
             type: "RESET",
             payload: payload,
          };
       },
 
-      markForReview(payload: iCompliancePayload) {
+      markForReview(payload: iCompliancePayload) : TaskAction {
          return {
             type: "FORREVIEW",
             payload: payload,
          };
       },
 
-      markBlocked(payload: iCompliancePayload) {
+      markBlocked(payload: iCompliancePayload) : TaskAction {
          return {
             type: "FORREVIEW",
             payload: { isBlocked: true, ...payload },
          };
       },
 
-      markComplete(payload: iCompliancePayload) {
+      markComplete(payload: iCompliancePayload) : TaskAction {
          return {
             type: "COMPLETE",
             payload: payload,
          };
       },
 
-      markFailed(payload: iCompliancePayload) {
+      markFailed(payload: iCompliancePayload) : TaskAction {
          return {
             type: "COMPLETE",
             payload: { isFailed: true, ...payload },
          };
       },
 
-      markFixed(payload: iCompliancePayload) {
+      markFixed(payload: iCompliancePayload) : TaskAction {
          return {
             type: "COMPLETE",
             payload: { isFixed: true, ...payload },
          };
       },
 
-      addComment(payload: iCommentPayload) {
+      addComment(payload: iCommentPayload) : CommentAction {
          return {
             type: "ADDCOMMENT",
             payload: payload,
          };
       },
 
-      deleteComment(payload: iCommentRemovalPayload) {
+      deleteComment(payload: iCommentRemovalPayload) : CommentAction {
          return {
             type: "DELETECOMMENT",
             payload: payload,
@@ -98,7 +89,8 @@ const compliance = {
       },
    },
 
-   dispatch: function (state, action) {
+   dispatch: function (state: iTasksByCategory, action : StoreAction ) : iTasksByCategory {
+      
       // Early exit
       if (
          !action.payload ||
@@ -321,7 +313,7 @@ const compliance = {
          }
       }
 
-      function mergeComplianceWithState() {
+      function mergeComplianceWithState() : iTasksByCategory {
          return {
             ...state,
             [taskCat]: {

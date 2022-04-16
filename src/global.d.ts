@@ -4,6 +4,15 @@ interface _iTask {
    subtasks?: string[];
 }
 
+interface ComplianceVariables {
+   isBlocked: boolean;
+   isFailed: boolean;
+   isFixed: boolean;
+   worker: string;
+   reviewer: string;
+   status: string;
+   comments: Comment[];
+}
 interface _iComplianceVariables {
    isBlocked?: boolean;
    isFailed?: boolean;
@@ -14,14 +23,14 @@ interface _iComplianceVariables {
 
 interface iComplianceObj extends _iComplianceVariables {
    status: string;
-   comments?: iCommentsObj[];
+   comments?: Comment[];
 }
 
 interface iTask extends _iTask {
-   compliance: iComplianceObj;
+   compliance: ComplianceParams;
 }
 
-interface iCommentsObj {
+interface iCommentObj {
    id: number;
    author: string;
    comment: string;
@@ -34,7 +43,9 @@ interface iTasksByStatus {
 }
 
 interface iTasksByCategory {
-   [k: string]: iTask[];
+   [k: string]: {
+      [k: string] :iTask
+   }
 }
 
 interface _iCompliancePayload {
@@ -54,3 +65,66 @@ interface iCommentPayload extends _iCompliancePayload {
    commentAuthor: string;
    commentText: string;
 }
+
+/***************/
+
+type StatusOptions = "incomplete" | "forReview" | "complete";
+
+type TaskMethods = "FORREVIEW" | "COMPLETE" | "RESET";
+type CommentMethods = "ADDCOMMENT" | "DELETECOMMENT";
+type AllMethods = TaskMethods | CommentMethods;
+
+interface Comment {
+   id: number;
+   author: string;
+   comment: string;
+}
+
+interface ComplianceParams {
+   isBlocked: boolean;
+   isFailed: boolean;
+   isFixed: boolean;
+   worker: string;
+   reviewer: string;
+   status: StatusOptions;
+   comments: Comment[]
+}
+
+interface PayloadRequirements {
+   taskId: string;
+   taskCat: string;
+}
+
+interface DeleteCommentPayload extends PayloadRequirements {
+   commentId: number;
+}
+
+interface AddCommentPayload extends PayloadRequirements {
+   commentAuthor: string;
+   commentText: string;
+}
+
+interface TaskPayload extends PayloadRequirements, Omit<Partial<ComplianceParams>, 'comments'> {}
+
+type CommentPayload = DeleteCommentPayload | AddCommentPayload;
+type Payloads = CommentPayload | TaskPayload;
+
+
+
+
+type PayloadTypes =
+    | iCompliancePayload
+    | iCommentRemovalPayload
+    | iCommentPayload;
+
+interface TaskAction {
+    type: TaskMethods;
+    payload: TaskPayload;
+}
+
+interface CommentAction {
+    type: CommentMethods;
+    payload: CommentPayload;
+}
+
+type DispatchActions = TaskAction | CommentAction;
