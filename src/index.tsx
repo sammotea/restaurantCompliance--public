@@ -17,7 +17,8 @@ import UserSwitch from "./components/Header/UserSwitch";
 
 const ComplianceTasks: React.FC = () => {
     const [user, setUser] = useState("manager");
-    const [currentView, setCurrentView] = useState("incomplete");
+    const [currentView, setCurrentView] =
+        useState<CoreStatusOptions>("incomplete");
     const [store, dispatch] = useReducer(
         compliance.dispatch,
         transformTasksForStore()
@@ -53,25 +54,48 @@ const ComplianceTasks: React.FC = () => {
             compliance.prepForStore,
             {}
         ) as iTasksByCategory;
+        console.log(tasksStore);
         return tasksStore;
     }
 
     function organiseTasksByStatus(
         fromStore: iTasksByCategory
     ): iTasksByStatus {
-        let tasksObj = {};
+        const incomplete = [];
+        const forReview = [];
+        const complete = [];
 
         for (const category in fromStore) {
             for (const taskId in fromStore[category]) {
                 const task = fromStore[category][taskId];
                 const status = task.compliance.status;
 
-                tasksObj[status] = tasksObj[status] || [];
-                tasksObj[status].push(task);
+                switch (status) {
+                    case "incomplete":
+                        incomplete.push(task);
+                        break;
+
+                    case "forReview":
+                        forReview.push(task);
+                        break;
+
+                    case "complete":
+                        complete.push(task);
+                        break;
+
+                    default:
+                        throw new Error(
+                            `ComplianceTasks.organiseTasksByStatus() : status not recognised [${status}]`
+                        );
+                }
             }
         }
 
-        return tasksObj;
+        return {
+            incomplete,
+            forReview,
+            complete,
+        };
     }
 
     function renderHeader() {

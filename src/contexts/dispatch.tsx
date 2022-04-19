@@ -1,5 +1,7 @@
 import React from "react";
 
-const Dispatch = React.createContext<null | React.Dispatch<Dispatch>>(null);
+const Dispatch = React.createContext<null | React.Dispatch<DispatchActions>>(
+    null
+);
 
 export default Dispatch;

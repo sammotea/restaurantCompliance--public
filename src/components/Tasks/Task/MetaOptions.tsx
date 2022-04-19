@@ -2,68 +2,67 @@ import React, { useContext } from "react";
 import Permission from "../../../contexts/permission";
 
 interface Props {
-   currentMeta: string;
-   hMetaChange(metaOption: string): void;
+    currentMeta: string;
+    hMetaChange(metaOption: string): void;
 }
 
-const MetaOptions: React.FC<Props> = ({
-   currentMeta,
-   hMetaChange,
-}) => {
-   const canReview = useContext(Permission);
+type PossibleMeta = "comments" | "info";
 
-   return <>{renderMetaOptions()}</>;
+const MetaOptions: React.FC<Props> = ({ currentMeta, hMetaChange }) => {
+    const canReview = useContext(Permission);
 
-   function renderMetaOptions() {
-      const metaOptions = getMetaOptions();
+    return <>{renderMetaOptions()}</>;
 
-      return (
-         <ul className={`c-taskOptions--meta`}>
-            {metaOptions.map((metaOption) => {
-               return (
-                  <li
-                     key={metaOption}
-                     onClick={() => hMetaClick(metaOption)}
-                     className={`c-taskOption--meta c-taskOption--${metaOption} ${
-                        currentMeta === metaOption
-                           ? "s--isSelected"
-                           : ""
-                     }`}
-                  >
-                     <span
-                        className={`c-icon c-icon--${metaOption}`}
-                     ></span>
-                  </li>
-               );
-            })}
-         </ul>
-      );
-   }
+    function renderMetaOptions() {
+        const metaOptions = getMetaOptions();
 
-   function getMetaOptions(): string[] {
-      const metaOptions = ["info"];
+        return (
+            <ul className={`c-taskOptions--meta`}>
+                {metaOptions.map((metaOption) => {
+                    return (
+                        <li
+                            key={metaOption}
+                            onClick={() => hMetaClick(metaOption)}
+                            className={`c-taskOption--meta c-taskOption--${metaOption} ${
+                                currentMeta === metaOption
+                                    ? "s--isSelected"
+                                    : ""
+                            }`}
+                        >
+                            <span
+                                className={`c-icon c-icon--${metaOption}`}
+                            ></span>
+                        </li>
+                    );
+                })}
+            </ul>
+        );
+    }
 
-      if (canReview) {
-         metaOptions.push("comments");
-      }
+    function getMetaOptions(): PossibleMeta[] {
+        const metaOptions: PossibleMeta[] = ["info"];
 
-      return orderOptions(metaOptions);
-   }
+        if (canReview) {
+            metaOptions.push("comments");
+        }
 
-   function orderOptions(options: string[]): string[] {
-      const metaOrder = {
-         comments: 1,
-         info: 1001,
-      };
+        return orderOptions(metaOptions);
+    }
 
-      return options.sort((a, b) => {
-         return metaOrder[a] - metaOrder[b];
-      });
-   }
+    function orderOptions(options: PossibleMeta[]): PossibleMeta[] {
+        const metaOrder = {
+            comments: 1,
+            info: 1001,
+        };
 
-   function hMetaClick(metaOption: string) {
-      hMetaChange(currentMeta === metaOption ? "" : metaOption);
-   }
+        return options.sort((a, b) => {
+            return metaOrder[a] - metaOrder[b];
+        });
+    }
+
+    function hMetaClick(metaOption: string) {
+        hMetaChange(currentMeta === metaOption ? "" : metaOption);
+    }
 };
 
 export default MetaOptions;

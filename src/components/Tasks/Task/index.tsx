@@ -14,136 +14,136 @@ import CommentsForm from "./Meta/CommentsForm";
 import Subtasks from "./Meta/Subtasks";
 
 interface Props {
-   task: iTask;
-   title: string;
+    task: iTask;
+    title: string;
 }
 
 const Task: React.FC<Props> = ({ task, title }) => {
-   const {
-      category,
-      compliance: {
-         worker,
-         reviewer,
-         status: currentStatus,
-         comments,
-      },
-      subtasks,
-   } = task;
+    const {
+        category,
+        compliance: { worker, reviewer, status: currentStatus, comments },
+        subtasks,
+    } = task;
 
-   const [showStatusOptions, setShowStatusOptions] = useState(false);
-   const [showMetaOptions, setShowMetaOptions] = useState(false);
-   const [showMeta, setShowMeta] = useState(false);
-   const [currentMeta, setCurrentMeta] = useState("");
+    const [showStatusOptions, setShowStatusOptions] = useState(false);
+    const [showMetaOptions, setShowMetaOptions] = useState(false);
+    const [showMeta, setShowMeta] = useState(false);
+    const [currentMeta, setCurrentMeta] = useState("");
 
-   const canReview = useContext(Permission);
-   const currentView = useContext(CurrentView);
+    const canReview = useContext(Permission);
+    const currentView = useContext(CurrentView);
 
-   return <>{renderTask()}</>;
+    return <>{renderTask()}</>;
 
-   function renderTask() {
-      return (
-         <li
-            key={title}
-            className={`c-task c-task--${currentStatus} ${
-               showStatusOptions ? "s--showStatusOptions" : ""
-            } ${showMetaOptions ? "s--showMetaOptions" : ""}`}
-         >
-            <div className={`c-task__header`}>
-               <Face
-                  task={task}
-                  hShowStatusOptions={hToggleShowStatusOptions}
-                  hShowMetaOptions={hToggleShowMetaOptions}
-               />
-               <StatusOptions
-                  task={task}
-                  hStatusChange={hStatusChange}
-               />
-               <MetaOptions
-                  currentMeta={currentMeta}
-                  hMetaChange={hMetaChange}
-               />
-            </div>
-            <div className={`c-task__body`}>{renderMeta()}</div>
-         </li>
-      );
-   }
+    function renderTask() {
+        return (
+            <li
+                key={title}
+                className={`c-task c-task--${currentStatus} ${
+                    showStatusOptions ? "s--showStatusOptions" : ""
+                } ${showMetaOptions ? "s--showMetaOptions" : ""}`}
+            >
+                <div className={`c-task__header`}>
+                    <Face
+                        task={task}
+                        hShowStatusOptions={hToggleShowStatusOptions}
+                        hShowMetaOptions={hToggleShowMetaOptions}
+                    />
+                    <StatusOptions task={task} hStatusChange={hStatusChange} />
+                    <MetaOptions
+                        currentMeta={currentMeta}
+                        hMetaChange={hMetaChange}
+                    />
+                </div>
+                <div className={`c-task__body`}>{renderMeta()}</div>
+            </li>
+        );
+    }
 
-   function renderMeta() {
-      if (showMeta && currentMeta) {
-         const components = [];
+    function renderMeta() {
+        if (showMeta && currentMeta) {
+            const components = [];
 
-         switch (currentMeta) {
-            case "comments":
-               components.push(
-                  <CommentsForm
-                     key={"commentsForm"}
-                     taskId={title}
-                     taskCat={category}
-                  />
-               );
-               components.push(
-                  <Comments
-                     key={"comments"}
-                     taskId={title}
-                     taskCat={category}
-                     comments={comments}
-                  />
-               );
-
-               break;
-
-            case "info":
-               if (
-                  currentStatus === "incomplete" ||
-                  (currentView === "incomplete" && !canReview)
-               ) {
-                  components.push(
-                     <Subtasks
-                        key={"subtasks"}
-                        subtasksArr={subtasks}
-                     />
-                  );
-               } else {
-                  if (canReview) {
-                     components.push(
-                        <History
-                           key={"history "}
-                           worker={worker}
-                           reviewer={reviewer}
+            switch (currentMeta) {
+                case "comments":
+                    components.push(
+                        <CommentsForm
+                            key={"commentsForm"}
+                            taskId={title}
+                            taskCat={category}
                         />
-                     );
-                  }
-               }
-         }
+                    );
+                    components.push(
+                        <Comments
+                            key={"comments"}
+                            taskId={title}
+                            taskCat={category}
+                            comments={comments}
+                        />
+                    );
 
-         return <Meta>{components}</Meta>;
-      }
-   }
+                    break;
 
-   function hStatusChange() {
-      hToggleShowStatusOptions();
-   }
+                case "info":
+                    if (
+                        currentStatus === "incomplete" ||
+                        (currentView === "incomplete" && !canReview)
+                    ) {
+                        let subtasksArr = ["No info available"];
 
-   function hMetaChange(metaOption: string) {
-      setCurrentMeta(metaOption);
-      setShowMeta(metaOption ? true : false);
-   }
+                        if (
+                            "undefined" !== typeof subtasks &&
+                            Array.isArray(subtasks)
+                        ) {
+                            subtasksArr = subtasks;
+                        }
+                        components.push(
+                            <Subtasks
+                                key={"subtasks"}
+                                subtasksArr={subtasksArr}
+                            />
+                        );
+                    } else {
+                        if (canReview) {
+                            components.push(
+                                <History
+                                    key={"history "}
+                                    worker={worker}
+                                    reviewer={reviewer}
+                                />
+                            );
+                        }
+                    }
+            }
 
-   function hToggleShowStatusOptions() {
-      setShowMetaOptions(false);
+            return <Meta>{components}</Meta>;
+        }
+    }
 
-      if (!showMetaOptions) {
-         setShowStatusOptions(!showStatusOptions);
-      }
-   }
+    function hStatusChange() {
+        hToggleShowStatusOptions();
+    }
 
-   function hToggleShowMetaOptions() {
-      setShowStatusOptions(false);
+    function hMetaChange(metaOption: string) {
+        setCurrentMeta(metaOption);
+        setShowMeta(metaOption ? true : false);
+    }
 
-      if (!showStatusOptions) {
-         setShowMetaOptions(!showMetaOptions);
-      }
-   }
+    function hToggleShowStatusOptions() {
+        setShowMetaOptions(false);
+
+        if (!showMetaOptions) {
+            setShowStatusOptions(!showStatusOptions);
+        }
+    }
+
+    function hToggleShowMetaOptions() {
+        setShowStatusOptions(false);
+
+        if (!showStatusOptions) {
+            setShowMetaOptions(!showMetaOptions);
+        }
+    }
 };
 
 export default Task;

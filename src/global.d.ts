@@ -36,16 +36,12 @@ interface iCommentObj {
    comment: string;
 }
 
-interface iTasksByStatus {
-   incomplete?: iTask[];
-   forReview?: iTask[];
-   complete?: iTask[];
+type iTasksByStatus = {
+   [status in CoreStatusOptions]: iTask[] | [];
 }
 
 interface iTasksByCategory {
-   [k: string]: {
-      [k: string] :iTask
-   }
+   [k: string]:  iTask[]
 }
 
 interface _iCompliancePayload {
@@ -68,7 +64,9 @@ interface iCommentPayload extends _iCompliancePayload {
 
 /***************/
 
-type StatusOptions = "incomplete" | "forReview" | "complete";
+type CoreStatusOptions = "incomplete" | "forReview" | "complete";
+type PseudoStatusOptions = 'blocked' | 'fixed' | 'failed';
+type AllStatusOptions = CoreStatusOptions | PseudoStatusOptions;
 
 type TaskMethods = "FORREVIEW" | "COMPLETE" | "RESET";
 type CommentMethods = "ADDCOMMENT" | "DELETECOMMENT";
@@ -86,7 +84,7 @@ interface ComplianceParams {
    isFixed: boolean;
    worker: string;
    reviewer: string;
-   status: StatusOptions;
+   status: CoreStatusOptions;
    comments: Comment[]
 }
 

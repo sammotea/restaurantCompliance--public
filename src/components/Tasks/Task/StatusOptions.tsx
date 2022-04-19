@@ -11,6 +11,8 @@ interface Props {
     hStatusChange(): void;
 }
 
+type iconOptions = "incomplete" | "complete" | "fixed" | "failed" | "undo";
+
 const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
     const {
         title,
@@ -59,27 +61,21 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
         );
     }
 
-    function getStatusOptions(): string[] {
-        const statusOptions = [];
-
+    function getStatusOptions(): iconOptions[] {
         switch (currentView) {
             case "incomplete":
-                statusOptions.push("incomplete", "complete", "failed");
-                break;
+                return orderOptions(["incomplete", "complete", "failed"]);
 
             case "forReview":
             case "complete":
-                statusOptions.push("complete", "failed", "fixed", "undo");
-                break;
+                return orderOptions(["complete", "failed", "fixed", "undo"]);
 
             default:
                 throw new Error("getStatusOptions: unrecognised view");
         }
-
-        return orderOptions(statusOptions);
     }
 
-    function checkIsCurrentStatus(statusOption: string): boolean {
+    function checkIsCurrentStatus(statusOption: iconOptions): boolean {
         let isSelected = false;
 
         /**
@@ -103,8 +99,6 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
                     if (statusOption === "failed" && isBlocked) {
                         isSelected = true;
                     }
-                } else {
-                    isSelected = currentStatus === statusOption;
                 }
 
                 break;
@@ -131,10 +125,15 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
         return isSelected;
     }
 
-    function getActionFromStatus(statusOption: string): string {
-        let action = statusOption;
+    function getActionFromStatus(statusOption: iconOptions): string {
+        let action;
 
         switch (statusOption) {
+            case "incomplete":
+            case "fixed":
+                action = statusOption;
+                break;
+
             case "complete":
                 if (!canReview) {
                     action = "forReview";
@@ -162,12 +161,17 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
                     }
                 }
                 break;
+
+            default:
+                throw new Error(
+                    `StatusOptions.getActionFromStatuses() : unrecognised statusOption [${statusOption}].`
+                );
         }
 
         return transformers.toCamel("mark " + action);
     }
 
-    function orderOptions(options: string[]): string[] {
+    function orderOptions(options: iconOptions[]): iconOptions[] {
         const statusOrder = {
             incomplete: 1,
             complete: 101,
@@ -219,7 +223,9 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
                 throw new Error("hStatusChange: status not recognised");
         }
 
-        dispatch(compliance.setAction[action](payload));
+        if (dispatch) {
+            dispatch(compliance.setAction[action](payload));
+        }
 
         hStatusChange();
     }

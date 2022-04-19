@@ -71,9 +71,11 @@ const CommentsForm: React.FC<Props> = ({ taskId, taskCat }) => {
 
     function hButtonClick() {
         if (comment) {
-            dispatch(compliance.setAction.addComment(payload));
-            setComment("");
-            setHasSubmitted(true);
+            if (dispatch) {
+                dispatch(compliance.setAction.addComment(payload));
+                setComment("");
+                setHasSubmitted(true);
+            }
         }
     }
 

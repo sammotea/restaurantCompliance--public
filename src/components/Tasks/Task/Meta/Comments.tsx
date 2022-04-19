@@ -8,7 +8,7 @@ import compliance from "../../../../utils/complianceNew";
 // Pending: Worker can view manager comments if switch permissions while comments open
 
 interface Props {
-    comments: any;
+    comments: Comment[];
     taskId: string;
     taskCat: string;
 }
@@ -31,7 +31,7 @@ const Comments: React.FC<Props> = ({
         }
     }
 
-    function getComment(commentObj: iCommentObj, index: number) {
+    function getComment(commentObj: Comment) {
         const { author, comment, id } = commentObj;
         const isUsersOwnComment = user === author ? true : false;
         const canEdit = isUsersOwnComment;
@@ -78,7 +78,8 @@ const Comments: React.FC<Props> = ({
             taskCat: taskCat,
             commentId: commentId,
         } as iCommentRemovalPayload;
-        dispatch(compliance.setAction.deleteComment(payload));
+
+        if (dispatch) dispatch(compliance.setAction.deleteComment(payload));
     }
 
     function hActionClick(actionType: string, commentId: number) {

@@ -29,11 +29,13 @@ const compliance = {
         acc: iTasksByCategory,
         cur: iTask
     ): iTasksByCategory {
-        const _cur = { ...cur };
-        const { title, category } = _cur;
+        const { title, category } = cur;
 
-        acc[category] = acc[category] || {};
-        acc[category][title] = _cur;
+        if ("undefined" === typeof acc[category]) {
+            acc[category] = [];
+        }
+
+        acc[category].push(cur);
 
         return acc;
     },
@@ -107,10 +109,18 @@ const compliance = {
 
         const { type: actionType, payload } = action;
         const { taskId, taskCat } = payload;
-        const complianceObj = state[taskCat][taskId]["compliance"];
-        let complianceChanges: Partial<ComplianceParams>;
+        console.log(state[taskCat]);
 
-        console.log(action);
+        const taskInStore = state[taskCat].find((t) => t.title === taskId);
+
+        if (!taskInStore) {
+            throw new Error(
+                `compliance.dispatch() : Task doesn't exist in store [${taskId}].`
+            );
+        }
+
+        const complianceObj = taskInStore["compliance"];
+        let complianceChanges: Partial<ComplianceParams>;
 
         // Filter based on action type
         if ("commentId" in payload || "commentText" in payload) {
@@ -146,15 +156,17 @@ const compliance = {
         taskId: string,
         taskCat: string
     ): iTasksByCategory {
+        const updatedTaskArr = state[taskCat].reduce((acc, cur) => {
+            if (cur.title === taskId) {
+                cur.compliance = updatedCompliance;
+            }
+
+            acc.push(cur);
+            return acc;
+        }, [] as iTask[]);
         return {
             ...state,
-            [taskCat]: {
-                ...state[taskCat],
-                [taskId]: {
-                    ...state[taskCat][taskId],
-                    compliance: updatedCompliance,
-                },
-            },
+            [taskCat]: updatedTaskArr,
         };
     },
 
@@ -284,11 +296,19 @@ const compliance = {
     },
 
     createComment: function (author: string, commentText: string): Comment {
+        /**
+         ** PENDING: Unresolved Typescript error
+         **
+         ** Type '{ OBJECT THAT IS PERFECTLY IDENTICAL TO COMMENT }' is missing the following properties
+         ** from type 'Comment': data, length, ownerDocume [ts(2740)].
+         **
+         ** I’ve hushed up the TS analysis with an 'as' statement.
+         **/
         return {
             id: pseudoUid(),
             author: author,
             comment: commentText,
-        };
+        } as Comment;
     },
 
     deleteComment: function (
