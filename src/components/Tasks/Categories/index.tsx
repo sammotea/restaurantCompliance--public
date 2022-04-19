@@ -6,7 +6,7 @@ import transformers from "../../../utils/transformers";
 import Category from "./Category";
 
 interface Props {
-    tasksArr: iTask[];
+    tasksArr: Task[];
     view: CoreStatusOptions;
 }
 
@@ -26,7 +26,7 @@ const Categories: React.FC<Props> = ({ tasksArr, view }) => {
         return <ul className={cl}>{sorters.byTitle(categories)}</ul>;
     }
 
-    function getTasksByCategory(): iTasksByCategory {
+    function getTasksByCategory(): TasksByCategory {
         return tasksArr.reduce(sorters.reduceByCategory, {});
     }
 };

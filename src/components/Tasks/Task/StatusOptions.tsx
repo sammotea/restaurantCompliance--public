@@ -4,10 +4,10 @@ import CurrentView from "../../../contexts/currentView";
 import User from "../../../contexts/user";
 import Dispatch from "../../../contexts/dispatch";
 import transformers from "../../../utils/transformers";
-import compliance from "../../../utils/complianceNew";
+import compliance from "../../../utils/compliance";
 
 interface Props {
-    task: iTask;
+    task: Task;
     hStatusChange(): void;
 }
 
@@ -186,10 +186,15 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
     }
 
     function hStatusClick(action: string) {
-        const payload = {
+        let payload;
+        const payloadRequirements = {
             taskId: title,
             taskCat: category,
-        } as iCompliancePayload;
+        };
+
+        if (!dispatch) {
+            return;
+        }
 
         /**
          ***   NB: Actions can be progressive (incomplete -> complete)
@@ -198,6 +203,7 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
 
         switch (action) {
             case "markIncomplete":
+                dispatch(compliance.setAction[action](payloadRequirements));
                 break;
 
             case "markBlocked":
@@ -208,23 +214,28 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
                  ***   the worker if the reviewer is undoing a
                  ***   mismarked-completed task.)
                  **/
-
-                payload["worker"] = worker ? worker : user;
+                dispatch(
+                    compliance.setAction[action]({
+                        ...payloadRequirements,
+                        worker: worker ? worker : user,
+                    })
+                );
                 break;
 
             case "markFixed":
             case "markFailed":
             case "markComplete":
-                payload["worker"] = worker ? worker : user;
-                payload["reviewer"] = user;
+                dispatch(
+                    compliance.setAction[action]({
+                        ...payloadRequirements,
+                        worker: worker ? worker : user,
+                        reviewer: user,
+                    })
+                );
                 break;
 
             default:
                 throw new Error("hStatusChange: status not recognised");
-        }
-
-        if (dispatch) {
-            dispatch(compliance.setAction[action](payload));
         }
 
         hStatusChange();

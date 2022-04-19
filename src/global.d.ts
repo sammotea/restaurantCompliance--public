@@ -1,82 +1,26 @@
-interface _iTask {
+// Task
+
+interface TaskRaw {
    title: string;
    category: string;
    subtasks?: string[];
 }
 
-interface ComplianceVariables {
-   isBlocked: boolean;
-   isFailed: boolean;
-   isFixed: boolean;
-   worker: string;
-   reviewer: string;
-   status: string;
-   comments: Comment[];
-}
-interface _iComplianceVariables {
-   isBlocked?: boolean;
-   isFailed?: boolean;
-   isFixed?: boolean;
-   worker: string;
-   reviewer: string;
-}
-
-interface iComplianceObj extends _iComplianceVariables {
-   status: string;
-   comments?: Comment[];
-}
-
-interface iTask extends _iTask {
+interface Task extends TaskRaw {
    compliance: ComplianceParams;
 }
 
-interface iCommentObj {
-   id: number;
-   author: string;
-   comment: string;
+// Grouped Tasks
+
+type TasksByStatus = {
+   [status in CoreStatusOptions]: Task[] | [];
 }
 
-type iTasksByStatus = {
-   [status in CoreStatusOptions]: iTask[] | [];
+interface TasksByCategory {
+   [k: string]:  Task[]
 }
 
-interface iTasksByCategory {
-   [k: string]:  iTask[]
-}
-
-interface _iCompliancePayload {
-   taskId: string;
-   taskCat: string;
-}
-
-interface iCompliancePayload
-   extends _iCompliancePayload,
-      Partial<_iComplianceVariables> {}
-
-interface iCommentRemovalPayload extends _iCompliancePayload {
-   commentId: number;
-}
-
-interface iCommentPayload extends _iCompliancePayload {
-   commentAuthor: string;
-   commentText: string;
-}
-
-/***************/
-
-type CoreStatusOptions = "incomplete" | "forReview" | "complete";
-type PseudoStatusOptions = 'blocked' | 'fixed' | 'failed';
-type AllStatusOptions = CoreStatusOptions | PseudoStatusOptions;
-
-type TaskMethods = "FORREVIEW" | "COMPLETE" | "RESET";
-type CommentMethods = "ADDCOMMENT" | "DELETECOMMENT";
-type AllMethods = TaskMethods | CommentMethods;
-
-interface Comment {
-   id: number;
-   author: string;
-   comment: string;
-}
+// Task Parts
 
 interface ComplianceParams {
    isBlocked: boolean;
@@ -87,6 +31,23 @@ interface ComplianceParams {
    status: CoreStatusOptions;
    comments: Comment[]
 }
+
+// Compliance Parts
+
+type CoreStatusOptions = "incomplete" | "forReview" | "complete";
+type PseudoStatusOptions = 'blocked' | 'fixed' | 'failed';
+type AllStatusOptions = CoreStatusOptions | PseudoStatusOptions;
+
+interface Comment {
+   id: number;
+   author: string;
+   comment: string;
+}
+
+// Payloads
+
+type TaskMethods = "FORREVIEW" | "COMPLETE" | "RESET";
+type CommentMethods = "ADDCOMMENT" | "DELETECOMMENT";
 
 interface PayloadRequirements {
    taskId: string;
@@ -106,14 +67,6 @@ interface TaskPayload extends PayloadRequirements, Omit<Partial<ComplianceParams
 
 type CommentPayload = DeleteCommentPayload | AddCommentPayload;
 type Payloads = CommentPayload | TaskPayload;
-
-
-
-
-type PayloadTypes =
-    | iCompliancePayload
-    | iCommentRemovalPayload
-    | iCommentPayload;
 
 interface TaskAction {
     type: TaskMethods;

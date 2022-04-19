@@ -3,7 +3,7 @@ import User from "../../../../contexts/user";
 import Dispatch from "../../../../contexts/dispatch";
 import avatars from "../../../../maps/avatars";
 import transformers from "../../../../utils/transformers";
-import compliance from "../../../../utils/complianceNew";
+import compliance from "../../../../utils/compliance";
 
 // Pending: Worker can view manager comments if switch permissions while comments open
 
@@ -77,7 +77,7 @@ const Comments: React.FC<Props> = ({
             taskId: taskId,
             taskCat: taskCat,
             commentId: commentId,
-        } as iCommentRemovalPayload;
+        };
 
         if (dispatch) dispatch(compliance.setAction.deleteComment(payload));
     }

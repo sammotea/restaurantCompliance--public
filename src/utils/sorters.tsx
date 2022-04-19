@@ -1,8 +1,8 @@
 const sorters = {
     reduceByCategory: function (
-        acc: iTasksByCategory,
-        cur: iTask
-    ): iTasksByCategory {
+        acc: TasksByCategory,
+        cur: Task
+    ): TasksByCategory {
         const { category } = cur;
 
         acc[category] = acc[category] || [];

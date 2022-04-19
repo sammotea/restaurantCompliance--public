@@ -1,331 +1,442 @@
 import pseudoUid from "./random";
 
+// PENDING
+// 1. FORREVIEW = SETFORREVIEW
+
 const compliance = {
-   addDefaults: function (acc: iTask[], cur: _iTask): iTask[] {
-      const taskDefaults = {
-         worker: "",
-         reviewer: "",
-         status: "incomplete",
-         isBlocked: false,
-         isFailed: false,
-         isFixed: false,
-         comments: [],
-      } as ComplianceVariables;
-      
-      const task = { ...cur, ...{ 'compliance' : taskDefaults } };
+    statusOptions: ["incomplete", "forReview", "complete"],
 
-      acc.push( task );
-      return acc;
-   },
+    taskDefaults: {
+        worker: "",
+        reviewer: "",
+        status: "incomplete",
+        isBlocked: false,
+        isFailed: false,
+        isFixed: false,
+        comments: [],
+    } as ComplianceParams,
 
-   prepForStore: function (acc: iTasksByCategory, cur: iTask): iTasksByCategory {
-      const _cur = { ...cur };
-      const {
-         title,
-         category
-      } = _cur;
+    addDefaults: function (acc: Task[], cur: TaskRaw): Task[] {
+        const defaults = compliance.taskDefaults;
+        const task = { ...cur, ...{ compliance: defaults } };
 
-      acc[category] = acc[category] || {};
-      acc[category][title] = _cur;
+        acc.push(task);
 
-      return acc;
-   },
+        return acc;
+    },
 
-   setAction: {
-      markIncomplete(payload: iCompliancePayload) : TaskAction {
-         return {
-            type: "RESET",
-            payload: payload,
-         };
-      },
+    prepForStore: function (acc: TasksByCategory, cur: Task): TasksByCategory {
+        const { title, category } = cur;
 
-      markForReview(payload: iCompliancePayload) : TaskAction {
-         return {
-            type: "FORREVIEW",
-            payload: payload,
-         };
-      },
+        if ("undefined" === typeof acc[category]) {
+            acc[category] = [];
+        }
 
-      markBlocked(payload: iCompliancePayload) : TaskAction {
-         return {
-            type: "FORREVIEW",
-            payload: { isBlocked: true, ...payload },
-         };
-      },
+        acc[category].push(cur);
 
-      markComplete(payload: iCompliancePayload) : TaskAction {
-         return {
-            type: "COMPLETE",
-            payload: payload,
-         };
-      },
+        return acc;
+    },
 
-      markFailed(payload: iCompliancePayload) : TaskAction {
-         return {
-            type: "COMPLETE",
-            payload: { isFailed: true, ...payload },
-         };
-      },
+    setAction: {
+        markIncomplete(payload: PayloadRequirements): TaskAction {
+            return {
+                type: "RESET",
+                payload: payload,
+            };
+        },
 
-      markFixed(payload: iCompliancePayload) : TaskAction {
-         return {
-            type: "COMPLETE",
-            payload: { isFixed: true, ...payload },
-         };
-      },
+        markForReview(
+            payload: PayloadRequirements & { worker: string }
+        ): TaskAction {
+            return {
+                type: "FORREVIEW",
+                payload: payload,
+            };
+        },
 
-      addComment(payload: iCommentPayload) : CommentAction {
-         return {
-            type: "ADDCOMMENT",
-            payload: payload,
-         };
-      },
+        markBlocked(
+            payload: PayloadRequirements & { worker: string }
+        ): TaskAction {
+            return {
+                type: "FORREVIEW",
+                payload: { isBlocked: true, ...payload },
+            };
+        },
 
-      deleteComment(payload: iCommentRemovalPayload) : CommentAction {
-         return {
-            type: "DELETECOMMENT",
-            payload: payload,
-         };
-      },
-   },
+        markComplete(
+            payload: PayloadRequirements & { worker: string; reviewer: string }
+        ): TaskAction {
+            return {
+                type: "COMPLETE",
+                payload: payload,
+            };
+        },
 
-   dispatch: function (state: iTasksByCategory, action : StoreAction ) : iTasksByCategory {
-      
-      // Early exit
-      if (
-         !action.payload ||
-         !action.payload.taskId ||
-         !action.payload.taskCat
-      ) {
-         throw new Error(
-            "complianceStateReducer() : No payload or missing details"
-         );
-      }
+        markFailed(
+            payload: PayloadRequirements & { worker: string; reviewer: string }
+        ): TaskAction {
+            return {
+                type: "COMPLETE",
+                payload: { isFailed: true, ...payload },
+            };
+        },
 
-      const p = action.payload;
-      const { taskId, taskCat } = p;
-      const compliance = { ...state[taskCat][taskId]["compliance"] };
+        markFixed(
+            payload: PayloadRequirements & { worker: string; reviewer: string }
+        ): TaskAction {
+            return {
+                type: "COMPLETE",
+                payload: { isFixed: true, ...payload },
+            };
+        },
 
-      const defaults = {
-         status: "incomplete",
-         worker: "",
-         reviewer: "",
-         isFixed: false,
-         isBlocked: false,
-         isFailed: false,
-      };
+        addComment(payload: AddCommentPayload): CommentAction {
+            return {
+                type: "ADDCOMMENT",
+                payload: payload,
+            };
+        },
 
-      switch (action.type) {
-         case "FORREVIEW":
-            if (compliance["reviewer"]) {
-               // Resetting from 'complete'
-               reset("reviewer", "isFixed", "isFailed");
-            } else {
-               if (validatePayload("worker")) {
-                  // Advancing from 'incomplete'
-                  updateWorker();
-                  updateIsBlocked();
-               }
-            }
+        deleteComment(payload: DeleteCommentPayload): CommentAction {
+            return {
+                type: "DELETECOMMENT",
+                payload: payload,
+            };
+        },
+    },
 
-            updateStatus("forReview");
+    dispatch: function (
+        state: TasksByCategory,
+        action: DispatchActions
+    ): TasksByCategory {
+        // Early exit if anything’s missing
+        if (!compliance.hasValidPayload(action)) {
+            throw new Error("compliance.dispatch() : Invalid payload");
+        }
 
-            break;
+        const { type: actionType, payload } = action;
+        const { taskId, taskCat } = payload;
+        console.log(state[taskCat]);
 
-         case "COMPLETE":
-            if (validatePayload("worker", "reviewer")) {
-               updateWorker();
-               updateReviewer();
-               updateWorkerFlag();
-               updateIsFailed();
-               updateStatus("complete");
-            }
+        const taskInStore = state[taskCat].find((t) => t.title === taskId);
 
-            break;
-
-         case "ADDCOMMENT":
-            if (validatePayload("commentAuthor", "commentText")) {
-               createComment();
-            }
-
-            break;
-
-         case "DELETECOMMENT":
-            if (validatePayload("commentId")) {
-               deleteComment();
-            }
-
-            break;
-
-         case "RESET":
-            resetAll();
-            break;
-
-         default:
+        if (!taskInStore) {
             throw new Error(
-               "complianceStateReducer() : Action not recognised"
+                `compliance.dispatch() : Task doesn't exist in store [${taskId}].`
             );
-      }
+        }
 
-      return mergeComplianceWithState();
+        const complianceObj = taskInStore["compliance"];
+        let complianceChanges: Partial<ComplianceParams>;
 
-      /*/
-   ///   Start functions
-   /*/
+        // Filter based on action type
+        if ("commentId" in payload || "commentText" in payload) {
+            complianceChanges = compliance.doCommentAction(
+                actionType as CommentMethods,
+                payload,
+                complianceObj
+            );
+        } else {
+            complianceChanges = compliance.doTaskAction(
+                actionType as TaskMethods,
+                payload,
+                complianceObj
+            );
+        }
 
-      function createComment() {
-         compliance["comments"].push({
+        const updatedCompliance: ComplianceParams = {
+            ...complianceObj,
+            ...complianceChanges,
+        };
+
+        return compliance.mergeUpdatesWithState(
+            state,
+            updatedCompliance,
+            taskId,
+            taskCat
+        );
+    },
+
+    mergeUpdatesWithState: function (
+        state: TasksByCategory,
+        updatedCompliance: ComplianceParams,
+        taskId: string,
+        taskCat: string
+    ): TasksByCategory {
+        const updatedTaskArr = state[taskCat].reduce((acc, cur) => {
+            if (cur.title === taskId) {
+                cur.compliance = updatedCompliance;
+            }
+
+            acc.push(cur);
+            return acc;
+        }, [] as Task[]);
+        return {
+            ...state,
+            [taskCat]: updatedTaskArr,
+        };
+    },
+
+    doTaskAction: function (
+        actionType: TaskMethods,
+        payload: TaskPayload,
+        complianceObj: ComplianceParams
+    ): Partial<ComplianceParams> {
+        let complianceUpdates = {} as Partial<ComplianceParams>;
+
+        switch (actionType) {
+            case "FORREVIEW":
+                // If already has a reviewer in state we must be resetting from 'complete'
+                if (complianceObj["reviewer"]) {
+                    complianceUpdates = compliance.getDefaults([
+                        "reviewer",
+                        "isFixed",
+                        "isFailed",
+                    ]);
+                } else {
+                    complianceUpdates = compliance.updateTask(
+                        ["worker", "isBlocked"],
+                        payload,
+                        complianceObj
+                    );
+                }
+
+                complianceUpdates["status"] = "forReview";
+
+                break;
+
+            case "COMPLETE":
+                complianceUpdates = compliance.updateTask(
+                    ["worker", "reviewer", "isBlocked", "isFailed", "isFixed"],
+                    payload,
+                    complianceObj
+                );
+
+                complianceUpdates["status"] = "complete";
+                break;
+
+            case "RESET":
+                complianceUpdates = compliance.getDefaults();
+                break;
+
+            default:
+                throw new Error(
+                    `compliance.doTaskAction() : Unrecognised actionType [${actionType}].`
+                );
+        }
+
+        return complianceUpdates;
+    },
+
+    getDefaults: function (
+        keyArray?: Array<keyof ComplianceParams>
+    ): Partial<ComplianceParams> {
+        if (keyArray) {
+            let defaults = {} as Partial<ComplianceParams>;
+
+            keyArray.forEach((k) => {
+                let assignation = {
+                    [k]: compliance.taskDefaults[k],
+                };
+                defaults = { ...defaults, ...assignation };
+            });
+
+            return defaults;
+        } else {
+            return compliance.taskDefaults;
+        }
+    },
+
+    updateTask: function (
+        keysArr: Array<keyof ComplianceParams>,
+        payload: TaskPayload,
+        complianceObj: ComplianceParams
+    ): Partial<ComplianceParams> {
+        let updates = {} as Partial<ComplianceParams>;
+
+        keysArr.forEach((k) => {
+            // Skip 'comments' param on ComplianceParms
+            if (k === "comments") return;
+
+            let assignation = {
+                [k]: payload[k],
+            };
+            updates = { ...updates, ...assignation };
+        });
+
+        return { ...complianceObj, ...updates };
+    },
+
+    doCommentAction: function (
+        actionType: CommentMethods,
+        payload: CommentPayload,
+        complianceObj: ComplianceParams
+    ): Partial<ComplianceParams> {
+        let comments = complianceObj["comments"];
+
+        switch (actionType) {
+            case "ADDCOMMENT":
+                if ("commentAuthor" in payload && "commentText" in payload) {
+                    const { commentAuthor, commentText } = payload;
+                    comments.push(
+                        compliance.createComment(commentAuthor, commentText)
+                    );
+                }
+
+                break;
+
+            case "DELETECOMMENT":
+                if ("commentId" in payload) {
+                    const { commentId } = payload;
+                    comments = compliance.deleteComment(commentId, comments);
+                }
+
+                break;
+
+            default:
+                throw new Error(
+                    `compliance.doCommentAction() : actionType not recognised [${actionType}]`
+                );
+        }
+
+        return { comments: comments };
+    },
+
+    createComment: function (author: string, commentText: string): Comment {
+        /**
+         ** PENDING: Unresolved Typescript error
+         **
+         ** Type '{ OBJECT THAT IS PERFECTLY IDENTICAL TO COMMENT }' is missing the following properties
+         ** from type 'Comment': data, length, ownerDocume [ts(2740)].
+         **
+         ** I’ve hushed up the TS analysis with an 'as' statement.
+         **/
+        return {
             id: pseudoUid(),
-            author: p.commentAuthor,
-            comment: p.commentText,
-         });
-      }
+            author: author,
+            comment: commentText,
+        } as Comment;
+    },
 
-      function deleteComment() {
-         const comments = compliance["comments"];
-
-         if (comments.length) {
+    deleteComment: function (
+        commentId: number,
+        commentsArr: Comment[]
+    ): Comment[] {
+        if (commentsArr.length) {
             let commentFound = false;
-
-            compliance["comments"] = comments.filter((comment) => {
-               if (comment.id === p["commentId"]) {
-                  commentFound = true;
-                  return false;
-               } else {
-                  return true;
-               }
+            const updatedComments = commentsArr.filter((comment) => {
+                if (commentId === comment.id) {
+                    commentFound = true;
+                    return false;
+                } else {
+                    return true;
+                }
             });
 
             if (!commentFound) {
-               throw new Error(
-                  "deleteComment() : No comment with that id"
-               );
+                throw new Error(
+                    `compliance.deleteComment() : comment [id: ${commentId}] not found.`
+                );
             }
-         } else {
-            throw new Error("deleteComment() : No comments exist");
-         }
-      }
 
-      function updateStatus(status) {
-         compliance["status"] = validateStatus(status);
-      }
-
-      function updateWorker() {
-         compliance["worker"] = getValidatedUser("worker");
-      }
-
-      function updateReviewer() {
-         compliance["reviewer"] = getValidatedUser("reviewer");
-      }
-
-      function updateWorkerFlag() {
-         compliance["isFixed"] = getValidatedBool("isFixed");
-      }
-
-      function updateIsBlocked() {
-         compliance["isBlocked"] = getValidatedBool("isBlocked");
-      }
-
-      function updateIsFailed() {
-         compliance["isFailed"] = getValidatedBool("isFailed");
-      }
-
-      function validatePayload(...keys) {
-         let isValid = true;
-
-         keys.forEach((key) => {
-            switch (key) {
-               case "worker":
-               case "reviewer":
-                  if (!getValidatedUser(key)) {
-                     isValid = false;
-                  }
-                  break;
-
-               case "commentAuthor":
-               case "commentText":
-                  if (!p[key] || "string" !== typeof p[key]) {
-                     isValid = false;
-                  }
-                  break;
-
-               case "commentId":
-                  if (!p[key] || "number" !== typeof p[key]) {
-                     isValid = false;
-                  }
-                  break;
-
-               default:
-                  throw new Error(
-                     "validatePayload() : key not recognised"
-                  );
-            }
-         });
-
-         return isValid;
-      }
-
-      function validateStatus(status) {
-         if (
-            ["incomplete", "forReview", "complete"].includes(status)
-         ) {
-            return status;
-         } else {
+            return updatedComments;
+        } else {
             throw new Error(
-               "validateStatus() : status not recognised"
+                `compliance.deleteComment() : there are no comments on compliance task.`
             );
-         }
-      }
+        }
+    },
 
-      function getValidatedBool(key) {
-         return p[key] && "boolean" === typeof p[key]
-            ? p[key]
-            : getDefault(key);
-      }
+    hasValidPayload: function (action: DispatchActions): boolean {
+        const { payload } = action;
+        const { taskId, taskCat, ...complianceObj } = payload;
+        let isValid = true;
 
-      function getValidatedUser(role) {
-         const user = p[role];
+        // Basic payload scaffold check
+        if (!payload || !taskId || !taskCat) {
+            throw new Error(
+                "compliance.dispatch() : No payload or missing details"
+            );
+        }
 
-         if (user && "string" === typeof user) {
-            return user;
-         } else {
-            throw new Error("getValidatedUser() : invalid user");
-         }
-      }
+        // Expected types for compliance params
+        for (const [k, v] of Object.entries(complianceObj)) {
+            switch (k) {
+                case "commentAuthor":
+                case "commentText":
+                case "commentId":
+                    isValid = compliance.validateCommentMeta(k, v);
+                    break;
 
-      function resetAll() {
-         for (const key in defaults) {
-            compliance[key] = getDefault(key);
-         }
-      }
+                case "status":
+                    isValid = compliance.validateStatus(v);
+                    break;
 
-      function reset(...keys) {
-         keys.forEach((key) => {
-            compliance[key] = getDefault(key);
-         });
-      }
+                case "worker":
+                case "reviewer":
+                    isValid = v && compliance.validateFromDefaults(k, v);
+                    break;
 
-      function getDefault(key) {
-         if (defaults.hasOwnProperty(key)) {
-            return defaults[key];
-         } else {
-            throw new Error("getDefault() : key not recognised");
-         }
-      }
+                case "isFixed":
+                case "isBlocked":
+                case "isFailed":
+                    isValid = compliance.validateFromDefaults(k, v);
+                    break;
 
-      function mergeComplianceWithState() : iTasksByCategory {
-         return {
-            ...state,
-            [taskCat]: {
-               ...state[taskCat],
-               [taskId]: {
-                  ...state[taskCat][taskId],
-                  compliance: compliance,
-               },
-            },
-         };
-      }
-   },
+                default:
+                    throw new Error(
+                        `compliance.isValidPayloadTypes() : key not recognised [${k}]`
+                    );
+            }
+
+            if (!isValid) break;
+        }
+
+        return isValid;
+    },
+    validateCommentMeta: function (
+        metaKey: string,
+        metaValue: string | number
+    ): boolean {
+        switch (metaKey) {
+            case "commentAuthor":
+            case "commentText":
+                return "string" === typeof metaValue;
+                break;
+
+            case "commentId":
+                return "number" === typeof metaValue;
+                break;
+
+            default:
+                throw new Error(
+                    `compliance.validateCommentMeta() : key not recognised [${metaKey}]`
+                );
+        }
+    },
+
+    validateStatus: function (status: string): boolean {
+        if (compliance.statusOptions.includes(status)) {
+            return true;
+        } else {
+            throw new Error(
+                `compliance.validateStatus() : status not recognised [${status}]`
+            );
+        }
+    },
+
+    // PENDING: value should be union of ComplianceParams possible types
+    validateFromDefaults: function (
+        key: keyof ComplianceParams,
+        value: any
+    ): boolean {
+        if (typeof value === typeof compliance.taskDefaults[key]) {
+            return true;
+        } else {
+            throw new Error(
+                `compliance.validateFromDefaults() : type not recognised [${key} : ${value}]`
+            );
+        }
+    },
 };
-
 export default compliance;

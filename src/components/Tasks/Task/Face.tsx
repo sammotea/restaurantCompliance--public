@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import Permission from "../../../contexts/permission";
 
 interface Props {
-    task: iTask;
+    task: Task;
     hShowStatusOptions(): void;
     hShowMetaOptions(): void;
 }

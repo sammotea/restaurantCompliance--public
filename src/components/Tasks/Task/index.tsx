@@ -14,7 +14,7 @@ import CommentsForm from "./Meta/CommentsForm";
 import Subtasks from "./Meta/Subtasks";
 
 interface Props {
-    task: iTask;
+    task: Task;
     title: string;
 }
 

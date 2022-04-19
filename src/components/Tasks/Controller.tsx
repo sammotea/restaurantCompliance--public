@@ -6,7 +6,7 @@ import Categories from "./Categories";
 import NoTasks from "./Task/NoTasks";
 
 interface Props {
-    tasksByStatusObj: iTasksByStatus;
+    tasksByStatusObj: TasksByStatus;
     view: CoreStatusOptions;
 }
 
@@ -28,13 +28,13 @@ const Controller: React.FC<Props> = ({ tasksByStatusObj, view }) => {
         }
     }
 
-    function getTasks(): iTask[] {
+    function getTasks(): Task[] {
         if (canReview) {
             return tasksByStatusObj.hasOwnProperty(view)
                 ? tasksByStatusObj[view]
                 : [];
         } else {
-            let tArr: iTask[] = [];
+            let tArr: Task[] = [];
             const limitedViews: CoreStatusOptions[] = [
                 "incomplete",
                 "forReview",

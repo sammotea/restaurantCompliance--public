@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import User from "../../../../contexts/user";
 import Dispatch from "../../../../contexts/dispatch";
-import compliance from "../../../../utils/complianceNew";
+import compliance from "../../../../utils/compliance";
 
 interface Props {
     taskId: string;
@@ -20,7 +20,7 @@ const CommentsForm: React.FC<Props> = ({ taskId, taskCat }) => {
         taskCat: taskCat,
         commentAuthor: user,
         commentText: comment,
-    } as iCommentPayload;
+    };
 
     return <>{renderCommentForm()}</>;
 

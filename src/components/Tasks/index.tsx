@@ -5,26 +5,24 @@ import sorters from "../../utils/sorters";
 import Task from "./Task/";
 
 interface Props {
-   tasksArr: iTask[];
+    tasksArr: Task[];
 }
 
 const Tasks: React.FC<Props> = ({ tasksArr }) => {
-   return <>{renderTasks()}</>;
+    return <>{renderTasks()}</>;
 
-   function renderTasks() {
-      const cl = `c-tasks`;
-      const taskList = getTasks();
+    function renderTasks() {
+        const cl = `c-tasks`;
+        const taskList = getTasks();
 
-      return <ul className={cl}>{sorters.byTitle(taskList)}</ul>;
-   }
+        return <ul className={cl}>{sorters.byTitle(taskList)}</ul>;
+    }
 
-   function getTasks() {
-      return tasksArr.map((task) => {
-         return (
-            <Task key={task.title} title={task.title} task={task} />
-         );
-      });
-   }
+    function getTasks() {
+        return tasksArr.map((task) => {
+            return <Task key={task.title} title={task.title} task={task} />;
+        });
+    }
 };
 
 export default Tasks;

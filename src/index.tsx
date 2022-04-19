@@ -8,7 +8,7 @@ import Permission from "./contexts/permission";
 import Dispatch from "./contexts/dispatch";
 import CurrentView from "./contexts/currentView";
 
-import compliance from "./utils/complianceNew";
+import compliance from "./utils/compliance";
 
 import Header from "./components/Header";
 import Views from "./components/Header/Views";
@@ -44,23 +44,21 @@ const ComplianceTasks: React.FC = () => {
         </User.Provider>
     );
 
-    function transformTasksForStore(): iTasksByCategory {
-        const tasksRaw = [...taskJson["tasks"]] as _iTask[];
+    function transformTasksForStore(): TasksByCategory {
+        const tasksRaw = [...taskJson["tasks"]] as TaskRaw[];
         const tasksRawWithDefaults = [...tasksRaw].reduce(
             compliance.addDefaults,
             []
-        ) as iTask[];
+        ) as Task[];
         const tasksStore = tasksRawWithDefaults.reduce(
             compliance.prepForStore,
             {}
-        ) as iTasksByCategory;
+        ) as TasksByCategory;
         console.log(tasksStore);
         return tasksStore;
     }
 
-    function organiseTasksByStatus(
-        fromStore: iTasksByCategory
-    ): iTasksByStatus {
+    function organiseTasksByStatus(fromStore: TasksByCategory): TasksByStatus {
         const incomplete = [];
         const forReview = [];
         const complete = [];
