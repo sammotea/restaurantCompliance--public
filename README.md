@@ -1,5 +1,7 @@
 # Restaurant Compliance, Prototype
 
+[Demo Video](https://www.dropbox.com/s/9v7631ucdgufgc9/complianceApp.mov?dl=0)
+
 ## What?
 
 A prototype for managing and overseeing regular (daily) close-down requirements at a restaurant. The primary UI is:
