@@ -1,4 +1,4 @@
-# Restaurant Compliance, Prototype
+# Restaurant Compliance, Prototype
 
 [Demo Video](https://www.dropbox.com/s/9v7631ucdgufgc9/complianceApp.mov?dl=0)
 
