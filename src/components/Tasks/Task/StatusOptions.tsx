@@ -127,7 +127,7 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
 
     function getActionFromStatus(statusOption: iconOptions): string {
         let action;
-
+        console.log(statusOption);
         switch (statusOption) {
             case "incomplete":
             case "fixed":
@@ -135,15 +135,11 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
                 break;
 
             case "complete":
-                if (!canReview) {
-                    action = "forReview";
-                }
+                action = canReview ? "complete" : "forReview";
                 break;
 
             case "failed":
-                if (!canReview) {
-                    action = "blocked";
-                }
+                action = canReview ? "failed" : "blocked";
                 break;
 
             case "undo":
@@ -186,6 +182,7 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
     }
 
     function hStatusClick(action: string) {
+        console.log(action);
         let payload;
         const payloadRequirements = {
             taskId: title,
@@ -200,7 +197,6 @@ const StatusOptions: React.FC<Props> = ({ task, hStatusChange }) => {
          ***   NB: Actions can be progressive (incomplete -> complete)
          ***   or regressive (complete -> forReview).
          **/
-
         switch (action) {
             case "markIncomplete":
                 dispatch(compliance.setAction[action](payloadRequirements));
